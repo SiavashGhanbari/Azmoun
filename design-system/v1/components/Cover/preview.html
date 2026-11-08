@@ -1,0 +1,49 @@
+<!-- @dsCard height=288 -->
+<!doctype html>
+<html lang="fa">
+<head><meta charset="utf-8">
+<style>
+  html,body{margin:0;background:var(--bg)}
+  .cv{position:relative;width:960px;height:288px;overflow:hidden;background:var(--bg);font-family:var(--font-sans)}
+  .cv svg{position:absolute;left:480px;top:0;width:480px;height:288px;overflow:hidden}
+  .b-pri{fill:var(--pri)} .b-sage{fill:var(--sage)} .b-terra{fill:var(--terra)} .b-mustard{fill:var(--mustard)} .b-ink{fill:var(--ink)} .b-shadow{fill:var(--ink)}
+  .ln{stroke:var(--ink);stroke-width:var(--stroke)}
+  .r-lg{rx:var(--radius-lg)}
+  .dot{fill:var(--terra)}
+  .txt{position:absolute;left:48px;bottom:40px;width:400px;direction:rtl;text-align:right}
+  .name{font-size:120px;line-height:.95;font-weight:900;color:var(--ink);letter-spacing:-1px}
+  .tag{margin-top:16px;font-size:14px;color:var(--muted)}
+</style></head>
+<body>
+<div class="cv">
+  <svg viewBox="0 0 480 288" aria-hidden="true">
+    <!--
+      blocks: pri pill 280×112 · sage slab 130×200 (radius-lg) · terra disc r44 · mustard pill 196×64 · ink block 120×120 (radius-lg); each outlined in ink at `stroke` over its `hard` shadow (0 3px ink).
+      arrangement: a big pri pill top-left of the zone, sage slab bleeding off the top, ink block bleeding off the bottom-right, mustard pill and terra disc stacked low.
+      pattern: the dotted terra shadow the illustrations sit on — "soft, friendly, large radii" plus the system's own dotted ground; 36 dots at pitch 12 (space-5) peeking out from under the disc.
+      scales: space-5 pitch, radius-lg for slabs, half the short side for pills and disc, stroke 1.6, hard shadow 3px.
+    -->
+    <g>
+      <g class="dots">
+        <circle class="dot" cx="30" cy="160" r="2"/><circle class="dot" cx="42" cy="160" r="2"/><circle class="dot" cx="54" cy="160" r="2"/><circle class="dot" cx="66" cy="160" r="2"/><circle class="dot" cx="78" cy="160" r="2"/><circle class="dot" cx="90" cy="160" r="2"/><circle class="dot" cx="102" cy="160" r="2"/><circle class="dot" cx="114" cy="160" r="2"/><circle class="dot" cx="126" cy="160" r="2"/><circle class="dot" cx="138" cy="160" r="2"/><circle class="dot" cx="150" cy="160" r="2"/><circle class="dot" cx="162" cy="160" r="2"/>
+        <circle class="dot" cx="30" cy="172" r="2"/><circle class="dot" cx="42" cy="172" r="2"/><circle class="dot" cx="54" cy="172" r="2"/><circle class="dot" cx="66" cy="172" r="2"/><circle class="dot" cx="78" cy="172" r="2"/><circle class="dot" cx="90" cy="172" r="2"/><circle class="dot" cx="102" cy="172" r="2"/><circle class="dot" cx="114" cy="172" r="2"/><circle class="dot" cx="126" cy="172" r="2"/><circle class="dot" cx="138" cy="172" r="2"/><circle class="dot" cx="150" cy="172" r="2"/><circle class="dot" cx="162" cy="172" r="2"/>
+        <circle class="dot" cx="30" cy="184" r="2"/><circle class="dot" cx="42" cy="184" r="2"/><circle class="dot" cx="54" cy="184" r="2"/><circle class="dot" cx="66" cy="184" r="2"/><circle class="dot" cx="78" cy="184" r="2"/><circle class="dot" cx="90" cy="184" r="2"/><circle class="dot" cx="102" cy="184" r="2"/><circle class="dot" cx="114" cy="184" r="2"/><circle class="dot" cx="126" cy="184" r="2"/><circle class="dot" cx="138" cy="184" r="2"/><circle class="dot" cx="150" cy="184" r="2"/><circle class="dot" cx="162" cy="184" r="2"/>
+      </g>
+      <rect class="b-shadow r-lg" x="322" y="-27" width="130" height="200"/>
+      <rect class="b-sage ln r-lg" x="322" y="-30" width="130" height="200"/>
+      <rect class="b-shadow" x="24" y="43" width="280" height="112" rx="56"/>
+      <rect class="b-pri ln" x="24" y="40" width="280" height="112" rx="56"/>
+      <rect class="b-shadow" x="176" y="193" width="196" height="64" rx="32"/>
+      <rect class="b-mustard ln" x="176" y="190" width="196" height="64" rx="32"/>
+      <circle class="b-shadow" cx="96" cy="227" r="44"/>
+      <circle class="b-terra ln" cx="96" cy="224" r="44"/>
+      <rect class="b-ink r-lg" x="392" y="196" width="120" height="120"/>
+    </g>
+  </svg>
+  <div class="txt">
+    <div class="name">آزمون</div>
+    <div class="tag">سیستم طراحی اپ آزمون، برای دانش‌آموزان پنجم و ششم</div>
+  </div>
+</div>
+</body>
+</html>

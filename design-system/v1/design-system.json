@@ -1,0 +1,341 @@
+{
+ "v": 3,
+ "layout": "files",
+ "createdOnFiles": {
+  "v": 1,
+  "at": "2026-10-31T07:07:29Z"
+ },
+ "title": "آزمون",
+ "namespace": "Azmoun",
+ "libraries": [],
+ "sections": {},
+ "groups": [
+  "Icons",
+  "Illustrations",
+  "Avatars"
+ ],
+ "assetGroups": {
+  "Icons": {
+   "name": "Icons",
+   "tile": "xs",
+   "order": [
+    "icon-home.svg",
+    "icon-exam.svg",
+    "icon-mission.svg",
+    "icon-rank.svg",
+    "icon-user.svg",
+    "icon-back.svg",
+    "icon-chev.svg",
+    "icon-down.svg",
+    "icon-arrowL.svg",
+    "icon-close.svg",
+    "icon-flag.svg",
+    "icon-grid.svg",
+    "icon-check.svg",
+    "icon-info.svg",
+    "icon-clock.svg",
+    "icon-lock.svg",
+    "icon-play.svg",
+    "icon-cam.svg",
+    "icon-zoom.svg",
+    "icon-edit.svg",
+    "icon-chat.svg",
+    "icon-card.svg",
+    "icon-out.svg",
+    "icon-undo.svg",
+    "icon-crown.svg"
+   ],
+   "files": {
+    "icon-home.svg": {
+     "name": "icon-home.svg",
+     "blob": "8260d5b8d227e14f6df6d8cc2cdbd16b",
+     "size": 264,
+     "type": "image/svg+xml"
+    },
+    "icon-exam.svg": {
+     "name": "icon-exam.svg",
+     "blob": "935df6b6cafc926e584bbe25b907734f",
+     "size": 301,
+     "type": "image/svg+xml"
+    },
+    "icon-mission.svg": {
+     "name": "icon-mission.svg",
+     "blob": "abf1500fcb8bbf4e1ff65adb64ab20e7",
+     "size": 318,
+     "type": "image/svg+xml"
+    },
+    "icon-rank.svg": {
+     "name": "icon-rank.svg",
+     "blob": "9aaff673112f2bc9d17b79ebac29a370",
+     "size": 305,
+     "type": "image/svg+xml"
+    },
+    "icon-user.svg": {
+     "name": "icon-user.svg",
+     "blob": "5abd933c7a4ebbf6caa31a5782664dee",
+     "size": 260,
+     "type": "image/svg+xml"
+    },
+    "icon-back.svg": {
+     "name": "icon-back.svg",
+     "blob": "6daf73ed7322488187fdf1e5c8960a48",
+     "size": 214,
+     "type": "image/svg+xml"
+    },
+    "icon-chev.svg": {
+     "name": "icon-chev.svg",
+     "blob": "509560fad954e9827993334319bc7dc2",
+     "size": 215,
+     "type": "image/svg+xml"
+    },
+    "icon-down.svg": {
+     "name": "icon-down.svg",
+     "blob": "fab3d8edc9fae67b1cc8128f53a1d5cb",
+     "size": 214,
+     "type": "image/svg+xml"
+    },
+    "icon-arrowL.svg": {
+     "name": "icon-arrowL.svg",
+     "blob": "88226429e0c0f83f2cc986993b46ff73",
+     "size": 222,
+     "type": "image/svg+xml"
+    },
+    "icon-close.svg": {
+     "name": "icon-close.svg",
+     "blob": "1751f84e66c984991dde33cf6fb33011",
+     "size": 222,
+     "type": "image/svg+xml"
+    },
+    "icon-flag.svg": {
+     "name": "icon-flag.svg",
+     "blob": "e9912795d5e137f6f032b716e5ba3038",
+     "size": 225,
+     "type": "image/svg+xml"
+    },
+    "icon-grid.svg": {
+     "name": "icon-grid.svg",
+     "blob": "c6d9c959d270c457382e9bb58d0adf73",
+     "size": 398,
+     "type": "image/svg+xml"
+    },
+    "icon-check.svg": {
+     "name": "icon-check.svg",
+     "blob": "0d4afb9b3e1bc8fcf6bb9d3b69238b58",
+     "size": 224,
+     "type": "image/svg+xml"
+    },
+    "icon-info.svg": {
+     "name": "icon-info.svg",
+     "blob": "0afeadf7bcffcdad0144982e99af243f",
+     "size": 256,
+     "type": "image/svg+xml"
+    },
+    "icon-clock.svg": {
+     "name": "icon-clock.svg",
+     "blob": "f6ae90f9b75a13a3e09d9674762f1283",
+     "size": 250,
+     "type": "image/svg+xml"
+    },
+    "icon-lock.svg": {
+     "name": "icon-lock.svg",
+     "blob": "c6b0df0144c978edd470da40222df05d",
+     "size": 279,
+     "type": "image/svg+xml"
+    },
+    "icon-play.svg": {
+     "name": "icon-play.svg",
+     "blob": "5397f997e8668ad12843dbc793822a8a",
+     "size": 235,
+     "type": "image/svg+xml"
+    },
+    "icon-cam.svg": {
+     "name": "icon-cam.svg",
+     "blob": "d7ecf00eb8b15e3eb0d915b120bc2b93",
+     "size": 267,
+     "type": "image/svg+xml"
+    },
+    "icon-zoom.svg": {
+     "name": "icon-zoom.svg",
+     "blob": "f72f74148250d2563880ee05c61f3682",
+     "size": 273,
+     "type": "image/svg+xml"
+    },
+    "icon-edit.svg": {
+     "name": "icon-edit.svg",
+     "blob": "ff58cb620a263d76d5266546b9c4d6b5",
+     "size": 225,
+     "type": "image/svg+xml"
+    },
+    "icon-chat.svg": {
+     "name": "icon-chat.svg",
+     "blob": "e0a64831d59e35825198da3b50ff0d60",
+     "size": 220,
+     "type": "image/svg+xml"
+    },
+    "icon-card.svg": {
+     "name": "icon-card.svg",
+     "blob": "e55cde89ae78ca545659eb9ae3b33ee2",
+     "size": 265,
+     "type": "image/svg+xml"
+    },
+    "icon-out.svg": {
+     "name": "icon-out.svg",
+     "blob": "20c4a91449c4f80734a86107e0983d65",
+     "size": 237,
+     "type": "image/svg+xml"
+    },
+    "icon-undo.svg": {
+     "name": "icon-undo.svg",
+     "blob": "e04fe7834db89ed05ade8f36b4852083",
+     "size": 256,
+     "type": "image/svg+xml"
+    },
+    "icon-crown.svg": {
+     "name": "icon-crown.svg",
+     "blob": "2a3109779c86ec9a3ff44f88c51451df",
+     "size": 219,
+     "type": "image/svg+xml"
+    }
+   }
+  },
+  "Illustrations": {
+   "name": "Illustrations",
+   "tile": "m",
+   "order": [
+    "illus-books.svg",
+    "illus-clock.svg",
+    "illus-target.svg",
+    "illus-bubble.svg",
+    "illus-trophy.svg",
+    "illus-paper.svg",
+    "illus-phone.svg",
+    "illus-key.svg"
+   ],
+   "files": {
+    "illus-books.svg": {
+     "name": "illus-books.svg",
+     "blob": "d902a8bf04d113302f3c9d6cad94d2f4",
+     "size": 1357,
+     "type": "image/svg+xml"
+    },
+    "illus-clock.svg": {
+     "name": "illus-clock.svg",
+     "blob": "c3dc8b311a9573e368394d014c04ea33",
+     "size": 977,
+     "type": "image/svg+xml"
+    },
+    "illus-target.svg": {
+     "name": "illus-target.svg",
+     "blob": "88ef9ec94a0ee60e0e04e05453dac48f",
+     "size": 840,
+     "type": "image/svg+xml"
+    },
+    "illus-bubble.svg": {
+     "name": "illus-bubble.svg",
+     "blob": "7a7f209e936518e941c1e6bea4096076",
+     "size": 1046,
+     "type": "image/svg+xml"
+    },
+    "illus-trophy.svg": {
+     "name": "illus-trophy.svg",
+     "blob": "927d6ea8c742c6d7bdeec75912e3ac6e",
+     "size": 914,
+     "type": "image/svg+xml"
+    },
+    "illus-paper.svg": {
+     "name": "illus-paper.svg",
+     "blob": "46c397e35b2f31acacb5d2afb7008573",
+     "size": 780,
+     "type": "image/svg+xml"
+    },
+    "illus-phone.svg": {
+     "name": "illus-phone.svg",
+     "blob": "f3f4d4d4092fe0d9a0cdce95ea2e8a3e",
+     "size": 800,
+     "type": "image/svg+xml"
+    },
+    "illus-key.svg": {
+     "name": "illus-key.svg",
+     "blob": "1cdd9a0c4c724db510458bced622ac56",
+     "size": 679,
+     "type": "image/svg+xml"
+    }
+   }
+  },
+  "Avatars": {
+   "name": "Avatars",
+   "tile": "s",
+   "order": [
+    "avatar-1.jpg",
+    "avatar-2.jpg",
+    "avatar-3.jpg",
+    "avatar-4.jpg",
+    "avatar-5.jpg",
+    "avatar-6.jpg",
+    "avatar-7.jpg",
+    "avatar-8.jpg"
+   ],
+   "files": {
+    "avatar-1.jpg": {
+     "name": "avatar-1.jpg",
+     "blob": "4702a9fc9c598e3a018c06827cf8c7a0",
+     "size": 9764,
+     "type": "image/jpeg"
+    },
+    "avatar-2.jpg": {
+     "name": "avatar-2.jpg",
+     "blob": "aebcb27a03c061fe8dcafae6f1b0fd22",
+     "size": 8501,
+     "type": "image/jpeg"
+    },
+    "avatar-3.jpg": {
+     "name": "avatar-3.jpg",
+     "blob": "dd1cfe562cdd7c74e369ce976ea379ad",
+     "size": 8497,
+     "type": "image/jpeg"
+    },
+    "avatar-4.jpg": {
+     "name": "avatar-4.jpg",
+     "blob": "9a58e41cb53cef207edbebaa553d010b",
+     "size": 8098,
+     "type": "image/jpeg"
+    },
+    "avatar-5.jpg": {
+     "name": "avatar-5.jpg",
+     "blob": "261e6dd24c6c85d77fe1ab58cb14dd6f",
+     "size": 7170,
+     "type": "image/jpeg"
+    },
+    "avatar-6.jpg": {
+     "name": "avatar-6.jpg",
+     "blob": "ec2a97e494fa2daed9a27829cd0358d0",
+     "size": 7668,
+     "type": "image/jpeg"
+    },
+    "avatar-7.jpg": {
+     "name": "avatar-7.jpg",
+     "blob": "b66ad568dbd2a9875bf9d54c66b245c1",
+     "size": 8649,
+     "type": "image/jpeg"
+    },
+    "avatar-8.jpg": {
+     "name": "avatar-8.jpg",
+     "blob": "e720c452fc2ea0a882a621170f61eb50",
+     "size": 7762,
+     "type": "image/jpeg"
+    }
+   }
+  }
+ },
+ "blobs": {},
+ "docs": {
+  "readme": "project/README.md",
+  "sections": []
+ },
+ "lastChange": {
+  "by": "Siavash",
+  "at": "2026-10-31T07:07:29Z",
+  "via": "Claude · Cowork",
+  "note": "ساخته‌شده از کد نسخه‌ی ۱ اپ آزمون (azmoun-app.html)"
+ }
+}

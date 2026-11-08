@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="240" viewBox="0 0 160 120" fill="none" stroke="#1D1D1B" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><defs><pattern id="dots" width="5" height="5" patternUnits="userSpaceOnUse"><circle cx="1.6" cy="1.6" r="1.15" fill="#D98F76"/></pattern></defs><ellipse cx="80" cy="106" rx="60" ry="8" fill="url(#dots)" stroke="none"/>
+    <rect x="22" y="82" width="116" height="20" rx="4" fill="#B7A8EA"/><path d="M124 85h10v14h-10" fill="#fff"/><path d="M126 89.5h6M126 94h6" stroke-width="1.1"/>
+    <rect x="30" y="62" width="98" height="20" rx="4" fill="#B8CD9E"/><path d="M44 65H34v14h10" fill="#fff"/><path d="M36 69.5h6M36 74h6" stroke-width="1.1"/>
+    <g transform="rotate(-5 80 52)"><rect x="40" y="43" width="80" height="19" rx="4" fill="#E2A48F"/><path d="M104 43v19"/><path d="M110 43v26l-4-4-4 4V43" fill="#EBCB7E"/></g>
+    <g transform="rotate(-38 120 26)"><rect x="96" y="21" width="44" height="10" rx="1.5" fill="#EBCB7E"/><path d="M140 21l11 5-11 5z" fill="#F7F5F1"/><path d="M148.5 24.8 151 26l-2.5 1.2z" fill="#1D1D1B"/><rect x="90" y="21" width="7" height="10" rx="2" fill="#E2A48F"/></g>
+    <path d="M28 30v12M22 36h12"/><path d="M144 58v12M138 64h12"/></svg>

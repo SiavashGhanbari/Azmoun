@@ -1,0 +1,77 @@
+/* آزمون — نسخه‌ی ۱ — generated from tokens.json */
+@font-face{font-family:"Yekan Bakh";src:url("fonts/YekanBakh-VF.ttf") format("truetype");font-weight:1 1000;font-display:swap}
+:root{
+  --bg: #ece9e3;
+  --surface: #f7f5f1;
+  --card: #ffffff;
+  --ink: #1d1d1b;
+  --muted: #6e6a63;
+  --line: #d6d0c6;
+  --track: #d9d9e3;
+  --backdrop: #dcd8d0;
+  --pri: #947edc;
+  --pri-dk: #7a63c6;
+  --pri-soft: #e9e3f8;
+  --pri-ink: #4b3a92;
+  --on-fill: #ffffff;
+  --green: #5e9a5f;
+  --green-dk: #2f5d35;
+  --green-soft: #dde9d4;
+  --green-muted: #8db68e;
+  --green-step: #bfd7ae;
+  --terra: #d98f76;
+  --terra-soft: #f4ded4;
+  --terra-ink: #8a3e26;
+  --sage: #b8cd9e;
+  --mustard: #ebcb7e;
+  --illus-purple: #b7a8ea;
+  --illus-terra: #e2a48f;
+  --bad: #b9442f;
+  --bad-soft: #f6ded7;
+  --hint-line: #c9b9a6;
+  --fill-ghost: rgba(29,29,27,0.075);
+  --fill-ghost-hover: rgba(29,29,27,0.11);
+  --fill-ghost-press: rgba(29,29,27,0.13);
+  --scrim: rgba(29,29,27,0.35);
+  --focus-ring: rgba(148,126,220,0.22);
+  --space-1: 4px;
+  --space-2: 6px;
+  --space-3: 8px;
+  --space-4: 10px;
+  --space-5: 12px;
+  --space-6: 16px;
+  --space-7: 20px;
+  --space-8: 24px;
+  --radius-sm: 14px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --radius-sheet: 28px;
+  --radius-pill: 999px;
+  --hard: 0 3px 0 #1d1d1b;
+  --hard-sm: 0 2px 0 #1d1d1b;
+  --soft: 0 1px 2px rgba(40,30,10,0.05), 0 12px 30px -14px rgba(40,30,10,0.22);
+  --nav: 0 8px 28px -6px rgba(30,25,15,0.25), 0 0 0 1px rgba(0,0,0,0.04);
+  --knob: 0 2px 6px rgba(47,93,53,0.35);
+  --focus: 0 0 0 4px rgba(148,126,220,0.22);
+  --stroke: 1.6px;
+  --stroke-icon: 1.8px;
+  --app-width: 430px;
+  --control-h: 54px;
+  --control-h-sm: 42px;
+  --control-h-xs: 34px;
+  --font-sans: "Yekan Bakh", Tahoma, sans-serif;
+}
+.t-score{font-family:var(--font-sans);font-size:42px;line-height:1.15;font-weight:900}
+.t-title{font-family:var(--font-sans);font-size:26px;line-height:1.4;font-weight:800;letter-spacing:-0.2px}
+.t-heading{font-family:var(--font-sans);font-size:20px;line-height:1.45;font-weight:800}
+.t-timer{font-family:var(--font-sans);font-size:18px;line-height:1.4;font-weight:900}
+.t-question{font-family:var(--font-sans);font-size:20px;line-height:1.95;font-weight:800}
+.t-option{font-family:var(--font-sans);font-size:17px;line-height:1.6;font-weight:600}
+.t-lead{font-family:var(--font-sans);font-size:16px;line-height:2;font-weight:400}
+.t-body{font-family:var(--font-sans);font-size:15px;line-height:1.75;font-weight:400}
+.t-small{font-family:var(--font-sans);font-size:13px;line-height:1.7;font-weight:400}
+.t-button{font-family:var(--font-sans);font-size:16px;line-height:1.2;font-weight:800}
+.t-label{font-family:var(--font-sans);font-size:13.5px;line-height:1.5;font-weight:700}
+.t-cap{font-family:var(--font-sans);font-size:12.5px;line-height:1.5;font-weight:700}
+.t-badge{font-family:var(--font-sans);font-size:12px;line-height:1.5;font-weight:700}
+.t-nav{font-family:var(--font-sans);font-size:11px;line-height:1.4;font-weight:400}
