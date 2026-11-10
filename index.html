@@ -28,6 +28,7 @@ button{cursor:pointer;border:0;background:none;padding:0}
 .app{max-width:430px;width:100%;min-height:100dvh;margin:0 auto;background:var(--bg);position:relative;display:flex;flex-direction:column;overflow-x:clip}
 .screen{min-width:0;max-width:100%}
 img,svg{max-width:100%}
+[hidden]{display:none!important}
 .screen{flex:1;padding:16px 16px 116px}
 .screen.no-nav{padding-bottom:32px}
 .screen.has-act{padding-bottom:200px}
@@ -143,7 +144,7 @@ body.scrolled .sticky{box-shadow:0 1px 0 var(--line),0 10px 16px -14px rgba(40,3
 .timer{font-weight:900;font-size:18px;font-variant-numeric:tabular-nums;min-width:58px;text-align:left;transition:color .3s}
 .timer.low{color:var(--bad)}
 .q-text{font-size:20px;font-weight:800;line-height:1.95;text-align:right;text-wrap:pretty;margin:6px 0 4px}
-.q-img{display:block;width:100%;background:#fff;border:1.6px solid var(--ink);border-radius:18px;box-shadow:var(--hard);padding:10px;position:relative;margin-top:8px;transition:box-shadow .14s}
+.q-img{display:block;width:100%;background:#fff;border:1.6px solid var(--ink);border-radius:18px;box-shadow:var(--hard);padding:10px 10px 46px;position:relative;margin-top:8px;transition:box-shadow .14s}
 .q-img:active{box-shadow:0 0 0 var(--ink)}
 .q-img img{display:block;max-width:100%;max-height:210px;margin:0 auto}
 .q-img .zoom{position:absolute;left:10px;bottom:10px;background:var(--ink);color:#fff;font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;display:flex;align-items:center;gap:4px}
@@ -291,6 +292,132 @@ body.scrolled .sticky{box-shadow:0 1px 0 var(--line),0 10px 16px -14px rgba(40,3
 .success-ic path{stroke-dasharray:24;stroke-dashoffset:24;animation:draw .45s .3s var(--ease) forwards}
 .confetti{position:fixed;width:8px;height:8px;border-radius:2px;pointer-events:none;z-index:40}
 
+
+/* ============ افزوده‌ها ============ */
+/* هدر آزمون: شمارهٔ سؤال و «همهٔ سؤالات» */
+.x-sub{margin-top:-2px;min-height:36px}
+/* گزینه‌های تصویری */
+.opts-img{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.opt.img{flex-direction:column;justify-content:center;gap:6px;border-radius:22px;padding:14px 10px 12px;position:relative;min-height:0}
+.opt.img .n{position:absolute;top:8px;right:8px;width:26px;height:26px;font-size:13px}
+.opt-img{display:block;width:100%;max-width:118px;aspect-ratio:1;margin:0 auto}
+.opt.img.sel{background:var(--pri-soft);color:var(--ink);box-shadow:0 3px 0 var(--ink);outline:3px solid var(--pri);outline-offset:-5px}
+.opt.img.static{min-height:0}
+.opt.mine{background:var(--pri-soft)}
+.tag{font-size:12px;font-weight:800;white-space:nowrap}
+.tag.ok{color:var(--green-dk)} .tag.bad{color:var(--bad)} .tag.me{color:#4B3A92}
+/* انتخاب استان، شهر و مدرسه */
+.field-btn:disabled{opacity:.55;cursor:default;background:var(--surface)}
+.pick-search{position:relative;margin:10px 0 6px}
+.pick-search svg{position:absolute;right:14px;top:50%;transform:translateY(-50%);width:20px;height:20px;color:var(--muted);pointer-events:none}
+.pick-search .field{padding-right:44px;height:50px}
+.pick-list{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.pick-it{display:flex;align-items:center;justify-content:space-between;min-height:52px;padding:0 16px;border-radius:16px;background:var(--card);border:1.6px solid var(--ink);box-shadow:0 2px 0 var(--ink);font-weight:700;text-align:right;transition:transform .12s,box-shadow .12s}
+.pick-it:active{transform:translateY(2px);box-shadow:0 0 0 var(--ink)}
+.pick-it.on{background:var(--pri);color:#fff}
+.pick-it svg{width:20px;height:20px}
+/* دکمهٔ سبد */
+.basket-btn{position:relative;overflow:visible}
+.basket-btn .cnt,.basket-big .cnt{position:absolute;top:-6px;left:-6px;min-width:22px;height:22px;padding:0 5px;border-radius:11px;background:var(--terra);color:var(--ink);border:1.6px solid var(--ink);font-size:12px;font-weight:900;display:grid;place-items:center;line-height:1}
+.pop-in{animation:pop .45s var(--spring)}
+/* خانه: برترین‌های کشور */
+.top3>*+*{margin-top:12px}
+.t3-list{display:flex;flex-direction:column}
+.t3-row{display:flex;align-items:center;gap:10px;padding:8px 2px;border-bottom:1px solid var(--line)}
+.t3-row:last-child{border-bottom:0}
+.t3-row .avatar{width:36px;height:36px;flex:none}
+.t3-row.me{background:var(--pri-soft);border-radius:16px;border-bottom:0;padding:8px 10px;margin-top:2px}
+.medal{min-width:30px;height:30px;padding:0 6px;border-radius:15px;display:grid;place-items:center;font-weight:900;font-size:13px;background:var(--surface);border:1.4px solid var(--ink);flex:none}
+.medal.m1{background:var(--pri);color:#fff} .medal.m2{background:var(--sage)} .medal.m3{background:var(--terra)} .medal.me{background:var(--card)}
+.res-new .illus svg{animation:bob 4s ease-in-out infinite, glowIn .8s var(--spring) both}
+.pulse{animation:pulse 2.2s 1s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:var(--hard)}50%{box-shadow:0 3px 0 var(--ink),0 0 0 8px rgba(148,126,220,.22)}}
+@keyframes glowIn{from{transform:scale(.6) rotate(-8deg);opacity:0}}
+
+/* ============ قصهٔ نتیجه ============ */
+.st-hd{padding-top:12px}
+.st-bars{display:flex;gap:5px}
+.st-bars i{flex:1;height:5px;border-radius:5px;background:var(--track);overflow:hidden;position:relative}
+.st-bars i.rv{flex:3}
+.st-bars b{position:absolute;inset:0 0 0 auto;background:var(--ink);border-radius:5px;transition:width .5s var(--ease)}
+.st-bars b.now{animation:fillSeg .7s var(--ease) both}
+@keyframes fillSeg{from{width:0}}
+.st-top{margin-top:10px;min-height:44px}
+.stars{display:inline-flex;align-items:center;gap:6px;background:var(--card);border-radius:99px;padding:4px 12px 4px 6px;box-shadow:var(--soft);font-weight:900;font-size:16px}
+.stars svg{width:24px;height:24px}
+.st-x{width:32px;height:32px;border-radius:50%;background:rgba(29,29,27,.06);color:var(--muted);display:grid;place-items:center;opacity:.75;transition:transform .14s}
+.st-x:active{transform:scale(.9)}
+.st-x svg{width:15px;height:15px}
+.st-body{padding-top:18px}
+.st-body>*+*{margin-top:12px}
+.st-h{font-size:27px;line-height:1.5;text-wrap:balance}
+.st-lead{font-size:16px;line-height:2;max-width:340px;margin-inline:auto}
+.hl{display:inline-block;background:var(--green-soft);color:var(--green-dk);border-radius:12px;padding:0 10px;font-variant-numeric:tabular-nums}
+.st-line{animation:rise .5s var(--ease) both;animation-delay:var(--d)}
+/* آمار: کاشی‌ها یکی‌یکی برمی‌گردند */
+.tiles{display:grid;grid-template-columns:repeat(10,1fr);gap:6px;max-width:330px;margin:22px auto 6px!important;perspective:400px}
+.tiles i{aspect-ratio:1;border-radius:8px;border:1.4px solid var(--ink);background:var(--card);animation:flipIn .5s var(--spring) both;animation-delay:var(--d)}
+.tiles i.ok{background:var(--green)} .tiles i.bad{background:var(--bad)} .tiles i.none{background:var(--track)}
+@keyframes flipIn{from{transform:rotateY(90deg) scale(.4);opacity:0}to{transform:none;opacity:1}}
+.st-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:22px!important}
+.stt{background:var(--card);border-radius:20px;padding:14px 6px 10px;box-shadow:var(--soft);display:flex;flex-direction:column;align-items:center;animation:popUp .55s var(--spring) both;animation-delay:var(--d)}
+.stt b{font-size:34px;font-weight:900;line-height:1.1;font-variant-numeric:tabular-nums}
+.stt span{font-size:13px;color:var(--muted);font-weight:700}
+.stt.ok b{color:var(--green-dk)} .stt.bad b{color:var(--bad)}
+@keyframes popUp{from{transform:translateY(24px) scale(.7);opacity:0}to{transform:none;opacity:1}}
+/* دسته‌ها */
+.cats{display:flex;flex-direction:column;gap:12px;margin-top:20px!important}
+.cat-row{background:var(--card);border-radius:20px;padding:14px 16px;box-shadow:var(--soft);animation:slideIn .5s var(--ease) both;animation-delay:var(--d)}
+.cat-n{font-weight:900;font-size:14px;background:var(--bad-soft);color:var(--bad);border-radius:99px;padding:2px 10px}
+.cbar{height:10px;background:var(--track);border-radius:10px;overflow:hidden;margin-top:10px}
+.cbar i{display:block;height:100%;width:var(--w);background:var(--terra);border-radius:10px;animation:growW .9s var(--ease) both;animation-delay:calc(var(--d) + .2s)}
+.cat-row:first-child .cbar i{background:var(--bad)}
+@keyframes growW{from{width:0}}
+@keyframes slideIn{from{transform:translateX(-30px);opacity:0}to{transform:none;opacity:1}}
+/* «اگه...» */
+.wf{display:flex;align-items:center;gap:10px;padding:18px 16px;margin-top:18px!important}
+.wf-now,.wf-then{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center}
+.wf-now b{font-size:22px;font-weight:900;color:var(--muted);text-decoration:line-through;text-decoration-thickness:2px}
+.wf-then{background:var(--pri);color:#fff;border:1.6px solid var(--ink);border-radius:18px;padding:10px 6px;animation:popUp .6s .3s var(--spring) both}
+.wf-then b{font-size:30px;font-weight:900;line-height:1.2;font-variant-numeric:tabular-nums}
+.wf-arrow{color:var(--ink);display:grid;animation:nudge 1.2s .6s ease-in-out infinite}
+.wf-arrow svg{width:26px;height:26px}
+@keyframes nudge{50%{transform:translateX(-6px)}}
+.wf-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.chip-up{background:var(--green-soft);color:var(--green-dk);font-weight:800;font-size:13.5px;border-radius:99px;padding:5px 14px;animation:popUp .5s var(--spring) both;animation-delay:var(--d)}
+.wf-row{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line);animation:rise .45s var(--ease) both;animation-delay:var(--d)}
+.wf-row:last-child{border-bottom:0}
+.wf-row b{font-size:14px;white-space:nowrap}
+/* دعوت به مرور */
+.go-art{margin:26px 0 8px}
+.go-art svg{width:210px}
+.go-legend{display:flex;flex-direction:column;gap:8px;align-items:center;margin-top:18px!important;font-size:13.5px;font-weight:700}
+.go-legend span{display:inline-flex;align-items:center;gap:8px;background:var(--card);border-radius:99px;padding:6px 14px 6px 10px;box-shadow:var(--soft)}
+.go-legend svg{width:20px;height:20px}
+/* مرور سؤال */
+.story .qwrap{padding-top:6px}
+.rv-card{padding:14px 14px 16px}
+.rv-card.flying{box-shadow:0 18px 40px -10px rgba(30,25,15,.45);overflow:hidden}
+.pulse-in{animation:pop .4s var(--spring)}
+.qwrap.tossing .explain,.qwrap.tossing .ask{opacity:0;transform:translateY(10px);transition:opacity .25s,transform .25s}
+.explain{background:var(--surface);box-shadow:none;border:1.4px dashed var(--line);animation:rise .4s var(--ease) both}
+.explain p{margin-top:4px;line-height:2}
+.ask{font-weight:800;text-align:center;animation:rise .35s var(--ease) both}
+.ask.no{color:var(--bad);animation:shake .42s var(--ease)}
+.got{display:flex;align-items:center;justify-content:center;gap:10px;background:var(--green-soft);color:var(--green-dk);border-radius:18px;padding:12px;animation:popUp .5s var(--spring) both}
+.got-star svg{width:30px;height:30px;display:block;animation:spinPop .7s var(--spring) both}
+@keyframes spinPop{from{transform:scale(0) rotate(-180deg)}}
+.fly-star svg{width:100%;height:100%;display:block}
+/* پایان */
+.end-art{margin:36px 0 6px}
+.end-art svg{width:230px;animation:bob 4s ease-in-out infinite, glowIn .8s var(--spring) both}
+.star-total{display:inline-flex!important;align-items:center;gap:8px;background:var(--card);border-radius:99px;padding:8px 18px 8px 12px;box-shadow:var(--soft);font-weight:800;animation:popUp .6s .3s var(--spring) both}
+.star-total svg{width:30px;height:30px}
+.star-total b{font-size:24px;font-weight:900}
+.basket-call{display:flex;align-items:center;gap:14px;text-align:right;margin-top:22px!important;animation:popUp .6s .6s var(--spring) both}
+.basket-big{position:relative;width:56px;height:56px;border-radius:50%;background:var(--terra-soft);border:1.6px solid var(--ink);display:grid;place-items:center;flex:none}
+.basket-big svg{width:28px;height:28px}
+
 /* ============ موشن ============ */
 .screen.enter-fwd{animation:inFwd .42s var(--ease) both}
 .screen.enter-back{animation:inBack .42s var(--ease) both}
@@ -356,6 +483,7 @@ const mmss = ms => { const t=Math.max(0,Math.ceil(ms/1000)); return fa(String(Ma
 const fmtPhone = p => fa(p.replace(/^(\d{4})(\d{3})(\d{4})$/,'$1 $2 $3'));
 const maskPhone = p => fa(p.slice(0,4)+'****'+p.slice(-3));
 const pct = (a,b) => b ? Math.round(a*100/b) : 0;
+const faN = n => fa(Math.round(n).toLocaleString('en-US')).replace(/,/g,'٬');
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 // جلوگیری از تنها ماندن یک کلمه یا علامت در خط آخر
@@ -387,6 +515,9 @@ const I = {
   chat: SVGI('<path d="M4 5h16v11H9l-5 4z"/>'),
   card: SVGI('<rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/>'),
   out: SVGI('<path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10"/>'),
+  basket: SVGI('<path d="M3.5 9h17l-1.6 9.2a2 2 0 0 1-2 1.8H7.1a2 2 0 0 1-2-1.8z"/><path d="M8 9l3-5M16 9l-3-5M9.5 13v3M14.5 13v3"/>','stroke-width="2"'),
+  star: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8l2.7 5.6 6.1.8-4.5 4.2 1.1 6.1L12 16.6l-5.4 2.9 1.1-6.1-4.5-4.2 6.1-.8z" fill="#EBCB7E" stroke="#1D1D1B" stroke-width="1.6" stroke-linejoin="round"/></svg>',
+  search: SVGI('<circle cx="11" cy="11" r="6.5"/><path d="m20 20-4-4"/>','stroke-width="2"'),
   crown: '<svg class="crown" viewBox="0 0 26 20" fill="#EBCB7E" stroke="#1D1D1B" stroke-width="1.6" stroke-linejoin="round"><path d="M2 17 4 5l5.5 6L13 2l3.5 9L22 5l2 12z"/></svg>',
 };
 
@@ -429,7 +560,7 @@ const ASSET = {"fig": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWwAAAFqCAA
 
 /* ============ داده‌ها (همهٔ عددها فقط از همین‌جا خوانده می‌شوند) ============ */
 const DATA = {
-  student: { first:'مرتضی', last:'پاشایی', grade:'ششم', city:'تهران' },
+  student: { first:'مرتضی', last:'پاشایی', grade:'ششم', province:'تهران', city:'تهران', school:'دبستان فرهنگ' },
   login: { testCode:'12345', unregistered:'09120000000', invite:'AZ1405', resendSeconds:60 },
   exam: { title:'آزمون ۱', free:true, resultAt:'چهارشنبه ۱۳ آبان، ساعت ۱۸:۰۰',
     booklets:[ { title:'استعداد تحلیلی', minutes:20 }, { title:'ریاضی و علوم', minutes:25 } ] },
@@ -437,14 +568,62 @@ const DATA = {
     { title:'آزمون ۲', state:'upcoming', note:'شروع: پنجشنبه ۲۱ آبان، ساعت ۹:۰۰' },
     { title:'آزمون ورودی مهر', state:'missed', note:'مهلت شرکت ۳۰ مهر تموم شد' },
   ],
-  othersDist:{20:1,19:1,18:4,17:4,16:3,15:4,14:6,13:9,12:14,11:15,10:16,9:12,8:10,7:8,6:6,5:4,4:3,3:2,2:1},
-  cities:['تهران','مشهد','اصفهان','شیراز','تبریز'],
+  // تعداد شرکت‌کننده‌های کشور با هر نمره (بدون خود کاربر)
+  national:{20:3,19:27,18:164,17:612,16:1490,15:2780,14:4105,13:5230,12:5910,11:6020,10:5680,9:4870,8:3790,7:2730,6:1820,5:1130,4:640,3:330,2:160,1:70,0:25},
   grades:['پنجم','ششم'], genders:['دختر','پسر'],
   months:['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'],
   years:[1390,1391,1392,1393,1394,1395,1396,1397,1398],
 };
+// استان‌ها و شهرها (اولین شهر هر استان، مرکز استان است)
+const PROVINCES = {
+  'تهران':['تهران','شهریار','اسلامشهر','ورامین','دماوند'],
+  'البرز':['کرج','فردیس','نظرآباد','هشتگرد'],
+  'اصفهان':['اصفهان','کاشان','نجف‌آباد','خمینی‌شهر','شاهین‌شهر'],
+  'فارس':['شیراز','مرودشت','کازرون','جهرم','فسا'],
+  'خراسان رضوی':['مشهد','نیشابور','سبزوار','تربت حیدریه','قوچان'],
+  'آذربایجان شرقی':['تبریز','مراغه','مرند','میانه','اهر'],
+  'آذربایجان غربی':['ارومیه','خوی','مهاباد','میاندوآب','بوکان'],
+  'خوزستان':['اهواز','دزفول','آبادان','خرمشهر','بهبهان'],
+  'مازندران':['ساری','بابل','آمل','قائم‌شهر','تنکابن'],
+  'گیلان':['رشت','بندر انزلی','لاهیجان','لنگرود','آستارا'],
+  'کرمان':['کرمان','رفسنجان','سیرجان','بم','جیرفت'],
+  'یزد':['یزد','میبد','اردکان','بافق'],
+  'قم':['قم'],
+  'مرکزی':['اراک','ساوه','خمین','محلات'],
+  'همدان':['همدان','ملایر','نهاوند','تویسرکان'],
+  'کرمانشاه':['کرمانشاه','اسلام‌آباد غرب','کنگاور','هرسین'],
+  'لرستان':['خرم‌آباد','بروجرد','دورود','الیگودرز'],
+  'کردستان':['سنندج','سقز','مریوان','بانه'],
+  'زنجان':['زنجان','ابهر','خرمدره'],
+  'قزوین':['قزوین','تاکستان','آبیک'],
+  'سمنان':['سمنان','شاهرود','دامغان','گرمسار'],
+  'گلستان':['گرگان','گنبد کاووس','علی‌آباد کتول','بندر ترکمن'],
+  'اردبیل':['اردبیل','پارس‌آباد','مشگین‌شهر','خلخال'],
+  'هرمزگان':['بندرعباس','قشم','میناب','بندر لنگه'],
+  'بوشهر':['بوشهر','برازجان','بندر گناوه','کنگان'],
+  'سیستان و بلوچستان':['زاهدان','زابل','چابهار','ایرانشهر'],
+  'خراسان شمالی':['بجنورد','شیروان','اسفراین'],
+  'خراسان جنوبی':['بیرجند','قائن','فردوس','طبس'],
+  'چهارمحال و بختیاری':['شهرکرد','بروجن','فارسان'],
+  'کهگیلویه و بویراحمد':['یاسوج','دوگنبدان','دهدشت'],
+  'ایلام':['ایلام','دهلران','ایوان','آبدانان'],
+};
+const CAPS = Object.values(PROVINCES).map(c=>c[0]);
+const SCHOOL_NAMES = ['فرهنگ','امام رضا','شهید مطهری','سعدی','فردوسی','پیام','نیکان','علامه طباطبایی','هدف','دانش','شاهد','حافظ','خوارزمی','ابن‌سینا','مهر','پرنیان'];
+// فهرست مدرسه‌های هر شهر (نمونه برای پروتوتایپ)
+const schoolsOf = city => { let h=0; for(const ch of city) h=(h*31+ch.charCodeAt(0))%9973; const out=[]; for(let i=0;out.length<8;i++){ const n='دبستان '+SCHOOL_NAMES[(h+i*7)%SCHOOL_NAMES.length]; if(!out.includes(n)) out.push(n); } return out; };
 const DIFF = { easy:'ساده', medium:'متوسط', hard:'سخت' };
 const DIFF_ORDER = { easy:0, medium:1, hard:2 };
+const TOPIC = { pattern:'الگو و دنباله', logic:'استدلال و مقایسه', numbers:'کسر، اعشار و درصد', geometry:'شکل‌ها و زاویه‌ها', science:'مواد و انرژی' };
+
+/* ---------- شکل‌های سؤال‌های تصویری ---------- */
+const svgUri = s => 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(s);
+const TILE = (inner, x=0) => `<g transform="translate(${x} 0)"><rect x="5" y="5" width="90" height="90" rx="16" fill="#F7F5F1" stroke="#1D1D1B" stroke-width="3"/>${inner}</g>`;
+const ARROW_IN = rot => `<g transform="rotate(${rot} 50 50)"><path d="M50 20 74 50H60v30H40V50H26z" fill="#947EDC" stroke="#1D1D1B" stroke-width="3" stroke-linejoin="round"/></g>`;
+const ARROW = rot => svgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">${TILE(ARROW_IN(rot))}</svg>`);
+const SHAPE = inner => svgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">${TILE(inner)}</svg>`);
+ASSET.arrows = svgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 430 100">${TILE(ARROW_IN(0),330)}${TILE(ARROW_IN(90),220)}${TILE(ARROW_IN(180),110)}${TILE('<text x="50" y="68" font-size="52" font-weight="800" text-anchor="middle" fill="#1D1D1B" font-family="Tahoma,sans-serif">?</text>',0)}</svg>`);
+const SH_ST = 'stroke="#1D1D1B" stroke-width="3" stroke-linejoin="round"';
 
 const Q = [
   {b:0,d:'medium',t:'pattern', img:'fig', q:'در شکل زیر به جای علامت سؤال چه عددی قرار می‌گیرد؟', o:['۵','۷','۶','۹'], a:2,
@@ -455,12 +634,15 @@ const Q = [
   {b:0,d:'easy',  t:'logic',   q:'کدام کلمه با بقیه فرق دارد؟', o:['سیب','موز','هویج','گلابی'], a:2, s:'سیب، موز و گلابی میوه‌اند ولی هویج سبزی است.'},
   {b:0,d:'medium',t:'geometry',q:'ساعت دقیقاً ۳:۰۰ است. زاویهٔ بین دو عقربه چند درجه است؟', o:['۴۵','۶۰','۹۰','۱۲۰'], a:2, s:'صفحهٔ ساعت ۱۲ قسمت دارد و هر قسمت ۳۰ درجه است. از ۱۲ تا ۳ سه قسمت است: ۳ × ۳۰ = ۹۰ درجه.'},
   {b:0,d:'medium',t:'logic',   q:'اگر امروز شنبه باشد، ۱۰ روز بعد چه روزی است؟', o:['دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه'], a:1, s:'هر ۷ روز همان روز تکرار می‌شود. ۱۰ = ۷ + ۳، پس کافی است ۳ روز از شنبه جلو برویم: یکشنبه، دوشنبه، سه‌شنبه.'},
-  {b:0,d:'easy',  t:'pattern', q:'عدد بعدی این دنباله چیست؟ ۱، ۴، ۹، ۱۶، ؟', o:['۲۰','۲۴','۲۵','۳۶'], a:2, s:'این‌ها مربع عددها هستند: ۱×۱، ۲×۲، ۳×۳، ۴×۴. عدد بعدی ۵×۵ = ۲۵ است.'},
+  {b:0,d:'easy',  t:'pattern', img:'arrows', q:'شکل‌ها از راست به چپ به ترتیب آمده‌اند. شکل بعدی کدام است؟', o:['فلش رو به بالا','فلش رو به راست','فلش رو به چپ','فلش رو به پایین'], oi:[ARROW(0),ARROW(90),ARROW(270),ARROW(180)], a:2,
+   s:'فلش در هر شکل یک ربع دور (۹۰ درجه) در جهت عقربه‌های ساعت می‌چرخد: بالا، راست، پایین. پس شکل بعدی فلشی است که رو به چپ است.'},
   {b:0,d:'hard',  t:'logic',   q:'سارا در یک صف، نفر پنجم از جلو و نفر هشتم از عقب است. صف چند نفر است؟', o:['۱۱','۱۲','۱۳','۱۴'], a:1, s:'جلوی سارا ۴ نفر و پشت سرش ۷ نفر هستند. با خود سارا: ۴ + ۷ + ۱ = ۱۲ نفر.'},
   {b:0,d:'medium',t:'numbers', q:'قیمت ۵ مداد ۲۰ هزار تومان است. ۸ مداد چند هزار تومان می‌شود؟', o:['۲۸','۳۰','۳۲','۴۰'], a:2, s:'قیمت یک مداد: ۲۰ ÷ ۵ = ۴ هزار تومان. پس ۸ مداد: ۸ × ۴ = ۳۲ هزار تومان.'},
   {b:1,d:'medium',t:'numbers', q:'حاصل ۳/۴ + ۱/۸ چیست؟', o:['۴/۱۲','۵/۸','۷/۸','۱'], a:2, s:'اول مخرج‌ها را یکی می‌کنیم: ۳/۴ = ۶/۸. حالا ۶/۸ + ۱/۸ = ۷/۸.'},
   {b:1,d:'hard',  t:'numbers', q:'بزرگ‌ترین شمارندهٔ مشترک ۱۲ و ۱۸ کدام است؟', o:['۲','۳','۶','۳۶'], a:2, s:'شمارنده‌های ۱۲: ۱، ۲، ۳، ۴، ۶، ۱۲ و شمارنده‌های ۱۸: ۱، ۲، ۳، ۶، ۹، ۱۸. بزرگ‌ترین شمارندهٔ مشترک ۶ است.'},
-  {b:1,d:'easy',  t:'geometry',q:'محیط مربعی به ضلع ۷ سانتی‌متر چند سانتی‌متر است؟', o:['۱۴','۲۱','۲۸','۴۹'], a:2, s:'مربع ۴ ضلع برابر دارد. محیط = ۴ × ۷ = ۲۸ سانتی‌متر.'},
+  {b:1,d:'easy',  t:'geometry',q:'کدام شکل محور تقارن ندارد؟', o:['مربع','مثلث متساوی‌الاضلاع','قلب','متوازی‌الاضلاع'],
+   oi:[SHAPE(`<rect x="24" y="24" width="52" height="52" fill="#B8CD9E" ${SH_ST}/>`), SHAPE(`<path d="M50 20 82 76H18z" fill="#EBCB7E" ${SH_ST}/>`), SHAPE(`<path d="M50 80C22 62 16 44 24 32c8-11 22-9 26 3 4-12 18-14 26-3 8 12 2 30-26 48z" fill="#E2A48F" ${SH_ST}/>`), SHAPE(`<path d="M36 28h50L64 72H14z" fill="#947EDC" ${SH_ST}/>`)], a:3,
+   s:'مربع، مثلث متساوی‌الاضلاع و قلب را می‌شود با یک خط طوری تا کرد که دو نیمه دقیقاً روی هم بیفتند. متوازی‌الاضلاعی که مستطیل یا لوزی نیست، چنین خطی ندارد.'},
   {b:1,d:'medium',t:'numbers', q:'۲۵ درصدِ عدد ۸۰ چند است؟', o:['۱۵','۲۰','۲۵','۴۰'], a:1, s:'۲۵ درصد یعنی یک‌چهارم. ۸۰ ÷ ۴ = ۲۰.'},
   {b:1,d:'hard',  t:'numbers', q:'حاصل ۰٫۶ × ۰٫۵ چیست؟', o:['۰٫۰۳','۰٫۳','۳','۱٫۱'], a:1, s:'اول بدون ممیز ضرب می‌کنیم: ۶ × ۵ = ۳۰. دو عدد روی هم دو رقم اعشار دارند، پس جواب ۰٫۳۰ یعنی ۰٫۳ است.'},
   {b:1,d:'easy',  t:'science', q:'کدام منبع انرژی تجدیدپذیر است؟', o:['زغال‌سنگ','نفت','خورشید','گاز طبیعی'], a:2, s:'انرژی خورشید تمام نمی‌شود، ولی زغال‌سنگ، نفت و گاز سوخت‌های فسیلی‌اند و یک روز تمام می‌شوند.'},
@@ -490,31 +672,44 @@ const MISSIONS = {
          {q:'یخ در چند درجهٔ سانتی‌گراد ذوب می‌شود؟', o:['صفر','۱۰','۵۰','۱۰۰'], a:0, s:'یخ در صفر درجهٔ سانتی‌گراد ذوب می‌شود و به آب تبدیل می‌شود.'} ] },
 };
 
+/* ---------- رتبه‌بندی کشوری ---------- */
 const NAMES = ['آرین','سارا','نیما','هستی','پارسا','یاسمن','امیرعلی','مهسا','رادین','نازنین','کیان','ترانه','سینا','آوا','بردیا','فاطمه','محمد','زهرا','علی','مریم','حسین','رها','ماهان','النا'];
 const INITS = ['ا','ب','ر','ک','م','ن','ح','ص','ج','ف','ط','ق','ش'];
-const OTHERS = (() => { const arr=[]; let k=0; Object.keys(DATA.othersDist).map(Number).sort((a,b)=>b-a).forEach(s=>{ for(let j=0;j<DATA.othersDist[s];j++){ arr.push({name:NAMES[k%NAMES.length]+' '+INITS[(k*7)%INITS.length]+'.', score:s, av:(k*3+1)%8}); k++; } }); return arr; })();
-const rankOf = score => 1 + OTHERS.filter(o=>o.score>score).length;
-const TOTAL = OTHERS.length + 1;
+const NAT = DATA.national;
+const TOTAL = Object.values(NAT).reduce((a,b)=>a+b,0) + 1;
+const aboveOf = s => Object.keys(NAT).filter(k=>+k>s).reduce((a,k)=>a+NAT[k],0);
+// در نمرهٔ برابر، کسی که زودتر تحویل داده جلوتر است؛ کاربر حدوداً در یک‌سوم اول هم‌نمره‌ها می‌نشیند
+const rankOf = score => aboveOf(score) + Math.max(1, Math.round((NAT[score]||0)*0.3));
+const scoreAt = rank => { let c=0; for(const s of Object.keys(NAT).map(Number).sort((a,b)=>b-a)){ c+=NAT[s]; if(rank<=c) return s; } return 0; };
+const person = (seed, rank) => ({ name:NAMES[(seed*5+3)%NAMES.length]+' '+INITS[(seed*7+2)%INITS.length]+'.', city:CAPS[(seed*11+4)%CAPS.length], av:(seed*3+1)%8, rank, score:scoreAt(rank) });
+// ده نفر اول کشور، با خود کاربر اگر جزوشان باشد
+function topList(){
+  const r = S.exam.status==='published' ? result() : null;
+  const list = Array.from({length:10},(_,i)=>person(i,i+1));
+  if(r && r.rank<=10) list.splice(r.rank-1,0,{ me:true, name:'تو', city:me().city, av:S.avatar, score:r.correct });
+  return list.slice(0,10).map((x,i)=>({...x, rank:i+1, score:x.me?x.score:scoreAt(i+1)}));
+}
+
 
 /* ============ وضعیت ============ */
-const KEY = 'azmoun-demo-v3';
+const KEY = 'azmoun-demo-v4';
 // دادهٔ هر کاربر (با شمارهٔ موبایل) جداست؛ کاربر جدید همیشه از آزمون اول شروع می‌کند
 const freshExam = () => ({ status:'available', booklet:0, idx:BOOKLETS.map(()=>0), answers:Array(Q.length).fill(null), flags:Array(Q.length).fill(false), passed:Array(Q.length).fill(false), endsAt:BOOKLETS.map(()=>null) });
-const freshUser = () => ({ profile:null, avatar:0, exam:freshExam(), missions:{ done:[] }, basket:[] });
-const USER_KEYS = ['profile','avatar','exam','missions','basket'];
+const freshUser = () => ({ profile:null, avatar:0, exam:freshExam(), missions:{ done:[] }, basket:[], story:null });
+const USER_KEYS = ['profile','avatar','exam','missions','basket','story'];
 const fresh = () => ({ loggedIn:false, phone:'', registered:[], accounts:{}, ...freshUser() });
 function stashUser(){ if(!S.phone) return; S.accounts[S.phone] = JSON.parse(JSON.stringify(Object.fromEntries(USER_KEYS.map(k=>[k,S[k]])))); }
-function loadUser(phone, forceNew){ const u = (!forceNew && S.accounts[phone]) || freshUser(); USER_KEYS.forEach(k=>S[k]=JSON.parse(JSON.stringify(u[k]))); }
+function loadUser(phone, forceNew){ const u = {...freshUser(), ...((!forceNew && S.accounts[phone]) || {})}; USER_KEYS.forEach(k=>S[k]=JSON.parse(JSON.stringify(u[k]))); }
 let S; try { S = JSON.parse(localStorage.getItem(KEY)) || fresh(); } catch(e) { S = fresh(); }
 if(!S.accounts) S.accounts={};
 const save = () => { if(S.loggedIn) stashUser(); try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) {} };
-const me = () => S.profile || DATA.student;
+const me = () => ({...DATA.student, ...(S.profile||{})});
 const avatar = (i=S.avatar) => ASSET.avatars[i % ASSET.avatars.length];
 
 let route = { name: S.loggedIn ? 'home' : 'login', p:{} };
 let stack = [], NAV = 'tab';
 let L = { mode:'login', phone:'', otp:'', err:'', resendAt:0 };
-const freshR = () => ({ step:0, invite:'', first:'', last:'', nid:'', phone:'', birth:null, gender:'', grade:'', city:'', errs:{} });
+const freshR = () => ({ step:0, invite:'', first:'', last:'', nid:'', phone:'', birth:null, gender:'', grade:'', province:'', city:'', school:'', errs:{} });
 let R = freshR();
 let M = { id:null, view:'learn', k:0, wrong:null, right:null };
 
@@ -557,9 +752,11 @@ function burst(x, y){
 }
 function countUp(root){
   root.querySelectorAll('[data-count]').forEach(el=>{
-    const to=+el.dataset.count, from=+(el.dataset.from||0), suf=el.dataset.suffix||'', t0=performance.now(), dur=900;
-    const step=now=>{ const k=Math.min(1,(now-t0)/dur), e=1-Math.pow(1-k,3); el.textContent=fa(Math.round(from+(to-from)*e))+suf; if(k<1) requestAnimationFrame(step); };
-    el.textContent=fa(from)+suf; requestAnimationFrame(step);
+    const to=+el.dataset.count, from=+(el.dataset.from||0), suf=el.dataset.suffix||'', f=el.dataset.sep?faN:fa, delay=+(el.dataset.delay||0), dur=+(el.dataset.dur||900);
+    el.textContent=f(from)+suf;
+    setTimeout(()=>{ const t0=performance.now();
+      const step=now=>{ const k=Math.min(1,(now-t0)/dur), e=1-Math.pow(1-k,3); el.textContent=f(Math.round(from+(to-from)*e))+suf; if(k<1) requestAnimationFrame(step); else if(delay) kick(el,'bump'); };
+      requestAnimationFrame(step); }, delay);
   });
 }
 function growBars(root){ root.querySelectorAll('.bar>i,.progress>i,.seg-b>i').forEach(el=>{ const w=el.style.width; el.style.transition='none'; el.style.width='0'; void el.offsetWidth; el.style.transition=''; requestAnimationFrame(()=>el.style.width=w); }); }
@@ -607,6 +804,8 @@ function xprog(){
     return `<div class="seg-b ${b<e.booklet?'done':''}" style="flex:${list.length}"><i style="width:${p}%"></i>${b===e.booklet?`<span class="knob" style="--p:${p}">${fa(n)}</span>`:''}</div>`; }).join('');
   return `<div class="xtrack" aria-label="${fa(n)} از ${fa(Q.length)} سؤال">${segs}<span class="xend">${fa(Q.length)}</span></div>`;
 }
+const optIn = (q,j) => q.oi ? `<img class="opt-img" src="${q.oi[j]}" alt="${esc(q.o[j])}">` : q.o[j];
+const optsCls = q => q.oi ? 'opts-img' : 'stack';
 const qBody = q => `<p class="q-text">${nob(q.q)}</p>${q.img?`<button class="q-img" onclick="zoomImg('${q.img}')"><img src="${ASSET[q.img]}" alt="شکل سؤال"><span class="zoom">${I.zoom}بزرگ‌نمایی</span></button>`:''}`;
 function zoomImg(k){ sheet(`<h2>شکل سؤال</h2><div class="card" style="padding:10px"><img src="${ASSET[k]}" alt="شکل سؤال" style="width:100%;display:block"></div><div class="acts"><button class="btn btn-primary" onclick="closeSheet()">بستن</button></div>`); }
 
@@ -658,7 +857,7 @@ function submitOtp(){
     stashUser();
     if(L.mode==='register'){
       loadUser(R.phone, true);
-      S.profile={ first:R.first.trim(), last:R.last.trim(), grade:R.grade, city:R.city, gender:R.gender, birth:R.birth, nid:R.nid };
+      S.profile={ first:R.first.trim(), last:R.last.trim(), grade:R.grade, province:R.province, city:R.city, school:R.school, gender:R.gender, birth:R.birth, nid:R.nid };
       if(!S.registered.includes(R.phone)) S.registered.push(R.phone);
     } else loadUser(L.phone);
     S.loggedIn=true; S.phone=L.phone; stashUser(); save();
@@ -692,7 +891,7 @@ const fmtDate = b => `${fa(b.d)} ${DATA.months[b.m-1]} ${fa(b.y)}`;
 const REG_STEPS = [
   { title:'اسمت چیه؟', sub:'همون‌طور که توی شناسنامه‌ت نوشته شده.', keys:['first','last','nid'] },
   { title:'یه کم از خودت بگو', sub:'برای ساختن کارنامه‌ت لازمه.', keys:['birth','gender'] },
-  { title:'کجا درس می‌خونی؟', sub:'با این، رتبه‌ت بین هم‌کلاسی‌هات حساب می‌شه.', keys:['grade','city'] },
+  { title:'کجا درس می‌خونی؟', sub:'کلاس و مدرسه‌ت رو انتخاب کن.', keys:['grade','province','city','school'] },
   { title:'شمارهٔ موبایلت چنده؟', sub:'کد تأیید به این شماره پیامک می‌شه.', keys:['phone'] },
 ];
 const enterNext = `onkeydown="if(event.key==='Enter')regNext()"`;
@@ -704,7 +903,9 @@ const FIELDS = {
   birth: () => fld('birth','تاریخ تولد',`<button class="field field-btn ${R.errs.birth?'err':''}" onclick="openDate()">${R.birth?`<span>${fmtDate(R.birth)}</span>`:'<span class="muted">انتخاب کن</span>'}${I.down}</button>`),
   gender:() => fld('gender','جنسیت',`<div class="seg">${DATA.genders.map(g=>`<button class="${R.gender===g?'on':''}" onclick="setR('gender','${g}')">${g}</button>`).join('')}</div>`),
   grade: () => fld('grade','کلاس',`<div class="seg">${DATA.grades.map(g=>`<button class="${R.grade===g?'on':''}" onclick="setR('grade','${g}')">${g}</button>`).join('')}</div>`),
-  city:  () => fld('city','شهر',`<div class="chips">${DATA.cities.map(c=>`<button class="${R.city===c?'on':''}" onclick="setR('city','${c}')">${c}</button>`).join('')}</div>`),
+  province:() => pickField('province','استان','انتخاب کن'),
+  city:  () => pickField('city','شهر', R.province?'انتخاب کن':'اول استان رو انتخاب کن', !R.province),
+  school:() => pickField('school','مدرسه', R.city?'انتخاب کن':'اول شهر رو انتخاب کن', !R.city),
 };
 V.register = () => { const st=REG_STEPS[R.step], last=R.step===REG_STEPS.length-1;
   return `<div class="screen no-nav has-act">
@@ -717,6 +918,16 @@ V.register = () => { const st=REG_STEPS[R.step], last=R.step===REG_STEPS.length-
       ${R.step===0?`<div style="margin-top:18px">${testHint(`یه کد ملی معتبر: <b class="ltr">${fa('0012345679')}</b>`)}</div>`:''}
     </div>
   </div>${actions(`<button class="btn btn-primary" id="regBtn" onclick="regNext()">${last?'ارسال کد تأیید':'ادامه'}</button>`)}`; };
+const pickField = (key, label, ph, off) => fld(key,label,`<button class="field field-btn ${R.errs[key]?'err':''}" onclick="openPick('${key}')" ${off?'disabled':''}>${R[key]?`<span>${esc(R[key])}</span>`:`<span class="muted">${ph}</span>`}${I.down}</button>`);
+const PICK = { province:{ title:'استان', list:()=>Object.keys(PROVINCES) }, city:{ title:'شهر', list:()=>PROVINCES[R.province]||[] }, school:{ title:'مدرسه', list:()=>schoolsOf(R.city) } };
+function openPick(key){
+  const p=PICK[key], items=p.list();
+  sheet(`<h2>${p.title}</h2>${key==='school'?`<p class="muted small">مدرسه‌های ${esc(R.city)}</p>`:''}
+    ${items.length>6?`<div class="pick-search">${I.search}<input id="pq" class="field txt" placeholder="جستجوی ${p.title}" autocomplete="off" oninput="filterPick(this.value)"></div>`:''}
+    <div class="pick-list" id="pl">${items.map(x=>`<button class="pick-it ${R[key]===x?'on':''}" data-v="${esc(x)}" onclick="setPick('${key}',this.dataset.v)"><span>${esc(x)}</span>${R[key]===x?I.check:''}</button>`).join('')}<p class="muted small center" id="pnone" hidden>چیزی پیدا نشد.</p></div>`);
+}
+function filterPick(v){ const t=v.trim(); let n=0; document.querySelectorAll('#pl .pick-it').forEach(b=>{ const ok=!t||b.dataset.v.includes(t); b.hidden=!ok; if(ok) n++; }); $('#pnone').hidden=n>0; }
+function setPick(key,v){ if(R[key]!==v){ R[key]=v; if(key==='province'){ R.city=PROVINCES[v].length===1?PROVINCES[v][0]:''; R.school=''; } if(key==='city') R.school=''; } delete R.errs[key]; closeSheet(); render(); haptic(); }
 function clr(k){ if(R.errs[k]){ delete R.errs[k]; render(); } }
 function setR(k,v){ R[k]=v; delete R.errs[k]; render(); haptic(); }
 function onDigits(el,k,n){ const v=toEn(el.value).replace(/\D/g,'').slice(0,n); R[k]=v; el.value=fa(v); clr(k); }
@@ -729,7 +940,9 @@ function checkR(k){ switch(k){
   case 'birth': return R.birth?'':'تاریخ تولدت رو انتخاب کن.';
   case 'gender': return R.gender?'':'یکی رو انتخاب کن.';
   case 'grade': return R.grade?'':'کلاست رو انتخاب کن.';
+  case 'province': return R.province?'':'استانت رو انتخاب کن.';
   case 'city': return R.city?'':'شهرت رو انتخاب کن.';
+  case 'school': return R.school?'':'مدرسه‌ت رو انتخاب کن.';
 } return ''; }
 const focusFirst = () => setTimeout(()=>{ const i=$('.screen .qwrap input'); if(i) i.focus(); },420);
 function regNext(){
@@ -746,8 +959,8 @@ function regBack(){ if(R.step>0){ R.step--; R.errs={}; rerender('back'); } else 
 let W = 0;
 const WELCOME = [
   { art:'books',  title:'آزمون بده، هر جا که هستی', text:'آزمون‌های مدرسه رو همین‌جا بده. هر دفترچه تایمر داره و سؤال‌های سخت رو می‌تونی علامت بزنی تا بعداً بهشون برگردی.' },
-  { art:'trophy', title:'کارنامه و رتبه‌ت رو ببین', text:'بعد از اعلام نتیجه، نمره‌ت، راه‌حل سؤال‌هایی که اشتباه زدی و رتبه‌ت بین بچه‌های مدرسه رو می‌بینی.' },
-  { art:'target', title:'از اشتباه‌هات یاد بگیر', text:'از روی اشتباه‌هات مأموریت‌های تمرینی ساخته می‌شه. هر سؤالی هم برات حل نشد، می‌ذاریش توی سبد تا از معلمت بپرسی.' },
+  { art:'trophy', title:'کارنامه و رتبه‌ت رو ببین', text:'بعد از اعلام نتیجه، نمره‌ت رو می‌بینی و رتبه‌ت بین همهٔ بچه‌های پایهٔ خودت توی کل کشور.' },
+  { art:'target', title:'از اشتباه‌هات یاد بگیر', text:'سؤال‌هایی رو که اشتباه زدی با توضیح مرور می‌کنی. هر کدوم رو نفهمیدی، می‌ندازیش توی سبد تا از معلمت بپرسی.' },
 ];
 V.welcome = () => { const s=WELCOME[W], last=W===WELCOME.length-1;
   return `<div class="screen no-nav has-act center" id="wel">
@@ -792,44 +1005,66 @@ function setDate(){ DP.d=markCol($('#wd'))+1; DP.m=markCol($('#wm'))+1; DP.y=DAT
   R.birth={...DP}; delete R.errs.birth; closeSheet(); render(); haptic(); }
 
 /* ---------- خانه ---------- */
-V.home = () => {
-  const st=S.exam.status, s=me(); let main='';
-  if(st==='available') main=`<div class="card center stack" style="padding:20px 18px">
+const basketBtn = (onclick="go('basket')") => { const n=openBasket().length; return `<button id="basketBtn" class="icon-btn basket-btn" onclick="${onclick}" aria-label="سبد از معلم می‌پرسم${n?'، '+fa(n)+' سؤال':''}">${I.basket}${n?`<span class="cnt">${fa(n)}</span>`:''}</button>`; };
+const medal = (rank, me) => `<span class="medal ${me?'me':rank<=3?'m'+rank:''}">${faN(rank)}</span>`;
+function examCard(){
+  const st=S.exam.status;
+  if(st==='available') return `<div class="card center stack" style="padding:20px 18px">
       <div class="illus">${ART.books}</div>
       <div><span class="badge">${DATA.exam.title}</span> ${DATA.exam.free?'<span class="badge ok">رایگان</span>':''}</div>
       <h1>اولین آزمونت آماده‌ست</h1><p class="muted">${nob(examMeta()+' · هر وقت آماده بودی شروع کن.')}</p>
       <button class="btn btn-primary" onclick="go('rules')">شروع آزمون</button></div>`;
-  if(st==='inProgress') main=`<div class="card center stack" style="padding:20px 18px">
+  if(st==='inProgress') return `<div class="card center stack" style="padding:20px 18px">
       <div class="illus">${ART.clock}</div><div><span class="badge">${DATA.exam.title}</span></div><h1>آزمونت نیمه‌کاره‌ست</h1>
       <p class="muted">دفترچهٔ ${fa(S.exam.booklet+1)} · ${mmss(timeLeft())} وقت مونده</p>
       <button class="btn btn-primary" onclick="go('exam')">ادامهٔ آزمون</button></div>`;
-  if(st==='submitted') main=`<div class="card center stack" style="padding:20px 18px">
+  if(st==='submitted') return `<div class="card center stack" style="padding:20px 18px">
       <div class="illus">${ART.clock}</div><div><span class="badge ok">${DATA.exam.title} تحویل داده شد</span></div><h1>منتظر نتیجه</h1>
       <p class="muted">نتیجه ${DATA.exam.resultAt} اعلام می‌شه.</p>
       <button class="btn btn-ghost btn-sm" onclick="publish()" style="color:#8A3E26">حالت تست: اعلام نتیجه</button></div>`;
-  if(st==='published'){ const r=result(); main=`<button class="card tap row between" onclick="go('result')" style="display:flex">
+  const ss=storyState();
+  if(ss==='new') return `<div class="card center stack res-new" style="padding:20px 18px">
+      <div class="illus">${ART.trophy}</div><div><span class="badge pri">نتیجهٔ ${DATA.exam.title} اومد</span></div>
+      <h1>نتیجه‌ت آماده‌ست!</h1><p class="muted">${nob('ببین چطور شدی و بعدش اشتباه‌هات رو با هم مرور کنیم.')}</p>
+      <button class="btn btn-primary pulse" onclick="startStory()">دیدن نتیجهٔ آزمون</button></div>`;
+  if(ss==='progress'){ const st2=S.story, w=result().wrong.length, inRev=STEPS()[st2.step]==='review';
+    return `<div class="card center stack" style="padding:20px 18px">
+      <div class="illus">${ART.target}</div><div><span class="badge warn">نیمه‌کاره</span></div>
+      <h1>مرور نتیجه‌ت مونده</h1><p class="muted">${inRev?`${fa(st2.k)} از ${fa(w)} سؤال رو مرور کردی. از همون‌جا ادامه بده.`:'از همون‌جایی که بودی ادامه بده.'}</p>
+      ${inRev?`<div class="progress" style="margin-top:14px"><i style="width:${pct(st2.k,w)}%"></i></div>`:''}
+      <button class="btn btn-primary" onclick="go('story')">ادامه بده</button></div>`; }
+  const r=result();
+  return `<button class="card tap row between" onclick="go('result')" style="display:flex">
       <div class="grow stack"><span class="cap">نتیجهٔ ${DATA.exam.title}</span>
-        <div style="font-size:23px;font-weight:900;line-height:1.3;margin-top:2px">رتبهٔ <span data-count="${r.rank}" data-from="${TOTAL}">${fa(r.rank)}</span> از ${fa(TOTAL)}</div>
+        <div style="font-size:23px;font-weight:900;line-height:1.3;margin-top:2px">رتبهٔ <span data-count="${r.rank}" data-from="${TOTAL}" data-sep="1">${faN(r.rank)}</span> کشور</div>
         <span class="muted small">دیدن کارنامه و راه‌حل‌ها</span></div>
-      ${ring(r.correct,r.total,'درست')}</button>`; }
-  const am=activeMission(), nb=openBasket().length;
+      ${ring(r.correct,r.total,'درست')}</button>`;
+}
+V.home = () => {
+  const s=me(), pub=S.exam.status==='published', r=pub?result():null, top=topList().slice(0,3), meTop=top.some(x=>x.me);
+  const row = x => `<div class="t3-row ${x.me?'me':''}">${medal(x.rank,x.me)}<img class="avatar" src="${avatar(x.av)}" alt=""><span class="grow"><b>${x.me?'تو':x.name}</b><span class="muted small"> · ${x.city}</span></span><span class="small muted">${fa(x.score)} از ${fa(Q.length)}</span></div>`;
+  const mine = meTop ? '' : pub
+    ? `<div class="t3-row me">${medal(r.rank,true)}<img class="avatar" src="${avatar()}" alt=""><span class="grow"><b>تو</b><span class="muted small"> · ${esc(s.city)}</span></span><span class="small muted">${fa(r.correct)} از ${fa(Q.length)}</span></div>`
+    : `<div class="t3-row me"><span class="medal me">؟</span><img class="avatar" src="${avatar()}" alt=""><span class="grow"><b>تو</b><br><span class="muted small">${S.exam.status==='submitted'?'رتبه‌ت بعد از اعلام نتیجه میاد':'بعد از آزمون، رتبه‌ت اینجا میاد'}</span></span></div>`;
   return `<div class="screen stack">
-    <div class="row between sticky"><div><h1>سلام ${esc(s.first)}</h1><p class="muted small">پایهٔ ${esc(s.grade)} · ${esc(s.city)}</p></div>
-      <button class="av-btn" onclick="tab('profile')" aria-label="پروفایل"><img class="avatar" src="${avatar()}" alt=""></button></div>
-    ${main}
-    ${am?`<button class="list-item" onclick="openMission('${am.id}')"><span class="grow"><span class="cap">مأموریت بعدی</span><b>${am.title}</b><br><span class="muted small">سطح ${DIFF[am.level]}</span></span><span class="thumb">${ART.target}</span></button>`:''}
-    <button class="list-item" onclick="go('basket')"><span class="grow"><b>از معلم می‌پرسم</b><br><span class="muted small">${nb?`${fa(nb)} سؤال منتظر پرسیدن`:'فعلاً سؤالی توی سبدت نیست'}</span></span><span class="thumb">${ART.bubble}</span></button>
-    <button class="list-item" onclick="tab('leaderboard')"><span class="grow"><b>رتبه‌بندی مدرسه</b><br><span class="muted small">${st==='published'?`جایگاه تو: ${fa(result().rank)} از ${fa(TOTAL)}`:`${fa(OTHERS.length)} نفر از مدرسه‌ات شرکت کردن`}</span></span><span class="thumb">${ART.trophy}</span></button>
+    <div class="row between sticky"><div class="grow"><h1>سلام ${esc(s.first)}</h1><p class="muted small">پایهٔ ${esc(s.grade)} · ${esc(s.school)}</p></div>
+      <div class="row" style="gap:10px">${basketBtn()}<button class="av-btn" onclick="tab('profile')" aria-label="پروفایل"><img class="avatar" src="${avatar()}" alt=""></button></div></div>
+    ${examCard()}
+    <div class="card top3">
+      <div class="row between"><b>برترین‌های کشور</b><span class="muted small">${DATA.exam.title} · ${faN(TOTAL)} نفر</span></div>
+      <div class="t3-list">${top.map(row).join('')}${mine?'<div class="gap">···</div>'+mine:''}</div>
+      <button class="btn btn-ghost" onclick="tab('leaderboard')">دیدن رتبه‌بندی کامل</button>
+    </div>
   </div>${navbar('home')}`;
 };
-function publish(){ S.exam.status='published'; save(); rerender('tab'); toast('نتیجهٔ آزمون ۱ اعلام شد'); }
+function publish(){ S.exam.status='published'; S.story=null; save(); rerender('tab'); toast('نتیجهٔ آزمون ۱ اعلام شد'); }
 
 /* ---------- آزمون‌های من ---------- */
 V.exams = () => {
   const st=S.exam.status, r=st==='published'?result():null;
   const chip={available:'<span class="badge ok">قابل شرکت</span>',inProgress:'<span class="badge warn">نیمه‌کاره</span>',submitted:'<span class="badge">در انتظار نتیجه</span>',published:'<span class="badge pri">نتیجه آمده</span>'}[st];
-  const sub={available:`${examMeta()}${DATA.exam.free?' · رایگان':''}`,inProgress:`${mmss(timeLeft())} از دفترچهٔ ${fa(S.exam.booklet+1)} مونده`,submitted:`نتیجه: ${DATA.exam.resultAt}`,published:r?`${fa(r.correct)} از ${fa(Q.length)} درست · رتبهٔ ${fa(r.rank)}`:''}[st];
-  const act={available:"go('rules')",inProgress:"go('exam')",submitted:"examWait()",published:"go('result')"}[st];
+  const sub={available:`${examMeta()}${DATA.exam.free?' · رایگان':''}`,inProgress:`${mmss(timeLeft())} از دفترچهٔ ${fa(S.exam.booklet+1)} مونده`,submitted:`نتیجه: ${DATA.exam.resultAt}`,published:r?(storyState()==='done'?`${fa(r.correct)} از ${fa(Q.length)} درست · رتبهٔ ${faN(r.rank)} کشور`:storyState()==='new'?'دیدن نتیجهٔ آزمون':'مرور نتیجه نیمه‌کاره‌ست'):''}[st];
+  const act={available:"go('rules')",inProgress:"go('exam')",submitted:"examWait()",published:storyState()==='done'?"go('result')":storyState()==='new'?'startStory()':"go('story')"}[st];
   return `<div class="screen stack"><h1 class="sticky">آزمون‌های من</h1>
     <button class="list-item" onclick="${act}"><span class="grow"><span class="row between"><b>${DATA.exam.title}</b>${chip}</span><span class="muted small">${sub}</span></span><span class="chev">${I.chev}</span></button>
     ${DATA.otherExams.map((e,i)=>`<button class="list-item" onclick="otherExam(${i})"><span class="grow"><span class="row between"><b>${e.title}</b><span class="badge">${e.state==='upcoming'?'هنوز شروع نشده':'مهلت گذشته'}</span></span><span class="muted small">${e.note}</span></span><span class="chev">${I.chev}</span></button>`).join('')}
@@ -858,16 +1093,16 @@ V.exam = () => {
     <div class="sticky"><div class="topbar"><button class="icon-btn" onclick="leaveExam()" aria-label="خروج">${I.close}</button>
       <div class="title">دفترچهٔ ${fa(b+1)} از ${fa(BOOKLETS.length)}<div class="small muted" style="font-weight:500">${DATA.exam.booklets[b].title}</div></div>
       <span class="timer ${left<180000?'low':''}" id="timer">${mmss(left)}</span></div>
-    ${xprog()}</div>
+    ${xprog()}
+    <div class="row between x-sub"><span class="muted small">سؤال ${fa(k+1)} از ${fa(list.length)}</span>
+      <button class="btn btn-ghost btn-xs" onclick="examGrid()">${I.grid}همهٔ سؤالات</button></div></div>
     <div class="qwrap stack">
-      <div class="row between"><span class="muted small">سؤال ${fa(k+1)} از ${fa(list.length)}</span>
-        <button class="btn btn-ghost btn-xs ${e.flags[gi]?'flag-on':''}" onclick="toggleFlag(${gi})">${I.flag}${e.flags[gi]?'علامت خورده':'علامت بزن'}</button></div>
+      <div class="row" style="justify-content:flex-end"><button class="btn btn-ghost btn-xs ${e.flags[gi]?'flag-on':''}" onclick="toggleFlag(${gi})">${I.flag}${e.flags[gi]?'علامت خورده':'علامت بزن'}</button></div>
       ${qBody(q)}
-      <div class="stack">${q.o.map((o,j)=>`<button class="opt ${e.answers[gi]===j?'sel':''}" onclick="pick(${gi},${j})" aria-pressed="${e.answers[gi]===j}"><span class="n">${fa(j+1)}</span>${o}</button>`).join('')}</div>
+      <div class="${optsCls(q)}">${q.o.map((o,j)=>`<button class="opt ${q.oi?'img':''} ${e.answers[gi]===j?'sel':''}" onclick="pick(${gi},${j})" aria-pressed="${e.answers[gi]===j}"><span class="n">${fa(j+1)}</span>${optIn(q,j)}</button>`).join('')}</div>
     </div>
   </div>
   <div class="exam-foot">
-    <button class="btn btn-ghost btn-sq" onclick="examGrid()" aria-label="همهٔ سؤال‌ها">${I.grid}</button>
     <button class="btn btn-ghost" onclick="move(-1)" ${k===0?'disabled':''}>قبلی</button>
     ${last?`<button class="btn btn-primary" onclick="${lastB?'finishExam()':'toNextBooklet()'}">${lastB?'پایان آزمون':'دفترچهٔ بعدی'}</button>`
           :`<button class="btn btn-primary" onclick="move(1)">بعدی</button>`}
@@ -917,11 +1152,11 @@ V.result = () => {
     <div class="card row between"><div class="grow"><span class="cap">نمرهٔ تو</span>
       <div class="big" data-count="${pct(r.correct,r.total)}" data-suffix="٪">${fa(pct(r.correct,r.total))}٪</div>
       <span class="muted small">${fa(r.correct)} از ${fa(r.total)} سؤال درست</span></div>${ring(r.correct,r.total,'درست')}</div>
-    <button class="list-item" onclick="tab('leaderboard')"><span class="grow"><span class="cap">رتبه در مدرسه</span><b style="font-size:20px;font-weight:900">${fa(r.rank)} از ${fa(TOTAL)}</b></span><span class="thumb">${ART.trophy}</span></button>
+    <button class="list-item" onclick="tab('leaderboard')"><span class="grow"><span class="cap">رتبه در کشور</span><b style="font-size:20px;font-weight:900">${faN(r.rank)} از ${faN(TOTAL)}</b></span><span class="thumb">${ART.trophy}</span></button>
     <span class="cap sec">بر اساس سطح سؤال</span>
     <div class="card">${['easy','medium','hard'].map(d=>{ const [c,t]=r.by[d], miss=t-c, hs=r.correct+miss;
       return `<div class="lv"><div class="row between"><b>${DIFF[d]}</b><span class="num">${fa(c)}/${fa(t)}</span></div><div class="bar"><i style="width:${pct(c,t)}%"></i></div>
-        <p class="small ${miss?'':'muted'}" style="margin-top:8px">${miss?`اگه ${fa(miss)} سؤالِ ${DIFF[d]} رو هم درست زده بودی: <b>رتبهٔ ${fa(rankOf(hs))}</b> · ${fa(pct(hs,r.total))}٪`:'همهٔ سؤال‌های این سطح رو درست زدی.'}</p></div>`; }).join('')}
+        <p class="small ${miss?'':'muted'}" style="margin-top:8px">${miss?`اگه ${fa(miss)} سؤالِ ${DIFF[d]} رو هم درست زده بودی: <b>رتبهٔ ${faN(rankOf(hs))}</b> · ${fa(pct(hs,r.total))}٪`:'همهٔ سؤال‌های این سطح رو درست زدی.'}</p></div>`; }).join('')}
       <div class="note" style="margin-top:12px">${I.info}<span>این رتبه‌ها فرضی‌ان و فقط برای مقایسه‌ن؛ توی رتبه‌بندی ثبت نمی‌شن.</span></div></div>
     ${am?`<button class="list-item" onclick="openMission('${am.id}')"><span class="grow"><span class="cap">مأموریت بعدی</span><b>${am.title}</b><br><span class="muted small">از روی اشتباه‌های همین آزمون</span></span><span class="thumb">${ART.target}</span></button>`:''}
     ${r.wrong.length?`<span class="cap sec">سؤال‌هایی که اشتباه زدی یا جواب ندادی</span>
@@ -932,31 +1167,196 @@ function showAnswer(i){
   const q=Q[i], my=S.exam.answers[i];
   sheet(`<div class="row between"><span class="badge">سؤال ${fa(i+1)} · ${DIFF[q.d]}</span>${my===null?'<span class="badge warn">بی‌جواب</span>':''}</div>
     ${qBody(q)}
-    <div class="stack" style="margin-top:12px">${q.o.map((o,j)=>{ const right=j===q.a, mine=j===my; return `<div class="opt static ${right?'right':mine?'wrong':''}" style="animation:none"><span class="n">${right?'✓':mine?'✕':fa(j+1)}</span><span class="grow">${o}</span>${right?'<span class="small" style="color:var(--green-dk);font-weight:800">جواب درست</span>':mine?'<span class="small" style="color:var(--bad);font-weight:800">جواب تو</span>':''}</div>`; }).join('')}</div>
+    <div class="${optsCls(q)}" style="margin-top:12px">${q.o.map((o,j)=>staticOpt(q,j,my,true)).join('')}</div>
     <div class="card" style="margin-top:16px"><span class="cap">راه‌حل</span><p style="margin-top:4px;line-height:2">${q.s}</p></div>
     <div class="acts"><button class="btn btn-primary" onclick="closeSheet()">فهمیدم</button></div>`);
 }
+// گزینهٔ فقط‌نمایشی: جواب تو (و اگر showRight، جواب درست)
+function staticOpt(q,j,my,showRight){ const right=showRight&&j===q.a, mine=j===my;
+  const tag = right?'<span class="tag ok">جواب درست</span>':mine?`<span class="tag ${showRight?'bad':'me'}">جواب تو</span>`:'';
+  return `<div class="opt static ${q.oi?'img':''} ${right?'right':mine?(showRight?'wrong':'mine'):''}" style="animation:none"><span class="n">${right?'✓':mine&&showRight?'✕':fa(j+1)}</span>${q.oi?optIn(q,j):`<span class="grow">${q.o[j]}</span>`}${tag}</div>`; }
 
-/* ---------- رتبه‌بندی ---------- */
+/* ---------- نتیجهٔ آزمون: قصه و مرور ---------- */
+// مرحله‌ها: آمار ← دسته‌ها ← «اگه...» ← دعوت به مرور ← مرور سؤال‌به‌سؤال ← پایان
+const STEPS = () => result().wrong.length ? ['stats','cats','whatif','go','review','end'] : ['stats','end'];
+const storyState = () => !S.story ? 'new' : S.story.done ? 'done' : 'progress';
+const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+function startStory(){ if(!S.story) S.story={ step:0, k:0, phase:'read', pick:null, res:{}, stars:0, done:false }; save(); go('story'); }
+function storyNext(){ const st=S.story; st.step=Math.min(st.step+1, STEPS().length-1); st.phase='read'; st.pick=null; if(STEPS()[st.step]==='end') st.done=true; save(); rerender('fwd'); haptic(); }
+function storyExit(){ sheet(`<h2>از مرور نتیجه بیرون می‌ری؟</h2><p class="muted">هر جا که هستی نگهش می‌داریم. از خانه می‌تونی ادامه بدی.</p>
+  <div class="acts"><button class="btn btn-primary" onclick="closeSheet()">ادامهٔ مرور</button><button class="btn btn-ghost" onclick="stack=[];go('home',{},false)">بیرون می‌رم</button></div>`); }
+function wrongByTopic(){ const m={}; result().wrong.forEach(i=>{ const t=Q[i].t; m[t]=(m[t]||0)+1; }); return Object.entries(m).sort((a,b)=>b[1]-a[1]); }
+
+function storyHead(){
+  const st=S.story, steps=STEPS(), cur=steps[st.step], w=result().wrong.length;
+  const bars=steps.filter(x=>x!=='end').map((x,i)=>{ const fill = i<st.step||cur==='end' ? 100 : i>st.step ? 0 : x==='review' ? pct(st.k+(st.phase==='got'?1:0), w) : 100;
+    return `<i class="${x==='review'?'rv':''}"><b class="${i===st.step&&x!=='review'?'now':''}" style="width:${fill}%"></b></i>`; }).join('');
+  return `<div class="sticky st-hd"><div class="st-bars">${bars}</div>
+    <div class="row between st-top"><span class="stars" id="starCnt">${I.star}<b>${fa(st.stars)}</b></span>
+      <div class="row" style="gap:10px">${basketBtn('peekBasket()')}<button class="st-x" onclick="storyExit()" aria-label="خروج از مرور">${I.close}</button></div></div></div>`;
+}
+function peekBasket(){ const open=openBasket();
+  sheet(`<h2>سبد «از معلم می‌پرسم»</h2>${open.length?`<p class="muted small">${fa(open.length)} سؤال توی سبدته. بعد از مرور می‌تونی یکی‌یکی ببینیشون.</p>
+    <div class="stack" style="margin-top:12px">${open.map(b=>`<div class="card flat small">${b.qi!=null?Q[b.qi].q:b.q}</div>`).join('')}</div>`
+    :'<p class="muted">هنوز چیزی توی سبدت نیست. هر سؤالی رو متوجه نشدی، بندازش اینجا.</p>'}
+    <div class="acts"><button class="btn btn-primary" onclick="closeSheet()">ادامهٔ مرور</button></div>`); }
+
+V.story = () => {
+  if(S.exam.status!=='published') return V.home();
+  if(!S.story) S.story={ step:0, k:0, phase:'read', pick:null, res:{}, stars:0, done:false };
+  const st=S.story, cur=STEPS()[st.step], r=result(), w=r.wrong.length;
+  const un=r.wrong.filter(i=>S.exam.answers[i]===null).length, bad=w-un;
+  let body='', act='';
+
+  if(cur==='stats'){
+    const order=[...Array(r.correct).fill('ok'),...Array(bad).fill('bad'),...Array(un).fill('none')];
+    const p=pct(r.correct,r.total), verdict = p>=80?'عالی بود! واقعاً خوب پیش رفتی.':p>=50?'خوب بود؛ ولی می‌تونی بهتر هم بشی.':'شروع خوبیه. بیا ببینیم کجاها جا موند.';
+    body=`<div class="st-body center">
+      <span class="cap">${DATA.exam.title} · نتیجه</span>
+      <h1 class="st-h">از ${fa(r.total)} سؤال، <span class="hl" data-count="${r.correct}" data-delay="300">${fa(r.correct)}</span> تا رو درست زدی</h1>
+      <div class="tiles" aria-hidden="true">${order.map((c,i)=>`<i class="${c}" style="--d:${300+i*55}ms"></i>`).join('')}</div>
+      <div class="st-stats">
+        <div class="stt ok" style="--d:1.3s"><b data-count="${r.correct}" data-delay="1300">${fa(r.correct)}</b><span>درست</span></div>
+        <div class="stt bad" style="--d:1.5s"><b data-count="${bad}" data-delay="1500">${fa(bad)}</b><span>غلط</span></div>
+        <div class="stt none" style="--d:1.7s"><b data-count="${un}" data-delay="1700">${fa(un)}</b><span>بی‌جواب</span></div>
+      </div>
+      <p class="muted st-line" style="--d:2s">${verdict}</p></div>`;
+    act=`<button class="btn btn-primary" onclick="storyNext()">${w?'بعدی':'بریم ادامه'}</button>`;
+  }
+
+  if(cur==='cats'){
+    const cats=wrongByTopic(), max=cats[0][1];
+    body=`<div class="st-body">
+      <span class="cap">${fa(w)} سؤالی که غلط زدی یا جواب ندادی</span>
+      <h1 class="st-h">این‌ها از کجا بودن؟</h1>
+      <div class="cats">${cats.map(([t,n],i)=>`<div class="cat-row" style="--d:${250+i*170}ms"><div class="row between"><b>${TOPIC[t]}</b><span class="cat-n">${fa(n)} سؤال</span></div><div class="cbar"><i style="--w:${pct(n,max)}%"></i></div></div>`).join('')}</div>
+      <p class="muted st-line" style="--d:${350+cats.length*170}ms">${nob(cats.length>1?`بیشتر از همه توی «${TOPIC[cats[0][0]]}» جا موندی.`:`همه‌شون از «${TOPIC[cats[0][0]]}» بودن.`)}</p></div>`;
+    act=`<button class="btn btn-primary" onclick="storyNext()">بعدی</button>`;
+  }
+
+  if(cur==='whatif'){
+    const hyp=rankOf(r.total), jump=r.rank-hyp, cats=wrongByTopic();
+    body=`<div class="st-body">
+      <span class="cap">فقط برای مقایسه</span>
+      <h1 class="st-h">اگه این ${fa(w)} تا رو هم درست زده بودی…</h1>
+      <div class="card wf">
+        <div class="wf-now"><span class="muted small">رتبهٔ الان تو</span><b class="ltr">${faN(r.rank)}</b></div>
+        <div class="wf-arrow">${I.arrowL}</div>
+        <div class="wf-then"><span class="small">رتبه‌ت می‌شد</span><b class="ltr" data-count="${hyp}" data-from="${r.rank}" data-sep="1" data-delay="500">${faN(r.rank)}</b></div>
+      </div>
+      <div class="wf-chips"><span class="chip-up" style="--d:1.5s">${faN(jump)} نفر جلو می‌زدی</span><span class="chip-up" style="--d:1.7s">نمره‌ت می‌شد ${fa(100)}٪</span></div>
+      ${cats.length>1?`<span class="cap sec" style="margin-top:22px">یا حتی فقط با یک دسته</span>
+      <div class="card" style="padding:6px 14px">${cats.map(([t,n],i)=>`<div class="wf-row" style="--d:${1.9+i*.15}s"><span class="grow">${TOPIC[t]} <span class="muted small">(${fa(n)} سؤال)</span></span><b>رتبهٔ ${faN(rankOf(r.correct+n))}</b></div>`).join('')}</div>`:''}
+      <div class="note" style="margin-top:14px">${I.info}<span>این رتبه‌ها فرضی‌ان و توی رتبه‌بندی کشوری ثبت نمی‌شن.</span></div></div>`;
+    act=`<button class="btn btn-primary" onclick="storyNext()">بعدی</button>`;
+  }
+
+  if(cur==='go'){
+    body=`<div class="st-body center">
+      <div class="illus go-art">${ART.target}</div>
+      <h1 class="st-h">بیا با هم مرورشون کنیم</h1>
+      <p class="muted st-lead">${nob(`${fa(w)} سؤال رو یکی‌یکی با توضیح می‌بینی. اگه فهمیدی، جواب درست رو بزن و ستاره بگیر. اگه نفهمیدی، بندازش توی سبد تا از معلمت بپرسی.`)}</p>
+      <div class="go-legend"><span>${I.star}هر جواب درست، یک ستاره</span><span>${I.basket}سؤال‌های نفهمیده، توی سبد</span></div></div>`;
+    act=`<button class="btn btn-primary pulse" onclick="storyNext()">شروع مرور</button>`;
+  }
+
+  if(cur==='review'){
+    const i=r.wrong[st.k], q=Q[i], my=S.exam.answers[i], ph=st.phase, last=st.k===w-1;
+    const opts = ph==='read'
+      ? q.o.map((o,j)=>staticOpt(q,j,my,false)).join('')
+      : q.o.map((o,j)=>{ const ok=ph==='got'&&j===q.a, no=ph==='answer'&&st.pick===j;
+          return `<button class="opt ${q.oi?'img':''} ${ok?'right':''} ${no?'wrong':''}" ${ph==='got'?'disabled':''} onclick="reviewPick(${j})"><span class="n">${ok?'✓':no?'✕':fa(j+1)}</span>${optIn(q,j)}</button>`; }).join('');
+    body=`<div class="qwrap stack">
+      <div class="row between small"><span class="muted">سؤال ${fa(st.k+1)} از ${fa(w)} · ${TOPIC[q.t]}</span>${my===null?'<span class="badge warn">جواب نداده بودی</span>':'<span class="badge">غلط زده بودی</span>'}</div>
+      <div class="rv-card card" id="rvCard">${qBody(q)}<div class="${optsCls(q)}" style="margin-top:12px">${opts}</div></div>
+      ${ph==='read'?`<div class="card explain"><span class="cap">توضیح</span><p>${q.s}</p></div>`:''}
+      ${ph==='answer'?`<p class="ask ${st.pick!==null?'no':''}">${st.pick!==null?'نه، این نبود. یه بار دیگه فکر کن یا توضیح رو دوباره بخون.':'حالا خودت جواب درست رو بزن.'}</p>`:''}
+      ${ph==='got'?`<div class="got"><span class="got-star">${I.star}</span><b>آفرین! یک ستاره گرفتی.</b></div>`:''}
+    </div>`;
+    act = ph==='read' ? `<button class="btn btn-primary" onclick="understood()">${I.check}متوجه شدم</button><button class="btn btn-ghost" onclick="toBasket()">${I.basket}متوجه نشدم؛ بندازش توی سبد</button>`
+        : ph==='answer' ? `<div class="row2"><button class="btn btn-ghost" onclick="reread()">دوباره توضیح</button><button class="btn btn-ghost" onclick="toBasket()">${I.basket}بنداز توی سبد</button></div>`
+        : `<button class="btn btn-primary" onclick="nextReview()">${last?'تموم شد؛ بریم ببینیم!':'سؤال بعدی'}</button>`;
+  }
+
+  if(cur==='end'){
+    const got=Object.values(st.res).filter(v=>v==='got').length, inB=Object.values(st.res).filter(v=>v==='basket').length, nb=openBasket().length;
+    if(!w) body=`<div class="st-body center"><div class="illus end-art">${ART.trophy}</div><h1 class="st-h">همه رو درست زدی!</h1><p class="muted st-lead">${nob('هیچ سؤالی برای مرور نمونده. ایول، دمت گرم!')}</p></div>`;
+    else if(!inB) body=`<div class="st-body center"><div class="illus end-art">${ART.trophy}</div>
+      <h1 class="st-h">ایول، دمت گرم!</h1><p class="muted st-lead">${nob(`هر ${fa(got)} سؤال رو یاد گرفتی. دفعهٔ بعد این‌ها دیگه غافلگیرت نمی‌کنن.`)}</p>
+      <div class="star-total">${I.star}<b data-count="${st.stars}" data-delay="400">${fa(st.stars)}</b><span>ستاره گرفتی</span></div></div>`;
+    else body=`<div class="st-body center"><div class="illus end-art">${ART.bubble}</div>
+      <h1 class="st-h">آفرین، مرورت تموم شد!</h1>
+      <p class="muted st-lead">${nob(`${fa(got)} سؤال رو یاد گرفتی و ${fa(inB)} سؤال انداختی توی سبد.`)}</p>
+      <div class="star-total">${I.star}<b data-count="${st.stars}" data-delay="400">${fa(st.stars)}</b><span>ستاره گرفتی</span></div>
+      <div class="card basket-call"><span class="basket-big">${I.basket}<span class="cnt">${fa(nb)}</span></span><div class="grow"><b>${fa(nb)} سؤال توی سبدت هست</b><p class="small muted">می‌خوای ببینیشون؟ می‌تونی سر کلاس از معلمت بپرسی.</p></div></div></div>`;
+    act = w&&inB ? `<button class="btn btn-primary" onclick="stack=[{name:'home',p:{}}];route={name:'basket',p:{}};rerender('fwd')">دیدن سبد</button><button class="btn btn-ghost" onclick="tab('home')">بعداً؛ برگشت به خانه</button>`
+                 : `<button class="btn btn-primary" onclick="tab('home')">برگشت به خانه</button><button class="btn btn-ghost" onclick="stack=[{name:'home',p:{}}];go('result')">دیدن کارنامه</button>`;
+  }
+  return `<div class="screen no-nav has-act story story-${cur}">${cur==='end'?'':storyHead()}${body}</div>${actions(act)}`;
+};
+function storyFx(){
+  const cur=STEPS()[S.story?.step];
+  if(cur==='stats') setTimeout(()=>{ if(route.name==='story' && STEPS()[S.story.step]==='stats' && pct(result().correct,Q.length)>=50){ const h=$('.st-stats'); if(h){ const b=h.getBoundingClientRect(); burst(b.left+b.width/2,b.top); } } },2000);
+  if(cur==='whatif') setTimeout(()=>{ const t=$('.wf-then b'); if(t && route.name==='story'){ const b=t.getBoundingClientRect(); burst(b.left+b.width/2,b.top+b.height/2); haptic(20); } },1450);
+  if(cur==='end'){ const go=()=>{ const t=$('.end-art'); if(t && route.name==='story'){ const b=t.getBoundingClientRect(); burst(b.left+b.width/2,b.top+b.height/2); } };
+    setTimeout(go,350); setTimeout(go,900); setTimeout(()=>{ if(route.name==='story') burst(innerWidth*.25,140); },1300); setTimeout(()=>{ if(route.name==='story') burst(innerWidth*.75,140); },1500); haptic(30); }
+}
+function understood(){ S.story.phase='answer'; S.story.pick=null; save(); render(); kick('#rvCard','pulse-in'); haptic(); }
+function reread(){ S.story.phase='read'; S.story.pick=null; save(); render(); }
+function reviewPick(j){
+  const st=S.story, i=result().wrong[st.k], q=Q[i]; if(st.phase!=='answer') return;
+  if(j!==q.a){ st.pick=j; save(); render(); haptic(30); return; }
+  st.phase='got'; st.pick=null; st.res[i]='got'; save(); render(); haptic(15);
+  const opt=document.querySelectorAll('#rvCard .opt')[j]; if(!opt) return;
+  const r=opt.getBoundingClientRect(); burst(r.left+r.width/2, r.top+r.height/2);
+  const star=document.createElement('span'); star.className='fly-star'; star.innerHTML=I.star;
+  fly(star, {left:r.left+r.width/2-22, top:r.top+r.height/2-22, width:44, height:44}, $('#starCnt'), {scaleTo:.5, arc:-90, dur:800}).then(()=>{ st.stars++; save(); render(); kick('#starCnt','bump'); haptic(10); });
+}
+function nextReview(){ const st=S.story; if(st.k>=result().wrong.length-1){ st.k=result().wrong.length; storyNext(); return; } st.k++; st.phase='read'; st.pick=null; save(); render(); kick('.qwrap','q-next'); top0(); }
+// انداختن سؤال توی سبد: کارت سؤال کوچک می‌شود و با یک قوس می‌افتد توی دکمهٔ سبد (مثل فرستادن پست در دایرکت)
+function toBasket(){
+  const st=S.story, i=result().wrong[st.k], card=$('#rvCard'); if(!card || st.busy) return; st.busy=true;
+  if(!S.basket.find(b=>b.key==='exam-'+i&&!b.solved)) S.basket.push({ key:'exam-'+i, id:Date.now(), qi:i, mission:`${DATA.exam.title} · سؤال ${fa(i+1)}`, my:S.exam.answers[i], solved:false });
+  st.res[i]='basket';
+  const r=card.getBoundingClientRect(), clone=card.cloneNode(true); clone.removeAttribute('id'); clone.classList.add('flying');
+  card.style.visibility='hidden'; card.closest('.qwrap').classList.add('tossing'); haptic(12);
+  const after=()=>{ st.busy=false; save(); render(); kick('#basketBtn','bump'); kick('#basketBtn .cnt','pop-in'); haptic(18); setTimeout(nextReview,420); };
+  fly(clone, r, $('#basketBtn'), {scaleTo:.04, arc:-70, dur:760, rot:-14}).then(after);
+}
+function fly(node, from, toEl, {dur=700, scaleTo=.08, arc=-60, rot=-10}={}){
+  return new Promise(res=>{
+    if(!toEl || reduced()){ res(); return; }
+    const t=toEl.getBoundingClientRect(), dx=t.left+t.width/2-(from.left+from.width/2), dy=t.top+t.height/2-(from.top+from.height/2);
+    Object.assign(node.style,{position:'fixed',left:from.left+'px',top:from.top+'px',width:from.width+'px',height:from.height+'px',margin:'0',zIndex:50,pointerEvents:'none',transformOrigin:'center'});
+    document.body.appendChild(node);
+    const a=node.animate([
+      {transform:'translate(0,0) scale(1) rotate(0)', opacity:1},
+      {transform:`translate(0,6px) scale(.94) rotate(0)`, opacity:1, offset:.12},
+      {transform:`translate(${dx*.35}px,${dy*.35+arc}px) scale(${(1+scaleTo)/2.4}) rotate(${rot/2}deg)`, opacity:1, offset:.5},
+      {transform:`translate(${dx}px,${dy}px) scale(${scaleTo}) rotate(${rot}deg)`, opacity:.5}],
+      {duration:dur, easing:'cubic-bezier(.5,0,.3,1)'});
+    a.onfinish=()=>{ node.remove(); res(); };
+  });
+}
+
+/* ---------- رتبه‌بندی کشوری ---------- */
 V.leaderboard = () => {
-  const st=S.exam.status, pub=st==='published', r=pub?result():null;
-  const mine = pub ? {name:'تو', score:r.correct, me:true, av:S.avatar} : null;
-  const all=[...OTHERS, ...(mine?[mine]:[])].sort((a,b)=>b.score-a.score || (a.me?-1:b.me?1:0));
-  all.forEach(x=>x.rank=1+all.filter(o=>o.score>x.score).length);
-  const pod=(x,cls)=>`<div class="pod ${cls} ${x.me?'me':''}">${cls==='p1'?I.crown:''}<img class="avatar" src="${avatar(x.av)}" alt=""><div class="nm">${x.me?'تو':x.name}</div><div class="sc">${fa(x.score)} از ${fa(Q.length)}</div><div class="blk">${fa(x.rank)}</div></div>`;
-  const mi=mine?all.indexOf(mine):-1;
-  const show=[...new Set((mine?[3,4,mi-1,mi,mi+1]:[3,4,5,6,7,8,9]).filter(i=>i>=3&&i<all.length))].sort((a,b)=>a-b);
-  let rows='', prev=2; show.forEach(i=>{ if(i>prev+1) rows+='<div class="gap">···</div>'; const x=all[i]; rows+=`<div class="lb-row ${x.me?'me':''}"><span class="rank">${fa(x.rank)}</span><img class="avatar" src="${avatar(x.av)}" alt=""><span class="grow">${x.me?'<b>تو</b>':x.name}</span><span class="muted small">${fa(x.score)} از ${fa(Q.length)}</span></div>`; prev=i; });
-  if(!mine) rows+=`<div class="gap">···</div><p class="small muted center" style="padding:4px 0 6px">${fa(all.length)} شرکت‌کننده</p>`;
+  const st=S.exam.status, pub=st==='published', r=pub?result():null, top=topList();
+  const pod=(x,cls)=>`<div class="pod ${cls} ${x.me?'me':''}">${cls==='p1'?I.crown:''}<img class="avatar" src="${avatar(x.av)}" alt=""><div class="nm">${x.me?'تو':x.name}</div><div class="sc">${x.city}</div><div class="blk">${fa(x.rank)}</div></div>`;
+  const lrow = x => `<div class="lb-row ${x.me?'me':''}"><span class="rank">${faN(x.rank)}</span><img class="avatar" src="${avatar(x.av)}" alt=""><span class="grow">${x.me?'<b>تو</b>':x.name}<br><span class="muted small">${x.city}</span></span><span class="muted small">${fa(x.score)} از ${fa(Q.length)}</span></div>`;
+  const at = rank => rank<=10 ? top[rank-1] : rank===r?.rank ? { me:true, name:'تو', city:me().city, av:S.avatar, rank, score:r.correct } : person(rank, rank);
+  const ranks = [...new Set((pub?[4,5,6,7,r.rank-1,r.rank,r.rank+1]:[4,5,6,7,8,9,10]).filter(k=>k>=4&&k<=TOTAL))].sort((a,b)=>a-b);
+  let rows='', prev=3; ranks.forEach(k=>{ if(k>prev+1) rows+='<div class="gap">···</div>'; rows+=lrow(at(k)); prev=k; });
+  if(prev<TOTAL) rows+=`<div class="gap">···</div><p class="small muted center" style="padding:4px 0 6px">${faN(TOTAL)} شرکت‌کننده از ${fa(Object.keys(PROVINCES).length)} استان</p>`;
   const myCard = pub
-    ? `<div class="card row between"><span>جایگاه تو</span><b><span data-count="${r.rank}" data-from="${TOTAL}">${fa(r.rank)}</span> از ${fa(TOTAL)}</b></div>`
+    ? `<div class="card row between"><span>جایگاه تو در کشور</span><b><span data-count="${r.rank}" data-from="${TOTAL}" data-sep="1">${faN(r.rank)}</span> از ${faN(TOTAL)}</b></div>`
     : `<div class="card row" style="gap:14px"><img class="avatar" src="${avatar()}" alt="" style="width:46px;height:46px;border:1.6px solid var(--ink)"><div class="grow"><b>تو هنوز رتبه نداری</b><p class="small muted">${st==='submitted'?`رتبه‌ت بعد از اعلام نتیجه (${DATA.exam.resultAt}) اینجا میاد.`:'بعد از شرکت در آزمون و اعلام نتیجه، جایگاهت اینجا میاد.'}</p></div></div>
        ${st==='available'?`<button class="btn btn-primary" onclick="go('rules')">شروع آزمون</button>`:st==='inProgress'?`<button class="btn btn-primary" onclick="go('exam')">ادامهٔ آزمون</button>`:''}`;
-  return `<div class="screen stack"><div class="sticky"><h1>رتبه‌بندی مدرسه</h1><p class="muted small">${DATA.exam.title} · ${fa(all.length)} شرکت‌کننده</p></div>
-    <div class="card podium-card"><div class="podium">${pod(all[1],'p2')}${pod(all[0],'p1')}${pod(all[2],'p3')}</div></div>
+  return `<div class="screen stack"><div class="sticky"><h1>رتبه‌بندی کشوری</h1><p class="muted small">${DATA.exam.title} · پایهٔ ${esc(me().grade)} · ${faN(TOTAL)} شرکت‌کننده</p></div>
+    <div class="card podium-card"><div class="podium">${pod(top[1],'p2')}${pod(top[0],'p1')}${pod(top[2],'p3')}</div></div>
     ${myCard}
     <div class="card" style="padding:8px 12px">${rows}</div>
-    <div class="note">${I.info}<span>رتبه فقط از نمرهٔ آزمون حساب می‌شه. انجام مأموریت یا حل کردن سؤال‌های سبد، رتبه رو تغییر نمی‌ده.</span></div>
+    <div class="note">${I.info}<span>رتبه فقط از نمرهٔ آزمون حساب می‌شه و در نمرهٔ برابر، کسی که زودتر تحویل داده جلوتره. مرور سؤال‌ها و سبد، رتبه رو تغییر نمی‌دن.</span></div>
   </div>${navbar('leaderboard')}`;
 };
 
@@ -964,7 +1364,7 @@ V.leaderboard = () => {
 V.profile = () => { const s=me(), ph=S.phone||'09121234567'; return `<div class="screen stack"><h1 class="sticky">پروفایل</h1>
     <div class="card pf-head"><div class="pf-av"><img class="avatar" src="${avatar()}" alt="عکس پروفایل"><button class="icon-btn edit" onclick="pickAvatar()" aria-label="تغییر عکس">${I.cam}</button></div>
       <h2 style="margin:0">${esc(s.first)} ${esc(s.last)}</h2>
-      <p class="muted small">پایهٔ ${esc(s.grade)} · ${esc(s.city)}</p>
+      <p class="muted small">پایهٔ ${esc(s.grade)} · ${esc(s.school)}</p><p class="muted small">${esc(s.city)}، ${esc(s.province)}</p>
       <p class="muted small ltr">${maskPhone(ph)}</p>
       <button class="btn btn-ghost btn-sm" style="margin-top:12px" onclick="pickAvatar()">تغییر عکس پروفایل</button></div>
     <span class="cap sec">حساب کاربری</span>
@@ -978,7 +1378,7 @@ function soon(){ toast('این بخش هنوز ساخته نشده'); }
 function pickAvatar(){ sheet(`<h2>عکس پروفایلت رو انتخاب کن</h2><div class="av-grid">${ASSET.avatars.map((a,i)=>`<button class="av-opt ${i===S.avatar?'on':''}" onclick="setAvatar(${i})"><img src="${a}" alt="آواتار ${fa(i+1)}"></button>`).join('')}</div><div class="acts"><button class="btn btn-ghost" onclick="closeSheet()">بستن</button></div>`); }
 function setAvatar(i){ S.avatar=i; save(); closeSheet(); render(); kick('.pf-av .avatar','bump'); haptic(); toast('عکس پروفایلت عوض شد'); }
 function logout(){ stashUser(); S.loggedIn=false; save(); closeSheet(); stack=[]; route={name:'login',p:{}}; L={mode:'login',phone:'',otp:'',err:'',resendAt:0}; rerender('tab'); }
-function retakeExam(){ S.exam=freshExam(); S.missions={done:[]}; S.basket=[]; stashUser(); save(); stack=[]; go('home',{},false); toast('آزمون از اول آماده‌ست'); }
+function retakeExam(){ S.exam=freshExam(); S.missions={done:[]}; S.basket=[]; S.story=null; stashUser(); save(); stack=[]; go('home',{},false); toast('آزمون از اول آماده‌ست'); }
 function resetDemo(){ S=fresh(); save(); closeSheet(); stack=[]; route={name:'login',p:{}}; L={mode:'login',phone:'',otp:'',err:'',resendAt:0}; R=freshR(); rerender('tab'); }
 
 /* ---------- مأموریت‌ها ---------- */
@@ -1058,15 +1458,15 @@ function backToMissions(){ closeSheet(); stack=[]; go('missions',{},false); }
 /* ---------- سبد: از معلم می‌پرسم ---------- */
 V.basket = () => { const open=openBasket(), solved=S.basket.length-open.length;
   return `<div class="screen no-nav stack">${topbar('از معلم می‌پرسم')}
-    ${open.length?open.map(b=>`<button class="list-item" onclick="go('basketItem',{id:${b.id}})"><span class="grow"><b class="small">${b.q}</b><br><span class="muted small">${b.mission}</span></span><span class="chev">${I.chev}</span></button>`).join('')
-      :empty(ART.bubble,'سبدت خالیه','وقتی توی مأموریت سؤالی برات حل نشد، با «از معلم می‌پرسم» بیارش اینجا.')}
+    ${open.length?open.map(b=>`<button class="list-item" onclick="go('basketItem',{id:${b.id}})"><span class="grow"><b class="small">${b.qi!=null?Q[b.qi].q:b.q}</b><br><span class="muted small">${b.mission}</span></span><span class="chev">${I.chev}</span></button>`).join('')
+      :empty(ART.bubble,'سبدت خالیه','وقتی موقع مرور نتیجه سؤالی رو متوجه نشدی، بندازش توی سبد تا از معلمت بپرسی.')}
     ${solved?`<p class="muted small center">${fa(solved)} سؤال حل‌شده از سبد بیرون رفته.</p>`:''}
   </div>`; };
-V.basketItem = () => { const b=S.basket.find(x=>x.id===route.p.id); if(!b) return V.basket();
+V.basketItem = () => { const b=S.basket.find(x=>x.id===route.p.id); if(!b) return V.basket(); const q=b.qi!=null?Q[b.qi]:b;
   return `<div class="screen no-nav has-act stack">${topbar('سؤال من')}
     <div><span class="badge">${b.mission}</span></div>
-    ${qBody(b)}
-    <div class="stack">${b.o.map((o,j)=>`<div class="opt static ${b.my===j?'sel':''}"><span class="n">${fa(j+1)}</span><span class="grow">${o}</span>${b.my===j?'<span class="small" style="font-weight:800">جواب من</span>':''}</div>`).join('')}</div>
+    ${qBody(q)}
+    <div class="${optsCls(q)}">${q.o.map((o,j)=>staticOpt(q,j,b.my,false)).join('')}</div>
     <div class="note">${I.info}<span>این سؤال رو سر کلاس یا از همون راهی که با معلمت در ارتباطی بپرس.</span></div>
     <b>اشکالت رفع شد؟</b>
   </div>${actions(`<button class="btn btn-primary" onclick="solve(${b.id})">آره، حل شد</button><div class="row2"><button class="btn btn-ghost" onclick="back();toast('سؤال برای پیگیری توی سبد می‌مونه')">هنوز نه</button><button class="btn btn-ghost btn-danger" onclick="removeItem(${b.id})">حذف از سبد</button></div>`)}`; };
@@ -1081,6 +1481,7 @@ function render(){
     const sc=app.querySelector('.screen'), kind=NAV||'tab';
     if(sc){ sc.classList.add('enter-'+kind); if(kind==='tab') [...sc.children].forEach((c,i)=>c.style.setProperty('--i',Math.min(i,8))); }
     growBars(app); countUp(app); NAV=null;
+    if(route.name==='story') storyFx();
   } else { const t=document.createElement('div'); t.innerHTML=html; morphKids(app,t); }
   if(route.name==='otp') tickResend();
   if(route.name==='welcome') bindSwipe();

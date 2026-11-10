@@ -20,6 +20,7 @@ button{cursor:pointer;border:0;background:none;padding:0}
 .app{max-width:430px;width:100%;min-height:100dvh;margin:0 auto;background:var(--bg);position:relative;display:flex;flex-direction:column;overflow-x:clip}
 .screen{min-width:0;max-width:100%}
 img,svg{max-width:100%}
+[hidden]{display:none!important}
 .screen{flex:1;padding:16px 16px 116px}
 .screen.no-nav{padding-bottom:32px}
 .screen.has-act{padding-bottom:200px}
@@ -135,7 +136,7 @@ body.scrolled .sticky{box-shadow:0 1px 0 var(--line),0 10px 16px -14px rgba(40,3
 .timer{font-weight:900;font-size:18px;font-variant-numeric:tabular-nums;min-width:58px;text-align:left;transition:color .3s}
 .timer.low{color:var(--bad)}
 .q-text{font-size:20px;font-weight:800;line-height:1.95;text-align:right;text-wrap:pretty;margin:6px 0 4px}
-.q-img{display:block;width:100%;background:#fff;border:1.6px solid var(--ink);border-radius:18px;box-shadow:var(--hard);padding:10px;position:relative;margin-top:8px;transition:box-shadow .14s}
+.q-img{display:block;width:100%;background:#fff;border:1.6px solid var(--ink);border-radius:18px;box-shadow:var(--hard);padding:10px 10px 46px;position:relative;margin-top:8px;transition:box-shadow .14s}
 .q-img:active{box-shadow:0 0 0 var(--ink)}
 .q-img img{display:block;max-width:100%;max-height:210px;margin:0 auto}
 .q-img .zoom{position:absolute;left:10px;bottom:10px;background:var(--ink);color:#fff;font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;display:flex;align-items:center;gap:4px}
@@ -282,6 +283,132 @@ body.scrolled .sticky{box-shadow:0 1px 0 var(--line),0 10px 16px -14px rgba(40,3
 .success-ic::after{content:"";position:absolute;inset:-2px;border-radius:50%;border:2px solid var(--green-dk);animation:ring 1s .2s var(--ease) both}
 .success-ic path{stroke-dasharray:24;stroke-dashoffset:24;animation:draw .45s .3s var(--ease) forwards}
 .confetti{position:fixed;width:8px;height:8px;border-radius:2px;pointer-events:none;z-index:40}
+
+
+/* ============ افزوده‌ها ============ */
+/* هدر آزمون: شمارهٔ سؤال و «همهٔ سؤالات» */
+.x-sub{margin-top:-2px;min-height:36px}
+/* گزینه‌های تصویری */
+.opts-img{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.opt.img{flex-direction:column;justify-content:center;gap:6px;border-radius:22px;padding:14px 10px 12px;position:relative;min-height:0}
+.opt.img .n{position:absolute;top:8px;right:8px;width:26px;height:26px;font-size:13px}
+.opt-img{display:block;width:100%;max-width:118px;aspect-ratio:1;margin:0 auto}
+.opt.img.sel{background:var(--pri-soft);color:var(--ink);box-shadow:0 3px 0 var(--ink);outline:3px solid var(--pri);outline-offset:-5px}
+.opt.img.static{min-height:0}
+.opt.mine{background:var(--pri-soft)}
+.tag{font-size:12px;font-weight:800;white-space:nowrap}
+.tag.ok{color:var(--green-dk)} .tag.bad{color:var(--bad)} .tag.me{color:#4B3A92}
+/* انتخاب استان، شهر و مدرسه */
+.field-btn:disabled{opacity:.55;cursor:default;background:var(--surface)}
+.pick-search{position:relative;margin:10px 0 6px}
+.pick-search svg{position:absolute;right:14px;top:50%;transform:translateY(-50%);width:20px;height:20px;color:var(--muted);pointer-events:none}
+.pick-search .field{padding-right:44px;height:50px}
+.pick-list{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.pick-it{display:flex;align-items:center;justify-content:space-between;min-height:52px;padding:0 16px;border-radius:16px;background:var(--card);border:1.6px solid var(--ink);box-shadow:0 2px 0 var(--ink);font-weight:700;text-align:right;transition:transform .12s,box-shadow .12s}
+.pick-it:active{transform:translateY(2px);box-shadow:0 0 0 var(--ink)}
+.pick-it.on{background:var(--pri);color:#fff}
+.pick-it svg{width:20px;height:20px}
+/* دکمهٔ سبد */
+.basket-btn{position:relative;overflow:visible}
+.basket-btn .cnt,.basket-big .cnt{position:absolute;top:-6px;left:-6px;min-width:22px;height:22px;padding:0 5px;border-radius:11px;background:var(--terra);color:var(--ink);border:1.6px solid var(--ink);font-size:12px;font-weight:900;display:grid;place-items:center;line-height:1}
+.pop-in{animation:pop .45s var(--spring)}
+/* خانه: برترین‌های کشور */
+.top3>*+*{margin-top:12px}
+.t3-list{display:flex;flex-direction:column}
+.t3-row{display:flex;align-items:center;gap:10px;padding:8px 2px;border-bottom:1px solid var(--line)}
+.t3-row:last-child{border-bottom:0}
+.t3-row .avatar{width:36px;height:36px;flex:none}
+.t3-row.me{background:var(--pri-soft);border-radius:16px;border-bottom:0;padding:8px 10px;margin-top:2px}
+.medal{min-width:30px;height:30px;padding:0 6px;border-radius:15px;display:grid;place-items:center;font-weight:900;font-size:13px;background:var(--surface);border:1.4px solid var(--ink);flex:none}
+.medal.m1{background:var(--pri);color:#fff} .medal.m2{background:var(--sage)} .medal.m3{background:var(--terra)} .medal.me{background:var(--card)}
+.res-new .illus svg{animation:bob 4s ease-in-out infinite, glowIn .8s var(--spring) both}
+.pulse{animation:pulse 2.2s 1s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:var(--hard)}50%{box-shadow:0 3px 0 var(--ink),0 0 0 8px rgba(148,126,220,.22)}}
+@keyframes glowIn{from{transform:scale(.6) rotate(-8deg);opacity:0}}
+
+/* ============ قصهٔ نتیجه ============ */
+.st-hd{padding-top:12px}
+.st-bars{display:flex;gap:5px}
+.st-bars i{flex:1;height:5px;border-radius:5px;background:var(--track);overflow:hidden;position:relative}
+.st-bars i.rv{flex:3}
+.st-bars b{position:absolute;inset:0 0 0 auto;background:var(--ink);border-radius:5px;transition:width .5s var(--ease)}
+.st-bars b.now{animation:fillSeg .7s var(--ease) both}
+@keyframes fillSeg{from{width:0}}
+.st-top{margin-top:10px;min-height:44px}
+.stars{display:inline-flex;align-items:center;gap:6px;background:var(--card);border-radius:99px;padding:4px 12px 4px 6px;box-shadow:var(--soft);font-weight:900;font-size:16px}
+.stars svg{width:24px;height:24px}
+.st-x{width:32px;height:32px;border-radius:50%;background:rgba(29,29,27,.06);color:var(--muted);display:grid;place-items:center;opacity:.75;transition:transform .14s}
+.st-x:active{transform:scale(.9)}
+.st-x svg{width:15px;height:15px}
+.st-body{padding-top:18px}
+.st-body>*+*{margin-top:12px}
+.st-h{font-size:27px;line-height:1.5;text-wrap:balance}
+.st-lead{font-size:16px;line-height:2;max-width:340px;margin-inline:auto}
+.hl{display:inline-block;background:var(--green-soft);color:var(--green-dk);border-radius:12px;padding:0 10px;font-variant-numeric:tabular-nums}
+.st-line{animation:rise .5s var(--ease) both;animation-delay:var(--d)}
+/* آمار: کاشی‌ها یکی‌یکی برمی‌گردند */
+.tiles{display:grid;grid-template-columns:repeat(10,1fr);gap:6px;max-width:330px;margin:22px auto 6px!important;perspective:400px}
+.tiles i{aspect-ratio:1;border-radius:8px;border:1.4px solid var(--ink);background:var(--card);animation:flipIn .5s var(--spring) both;animation-delay:var(--d)}
+.tiles i.ok{background:var(--green)} .tiles i.bad{background:var(--bad)} .tiles i.none{background:var(--track)}
+@keyframes flipIn{from{transform:rotateY(90deg) scale(.4);opacity:0}to{transform:none;opacity:1}}
+.st-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:22px!important}
+.stt{background:var(--card);border-radius:20px;padding:14px 6px 10px;box-shadow:var(--soft);display:flex;flex-direction:column;align-items:center;animation:popUp .55s var(--spring) both;animation-delay:var(--d)}
+.stt b{font-size:34px;font-weight:900;line-height:1.1;font-variant-numeric:tabular-nums}
+.stt span{font-size:13px;color:var(--muted);font-weight:700}
+.stt.ok b{color:var(--green-dk)} .stt.bad b{color:var(--bad)}
+@keyframes popUp{from{transform:translateY(24px) scale(.7);opacity:0}to{transform:none;opacity:1}}
+/* دسته‌ها */
+.cats{display:flex;flex-direction:column;gap:12px;margin-top:20px!important}
+.cat-row{background:var(--card);border-radius:20px;padding:14px 16px;box-shadow:var(--soft);animation:slideIn .5s var(--ease) both;animation-delay:var(--d)}
+.cat-n{font-weight:900;font-size:14px;background:var(--bad-soft);color:var(--bad);border-radius:99px;padding:2px 10px}
+.cbar{height:10px;background:var(--track);border-radius:10px;overflow:hidden;margin-top:10px}
+.cbar i{display:block;height:100%;width:var(--w);background:var(--terra);border-radius:10px;animation:growW .9s var(--ease) both;animation-delay:calc(var(--d) + .2s)}
+.cat-row:first-child .cbar i{background:var(--bad)}
+@keyframes growW{from{width:0}}
+@keyframes slideIn{from{transform:translateX(-30px);opacity:0}to{transform:none;opacity:1}}
+/* «اگه...» */
+.wf{display:flex;align-items:center;gap:10px;padding:18px 16px;margin-top:18px!important}
+.wf-now,.wf-then{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center}
+.wf-now b{font-size:22px;font-weight:900;color:var(--muted);text-decoration:line-through;text-decoration-thickness:2px}
+.wf-then{background:var(--pri);color:#fff;border:1.6px solid var(--ink);border-radius:18px;padding:10px 6px;animation:popUp .6s .3s var(--spring) both}
+.wf-then b{font-size:30px;font-weight:900;line-height:1.2;font-variant-numeric:tabular-nums}
+.wf-arrow{color:var(--ink);display:grid;animation:nudge 1.2s .6s ease-in-out infinite}
+.wf-arrow svg{width:26px;height:26px}
+@keyframes nudge{50%{transform:translateX(-6px)}}
+.wf-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.chip-up{background:var(--green-soft);color:var(--green-dk);font-weight:800;font-size:13.5px;border-radius:99px;padding:5px 14px;animation:popUp .5s var(--spring) both;animation-delay:var(--d)}
+.wf-row{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line);animation:rise .45s var(--ease) both;animation-delay:var(--d)}
+.wf-row:last-child{border-bottom:0}
+.wf-row b{font-size:14px;white-space:nowrap}
+/* دعوت به مرور */
+.go-art{margin:26px 0 8px}
+.go-art svg{width:210px}
+.go-legend{display:flex;flex-direction:column;gap:8px;align-items:center;margin-top:18px!important;font-size:13.5px;font-weight:700}
+.go-legend span{display:inline-flex;align-items:center;gap:8px;background:var(--card);border-radius:99px;padding:6px 14px 6px 10px;box-shadow:var(--soft)}
+.go-legend svg{width:20px;height:20px}
+/* مرور سؤال */
+.story .qwrap{padding-top:6px}
+.rv-card{padding:14px 14px 16px}
+.rv-card.flying{box-shadow:0 18px 40px -10px rgba(30,25,15,.45);overflow:hidden}
+.pulse-in{animation:pop .4s var(--spring)}
+.qwrap.tossing .explain,.qwrap.tossing .ask{opacity:0;transform:translateY(10px);transition:opacity .25s,transform .25s}
+.explain{background:var(--surface);box-shadow:none;border:1.4px dashed var(--line);animation:rise .4s var(--ease) both}
+.explain p{margin-top:4px;line-height:2}
+.ask{font-weight:800;text-align:center;animation:rise .35s var(--ease) both}
+.ask.no{color:var(--bad);animation:shake .42s var(--ease)}
+.got{display:flex;align-items:center;justify-content:center;gap:10px;background:var(--green-soft);color:var(--green-dk);border-radius:18px;padding:12px;animation:popUp .5s var(--spring) both}
+.got-star svg{width:30px;height:30px;display:block;animation:spinPop .7s var(--spring) both}
+@keyframes spinPop{from{transform:scale(0) rotate(-180deg)}}
+.fly-star svg{width:100%;height:100%;display:block}
+/* پایان */
+.end-art{margin:36px 0 6px}
+.end-art svg{width:230px;animation:bob 4s ease-in-out infinite, glowIn .8s var(--spring) both}
+.star-total{display:inline-flex!important;align-items:center;gap:8px;background:var(--card);border-radius:99px;padding:8px 18px 8px 12px;box-shadow:var(--soft);font-weight:800;animation:popUp .6s .3s var(--spring) both}
+.star-total svg{width:30px;height:30px}
+.star-total b{font-size:24px;font-weight:900}
+.basket-call{display:flex;align-items:center;gap:14px;text-align:right;margin-top:22px!important;animation:popUp .6s .6s var(--spring) both}
+.basket-big{position:relative;width:56px;height:56px;border-radius:50%;background:var(--terra-soft);border:1.6px solid var(--ink);display:grid;place-items:center;flex:none}
+.basket-big svg{width:28px;height:28px}
 
 /* ============ موشن ============ */
 .screen.enter-fwd{animation:inFwd .42s var(--ease) both}
