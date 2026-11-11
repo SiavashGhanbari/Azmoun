@@ -617,9 +617,9 @@ V.exam = () => {
       <span class="timer ${left<180000?'low':''}" id="timer">${mmss(left)}</span></div>
     ${xprog()}
     <div class="row between x-sub"><span class="muted small">سؤال ${fa(k+1)} از ${fa(list.length)}</span>
-      <button class="btn btn-ghost btn-xs" onclick="examGrid()">${I.grid}همهٔ سؤالات</button></div></div>
+      <div class="row" style="gap:8px"><button class="btn btn-ghost btn-xs ${e.flags[gi]?'flag-on':''}" onclick="toggleFlag(${gi})">${I.flag}${e.flags[gi]?'علامت خورده':'علامت بزن'}</button>
+      <button class="btn btn-ghost btn-xs" onclick="examGrid()">${I.grid}همهٔ سؤالات</button></div></div></div>
     <div class="qwrap stack">
-      <div class="row" style="justify-content:flex-end"><button class="btn btn-ghost btn-xs ${e.flags[gi]?'flag-on':''}" onclick="toggleFlag(${gi})">${I.flag}${e.flags[gi]?'علامت خورده':'علامت بزن'}</button></div>
       ${qBody(q)}
       <div class="${optsCls(q)}">${q.o.map((o,j)=>`<button class="opt ${q.oi?'img':''} ${e.answers[gi]===j?'sel':''}" onclick="pick(${gi},${j})" aria-pressed="${e.answers[gi]===j}"><span class="n">${fa(j+1)}</span>${optIn(q,j)}</button>`).join('')}</div>
     </div>
@@ -731,12 +731,12 @@ V.story = () => {
   let body='', act='';
 
   if(cur==='stats'){
-    const order=[...Array(r.correct).fill('ok'),...Array(bad).fill('bad'),...Array(un).fill('none')];
+    const order=Q.map((q,i)=>S.exam.answers[i]===null?'none':S.exam.answers[i]===q.a?'ok':'bad');
     const p=pct(r.correct,r.total), verdict = p>=80?'عالی بود! واقعاً خوب پیش رفتی.':p>=50?'خوب بود؛ ولی می‌تونی بهتر هم بشی.':'شروع خوبیه. بیا ببینیم کجاها جا موند.';
     body=`<div class="st-body center">
       <span class="cap">${DATA.exam.title} · نتیجه</span>
       <h1 class="st-h">از ${fa(r.total)} سؤال، <span class="hl" data-count="${r.correct}" data-delay="300">${fa(r.correct)}</span> تا رو درست زدی</h1>
-      <div class="tiles" aria-hidden="true">${order.map((c,i)=>`<i class="${c}" style="--d:${300+i*55}ms"></i>`).join('')}</div>
+      <div class="tiles-wrap" aria-hidden="true">${BOOKLETS.map(b=>`<div class="tiles-b"><span class="cap">دفترچهٔ ${fa(b+1)}</span><div class="tiles">${QB(b).map(q=>`<i class="${order[q.i]}" style="--d:${300+q.i*55}ms">${fa(q.i-QB(b)[0].i+1)}</i>`).join('')}</div></div>`).join('')}</div>
       <div class="st-stats">
         <div class="stt ok" style="--d:1.3s"><b data-count="${r.correct}" data-delay="1300">${fa(r.correct)}</b><span>درست</span></div>
         <div class="stt bad" style="--d:1.5s"><b data-count="${bad}" data-delay="1500">${fa(bad)}</b><span>غلط</span></div>
@@ -757,18 +757,23 @@ V.story = () => {
   }
 
   if(cur==='whatif'){
-    const hyp=rankOf(r.total), jump=r.rank-hyp, cats=wrongByTopic();
+    const one=rankOf(r.correct+1), jump1=r.rank-one, cats=wrongByTopic();
+    const steps=[...Array(Math.min(w,4)).keys()].map(n=>n+1).map(n=>({n, rank:rankOf(r.correct+n)}));
+    const ahead=pct(TOTAL-r.rank,TOTAL);
     body=`<div class="st-body">
       <span class="cap">فقط برای مقایسه</span>
-      <h1 class="st-h">اگه این ${fa(w)} تا رو هم درست زده بودی…</h1>
+      <h1 class="st-h">فقط یک جواب درستِ بیشتر، چقدر می‌ارزید؟</h1>
       <div class="card wf">
         <div class="wf-now"><span class="muted small">رتبهٔ الان تو</span><b class="ltr">${faN(r.rank)}</b></div>
         <div class="wf-arrow">${I.arrowL}</div>
-        <div class="wf-then"><span class="small">رتبه‌ت می‌شد</span><b class="ltr" data-count="${hyp}" data-from="${r.rank}" data-sep="1" data-delay="500">${faN(r.rank)}</b></div>
+        <div class="wf-then"><span class="small">با یک سؤال بیشتر</span><b class="ltr" data-count="${one}" data-from="${r.rank}" data-sep="1" data-delay="500">${faN(r.rank)}</b></div>
       </div>
-      <div class="wf-chips"><span class="chip-up" style="--d:1.5s">${faN(jump)} نفر جلو می‌زدی</span><span class="chip-up" style="--d:1.7s">نمره‌ت می‌شد ${fa(100)}٪</span></div>
-      ${cats.length>1?`<span class="cap sec" style="margin-top:22px">یا حتی فقط با یک دسته</span>
-      <div class="card" style="padding:6px 14px">${cats.map(([t,n],i)=>`<div class="wf-row" style="--d:${1.9+i*.15}s"><span class="grow">${TOPIC[t]} <span class="muted small">(${fa(n)} سؤال)</span></span><b>رتبهٔ ${faN(rankOf(r.correct+n))}</b></div>`).join('')}</div>`:''}
+      <div class="wf-chips"><span class="chip-up" style="--d:1.5s">یعنی ${faN(jump1)} نفر رو جلو می‌زدی</span></div>
+      ${steps.length>1?`<span class="cap sec" style="margin-top:22px">هر سؤال، یک پله بالاتر</span>
+      <div class="card ladder">${steps.map((x,i)=>`<div class="ld-row" style="--d:${1.7+i*.16}s"><span class="ld-n">+${fa(x.n)}</span><div class="grow"><div class="row between"><b>رتبهٔ ${faN(x.rank)}</b><span class="muted small">${faN(r.rank-x.rank)} نفر جلوتر</span></div><div class="cbar"><i style="--w:${Math.max(6,pct(r.rank-x.rank,r.rank))}%"></i></div></div></div>`).join('')}</div>`:''}
+      ${cats.length>1?`<span class="cap sec" style="margin-top:22px">اگه فقط یک دسته رو درست زده بودی</span>
+      <div class="card" style="padding:6px 14px">${cats.map(([t,n],i)=>`<div class="wf-row" style="--d:${2.3+i*.12}s"><span class="grow">${TOPIC[t]} <span class="muted small">(${fa(n)} سؤال)</span></span><b>رتبهٔ ${faN(rankOf(r.correct+n))}</b></div>`).join('')}</div>`:''}
+      <p class="muted small center st-line" style="--d:2.6s">همین الان هم از ${fa(ahead)}٪ شرکت‌کننده‌ها جلوتری.</p>
       <div class="note" style="margin-top:14px">${I.info}<span>این رتبه‌ها فرضی‌ان و توی رتبه‌بندی کشوری ثبت نمی‌شن.</span></div></div>`;
     act=`<button class="btn btn-primary" onclick="storyNext()">بعدی</button>`;
   }

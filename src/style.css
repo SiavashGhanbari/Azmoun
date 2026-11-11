@@ -347,7 +347,17 @@ body.scrolled .sticky{box-shadow:0 1px 0 var(--line),0 10px 16px -14px rgba(40,3
 .hl{display:inline-block;background:var(--green-soft);color:var(--green-dk);border-radius:12px;padding:0 10px;font-variant-numeric:tabular-nums}
 .st-line{animation:rise .5s var(--ease) both;animation-delay:var(--d)}
 /* آمار: کاشی‌ها یکی‌یکی برمی‌گردند */
-.tiles{display:grid;grid-template-columns:repeat(10,1fr);gap:6px;max-width:330px;margin:22px auto 6px!important;perspective:400px}
+.tiles-wrap{display:flex;flex-direction:column;gap:10px;max-width:340px;margin:22px auto 6px!important}
+.tiles-b{display:flex;flex-direction:column;gap:4px;text-align:right}
+.tiles{display:grid;grid-template-columns:repeat(10,1fr);gap:5px;perspective:400px}
+.tiles i{display:grid;place-items:center;font-style:normal;font-size:11px;font-weight:800;color:var(--ink)}
+.tiles i.bad{color:#fff}
+.ladder{padding:6px 14px}
+.ld-row{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);animation:rise .45s var(--ease) both;animation-delay:var(--d)}
+.ld-row:last-child{border-bottom:0}
+.ld-n{flex:none;width:38px;height:38px;border-radius:50%;background:var(--pri-soft);border:1.4px solid var(--ink);display:grid;place-items:center;font-weight:900;font-size:14px;direction:ltr}
+.ld-row .cbar{margin-top:6px;height:8px}
+.ld-row .cbar i{background:var(--green)}
 .tiles i{aspect-ratio:1;border-radius:8px;border:1.4px solid var(--ink);background:var(--card);animation:flipIn .5s var(--spring) both;animation-delay:var(--d)}
 .tiles i.ok{background:var(--green)} .tiles i.bad{background:var(--bad)} .tiles i.none{background:var(--track)}
 @keyframes flipIn{from{transform:rotateY(90deg) scale(.4);opacity:0}to{transform:none;opacity:1}}
