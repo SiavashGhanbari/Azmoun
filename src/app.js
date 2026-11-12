@@ -84,14 +84,11 @@ const ART = {
 const DATA = {
   student: { first:'مرتضی', last:'پاشایی', grade:'ششم', province:'تهران', city:'تهران', school:'دبستان فرهنگ' },
   login: { testCode:'12345', unregistered:'09120000000', invite:'AZ1405', resendSeconds:60 },
-  exam: { title:'آزمون ۱', free:true, resultAt:'چهارشنبه ۱۳ آبان، ساعت ۱۸:۰۰',
-    booklets:[ { title:'استعداد تحلیلی', minutes:20 }, { title:'ریاضی و علوم', minutes:25 } ] },
-  otherExams:[
-    { title:'آزمون ۲', state:'upcoming', note:'شروع: پنجشنبه ۲۱ آبان، ساعت ۹:۰۰' },
-    { title:'آزمون ورودی مهر', state:'missed', note:'مهلت شرکت ۳۰ مهر تموم شد' },
-  ],
-  // تعداد شرکت‌کننده‌های کشور با هر نمره (بدون خود کاربر)
-  national:{20:3,19:27,18:164,17:612,16:1490,15:2780,14:4105,13:5230,12:5910,11:6020,10:5680,9:4870,8:3790,7:2730,6:1820,5:1130,4:640,3:330,2:160,1:70,0:25},
+  // هر دفترچه ۶۰ سؤال؛ دفترچهٔ اول سخت‌تر است و ضریب ۳ دارد. هر جواب غلط یک‌سومِ نمرهٔ یک سؤال را کم می‌کند.
+  exam: { title:'آزمون ۱', free:true, resultAt:'چهارشنبه ۱۳ آبان، ساعت ۱۸:۰۰', negative:1/3, others:231,
+    booklets:[ { title:'استعداد تحلیلی', minutes:75, coef:3 }, { title:'ریاضی و علوم', minutes:25, coef:1 } ] },
+  nextExam:{ title:'آزمون ۲', when:'پنجشنبه ۲۱ آبان، ساعت ۹:۰۰' },
+  pastExams:[ { title:'آزمون آزمایشی مهر', date:'۲۴ مهر', taraz:5380, rank:88, total:214, pd:31, pt:44 } ],
   grades:['پنجم','ششم'], genders:['دختر','پسر'],
   months:['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'],
   years:[1390,1391,1392,1393,1394,1395,1396,1397,1398],
@@ -147,7 +144,7 @@ const SHAPE = inner => svgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="
 ASSET.arrows = svgUri(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 430 100">${TILE(ARROW_IN(0),330)}${TILE(ARROW_IN(90),220)}${TILE(ARROW_IN(180),110)}${TILE('<text x="50" y="68" font-size="52" font-weight="800" text-anchor="middle" fill="#1D1D1B" font-family="Tahoma,sans-serif">?</text>',0)}</svg>`);
 const SH_ST = 'stroke="#1D1D1B" stroke-width="3" stroke-linejoin="round"';
 
-const Q = [
+const HQ = [
   {b:0,d:'medium',t:'pattern', img:'fig', q:'در شکل زیر به جای علامت سؤال چه عددی قرار می‌گیرد؟', o:['۵','۷','۶','۹'], a:2,
    s:'در هر مثلث، جمع دو عدد بیرونی سه برابرِ عددی است که داخل مربع افتاده: ۱۹ + ۵ = ۲۴ = ۳ × ۸ و ۱۷ + ۱۳ = ۳۰ = ۳ × ۱۰ و ۵ + ۷ = ۱۲ = ۳ × ۴. پس ۲ + ۱۶ = ۱۸ = ۳ × ؟ و جواب ۶ است.'},
   {b:0,d:'easy',  t:'logic',   q:'«کتاب» به «کتابخانه» مثل «دارو» به …', o:['پزشک','داروخانه','بیمار','قرص'], a:1, s:'کتابخانه جایی است که کتاب‌ها آنجا نگه‌داری می‌شوند. داروها هم در داروخانه نگه‌داری می‌شوند.'},
@@ -173,52 +170,179 @@ const Q = [
   {b:1,d:'medium',t:'science', q:'کدام اندام خون را در بدن به گردش درمی‌آورد؟', o:['ریه','قلب','کبد','کلیه'], a:1, s:'قلب یک ماهیچهٔ قوی است که مثل پمپ، خون را به همهٔ بدن می‌فرستد.'},
   {b:1,d:'hard',  t:'science', q:'آهنربا کدام یک را جذب می‌کند؟', o:['قاشق چوبی','لیوان شیشه‌ای','میخ آهنی','سکهٔ مسی'], a:2, s:'آهنربا فقط بعضی فلزها مثل آهن را جذب می‌کند. چوب، شیشه و مس جذب آهنربا نمی‌شوند.'},
 ];
-const BOOKLETS = [...new Set(Q.map(q=>q.b))];
-const QB = b => Q.map((q,i)=>({...q,i})).filter(q=>q.b===b);
 
-const MISSIONS = {
-  pattern:{ title:'الگو و دنباله', learn:'برای پیدا کردن عدد بعدی، فاصلهٔ هر عدد با عدد قبلی را بنویس. اگر فاصله‌ها ثابت بود یا خودشان یک الگو داشتند (مثلاً هر بار ۱ تا بیشتر می‌شوند)، عدد بعدی را با همان الگو پیدا کن. گاهی هم هر عدد دو برابر عدد قبلی است.',
-    qs:[ {q:'عدد بعدی چیست؟ ۱، ۳، ۶، ۱۰، ؟', o:['۱۲','۱۴','۱۵','۱۶'], a:2, s:'فاصله‌ها ۲، ۳، ۴ هستند و هر بار یکی بیشتر می‌شوند. فاصلهٔ بعدی ۵ است: ۱۰ + ۵ = ۱۵.'},
-         {q:'عدد بعدی چیست؟ ۵، ۱۰، ۲۰، ۴۰، ؟', o:['۵۰','۶۰','۸۰','۱۰۰'], a:2, s:'هر عدد دو برابر عدد قبلی است: ۴۰ × ۲ = ۸۰.'} ] },
-  logic:{ title:'استدلال و مقایسه', learn:'وقتی چند نفر یا چند چیز را با هم مقایسه می‌کنیم، آن‌ها را روی یک خط مرتب کن. برای روزهای هفته هم یادت باشد هر ۷ روز همان روز تکرار می‌شود؛ پس فقط باقی‌ماندهٔ تقسیم بر ۷ را بشمار.',
-    qs:[ {q:'مینا از نگار بزرگ‌تر است و نگار از لیلا بزرگ‌تر است. بزرگ‌ترین کیست؟', o:['مینا','نگار','لیلا','هر سه هم‌سن‌اند'], a:0, s:'اگر به ترتیب سن بچینیم: مینا، نگار، لیلا. پس مینا از همه بزرگ‌تر است.'},
-         {q:'اگر امروز دوشنبه باشد، ۸ روز بعد چه روزی است؟', o:['دوشنبه','سه‌شنبه','چهارشنبه','یکشنبه'], a:1, s:'۸ = ۷ + ۱. بعد از ۷ روز دوباره دوشنبه است و یک روز بعدش سه‌شنبه.'} ] },
-  numbers:{ title:'کسر، اعشار و درصد', learn:'برای جمع دو کسر، اول مخرج‌ها را یکی کن. برای درصد، عدد را بر ۱۰۰ تقسیم کن و در درصد ضرب کن؛ مثلاً ۲۰٪ از ۵۰ یعنی ۵۰ ÷ ۱۰۰ × ۲۰.',
-    qs:[ {q:'حاصل ۱/۲ + ۱/۴ چیست؟', o:['۲/۶','۱/۸','۳/۴','۱'], a:2, s:'۱/۲ همان ۲/۴ است. پس ۲/۴ + ۱/۴ = ۳/۴.'},
-         {q:'۲۰ درصدِ عدد ۵۰ چند است؟', o:['۵','۱۰','۲۰','۲۵'], a:1, s:'۵۰ ÷ ۱۰۰ × ۲۰ = ۱۰. یا ساده‌تر: ۱۰٪ از ۵۰ می‌شود ۵ و ۲۰٪ دو برابرش یعنی ۱۰.'} ] },
-  geometry:{ title:'شکل‌ها و زاویه‌ها', learn:'صفحهٔ ساعت ۳۶۰ درجه است و ۱۲ قسمت دارد؛ پس فاصلهٔ هر دو عدد ۳۰ درجه است. محیط یعنی جمع اندازهٔ ضلع‌ها و مساحت مستطیل یعنی طول × عرض.',
-    qs:[ {q:'ساعت دقیقاً ۶:۰۰ است. زاویهٔ بین دو عقربه چند درجه است؟', o:['۹۰','۱۲۰','۱۵۰','۱۸۰'], a:3, s:'از ۱۲ تا ۶ شش قسمت است و هر قسمت ۳۰ درجه: ۶ × ۳۰ = ۱۸۰ درجه.'},
-         {q:'مساحت مستطیلی به طول ۵ و عرض ۴ سانتی‌متر چقدر است؟', o:['۹','۱۸','۲۰','۲۵'], a:2, s:'مساحت مستطیل = طول × عرض = ۵ × ۴ = ۲۰ سانتی‌متر مربع.'} ] },
-  science:{ title:'مواد و انرژی', learn:'مخلوط یعنی چند ماده که با هم قاطی شده‌اند ولی هر کدام ویژگی خودش را دارد؛ مثل آب نمک. فلزها معمولاً گرما و برق را خوب از خود عبور می‌دهند.',
-    qs:[ {q:'کدام یک رسانای خوب گرما است؟', o:['چوب','مس','پلاستیک','شیشه'], a:1, s:'مس فلز است و فلزها گرما را خوب عبور می‌دهند. چوب، پلاستیک و شیشه نارسانا هستند.'},
-         {q:'یخ در چند درجهٔ سانتی‌گراد ذوب می‌شود؟', o:['صفر','۱۰','۵۰','۱۰۰'], a:0, s:'یخ در صفر درجهٔ سانتی‌گراد ذوب می‌شود و به آب تبدیل می‌شود.'} ] },
+/* ---------- بانک سؤال: هر دفترچه ۶۰ سؤال ---------- */
+// ۲۰ سؤال بالا دست‌نویس‌اند؛ بقیه از الگوهای زیر ساخته می‌شوند. «سؤال مشابه» هر سؤال هم از همان الگو با عددهای دیگر ساخته می‌شود.
+const rngOf = seed => { let a=seed>>>0; return () => { a=a+0x6D2B79F5|0; let t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; };
+const ri = (r,a,b) => a+Math.floor(r()*(b-a+1));
+const pickOf = (r,arr) => arr[Math.floor(r()*arr.length)];
+function mk(r, t, q, right, wrongs, s){
+  const num=typeof right==='number'; let ws=[...new Set(wrongs)].filter(x=>x!==right && (!num||x>0));
+  for(let k=1; num && ws.length<3; k++){ const c=right+k*2+1; if(!ws.includes(c)) ws.push(c); }
+  ws=ws.slice(0,3); const pos=ri(r,0,3), o=ws.slice(); o.splice(pos,0,right);
+  return { t, q, o:o.map(x=>num?fa(x):x), a:pos, s };
+}
+const DAYS=['شنبه','یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه'];
+const KIDS=['علی','سارا','رضا','مینا','امیر','نگار','پویا','هدی'];
+const THINGS=['دفتر','مداد','پاک‌کن','خودکار','شکلات','بادکنک'];
+const ANALOGY=[
+  ['«معلم» به «مدرسه» مثل «پزشک» به …','بیمارستان',['دارو','بیمار','آمبولانس'],'معلم در مدرسه کار می‌کند و پزشک در بیمارستان.'],
+  ['«ماهی» به «آب» مثل «پرنده» به …','آسمان',['لانه','بال','دانه'],'ماهی در آب حرکت می‌کند و پرنده در آسمان.'],
+  ['«چشم» به «دیدن» مثل «گوش» به …','شنیدن',['صدا','سر','بوییدن'],'با چشم می‌بینیم و با گوش می‌شنویم.'],
+  ['«نانوا» به «نان» مثل «نجار» به …','میز',['چوب','اره','کارگاه'],'نانوا نان درست می‌کند و نجار میز.'],
+  ['«روز» به «خورشید» مثل «شب» به …','ماه',['تاریکی','خواب','ستاره‌شناس'],'در روز خورشید در آسمان است و در شب ماه.'],
+  ['«دست» به «دستکش» مثل «پا» به …','جوراب',['کفش‌فروشی','راه رفتن','زانو'],'دستکش را روی دست می‌پوشیم و جوراب را روی پا.'],
+  ['«قلم» به «نوشتن» مثل «قیچی» به …','بریدن',['کاغذ','تیز','خیاط'],'با قلم می‌نویسیم و با قیچی می‌بُریم.'],
+  ['«درخت» به «جنگل» مثل «ستاره» به …','کهکشان',['شب','نور','تلسکوپ'],'جنگل از تعداد زیادی درخت درست شده و کهکشان از تعداد زیادی ستاره.'],
+  ['«بهار» به «تابستان» مثل «پاییز» به …','زمستان',['برف','مهر','سرما'],'بعد از بهار تابستان می‌آید و بعد از پاییز زمستان.'],
+  ['«گندم» به «نان» مثل «شیر» به …','پنیر',['گاو','سفید','لیوان'],'نان از گندم درست می‌شود و پنیر از شیر.'],
+  ['«راننده» به «اتوبوس» مثل «خلبان» به …','هواپیما',['فرودگاه','آسمان','مسافر'],'راننده اتوبوس را می‌راند و خلبان هواپیما را.'],
+  ['«سرد» به «گرم» مثل «تاریک» به …','روشن',['شب','سیاه','چراغ'],'گرم مخالف سرد است و روشن مخالف تاریک.'],
+];
+const ODD=[
+  [['گربه','اسب','کبوتر','گاو'],2,'گربه، اسب و گاو پستاندارند ولی کبوتر پرنده است.'],
+  [['دایره','مربع','مثلث','مکعب'],3,'دایره، مربع و مثلث شکل‌های تخت‌اند ولی مکعب حجم دارد.'],
+  [['تهران','شیراز','ایران','تبریز'],2,'تهران، شیراز و تبریز شهرند ولی ایران کشور است.'],
+  [['مداد','خودکار','ماژیک','دفتر'],3,'با مداد، خودکار و ماژیک می‌نویسیم ولی دفتر چیزی است که رویش می‌نویسیم.'],
+  [['۲','۴','۷','۸'],2,'۲، ۴ و ۸ زوج‌اند ولی ۷ فرد است.'],
+  [['فروردین','شنبه','آبان','دی'],1,'فروردین، آبان و دی ماه‌اند ولی شنبه روز هفته است.'],
+  [['متر','کیلوگرم','سانتی‌متر','کیلومتر'],1,'متر، سانتی‌متر و کیلومتر واحد طول‌اند ولی کیلوگرم واحد جرم است.'],
+  [['قاشق','چنگال','بشقاب','چکش'],3,'قاشق، چنگال و بشقاب وسیلهٔ غذا خوردن‌اند ولی چکش ابزار کار است.'],
+  [['۹','۱۶','۲۰','۲۵'],2,'۹ = ۳×۳، ۱۶ = ۴×۴ و ۲۵ = ۵×۵ هستند، ولی ۲۰ حاصل ضرب یک عدد در خودش نیست.'],
+  [['چشم','گوش','بینی','کفش'],3,'چشم، گوش و بینی عضو بدن‌اند ولی کفش پوشیدنی است.'],
+  [['گل رز','لاله','کاج','نرگس'],2,'رز، لاله و نرگس گل‌اند ولی کاج درخت است.'],
+  [['۳','۶','۱۰','۱۲'],2,'۳، ۶ و ۱۲ بر ۳ بخش‌پذیرند ولی ۱۰ نیست.'],
+];
+const SCI=[
+  ['گیاهان برای ساختن غذای خود به کدام یک نیاز دارند؟','نور خورشید',['خاک رس','نمک','باد'],'گیاه با کمک نور خورشید، آب و کربن دی‌اکسید غذا می‌سازد (فتوسنتز).'],
+  ['کدام حالت ماده شکل و حجم ثابت دارد؟','جامد',['مایع','گاز','بخار'],'جامد هم شکلش ثابت است هم حجمش؛ مایع فقط حجمش ثابت است.'],
+  ['کدام سیاره به خورشید نزدیک‌تر است؟','عطارد',['زمین','مریخ','مشتری'],'ترتیب از خورشید: عطارد، زهره، زمین، مریخ و…'],
+  ['کدام یک رسانای خوب برق است؟','سیم مسی',['چوب خشک','پلاستیک','شیشه'],'فلزها مثل مس برق را به‌خوبی عبور می‌دهند.'],
+  ['یخ در چند درجهٔ سانتی‌گراد آب می‌شود؟','صفر',['۱۰','۵۰','۱۰۰'],'نقطهٔ ذوب یخ صفر درجهٔ سانتی‌گراد است.'],
+  ['کدام اندام کار تنفس را انجام می‌دهد؟','شش',['معده','کبد','کلیه'],'هوا وارد شش‌ها می‌شود و اکسیژن آن به خون می‌رسد.'],
+  ['کدام یک انرژی حرکتی دارد؟','توپِ در حال غلتیدن',['کتابِ روی میز','باتریِ نو','سنگِ بالای کوه'],'هر چیزی که حرکت می‌کند انرژی حرکتی دارد.'],
+  ['کدام تغییر، تغییر شیمیایی است؟','سوختن چوب',['آب شدن یخ','خرد شدن شیشه','تا کردن کاغذ'],'در سوختن، مادهٔ جدیدی (خاکستر و دود) درست می‌شود.'],
+  ['ماه نور خود را از کجا می‌گیرد؟','خورشید',['زمین','ستاره‌ها','خودش'],'ماه از خودش نور ندارد و نور خورشید را بازتاب می‌کند.'],
+  ['کدام یک جزو مهره‌داران نیست؟','پروانه',['ماهی','قورباغه','گنجشک'],'پروانه حشره است و ستون مهره ندارد.'],
+  ['صدا در کدام یک تندتر حرکت می‌کند؟','آهن',['هوا','آب','پنبه'],'صدا در جامدها تندتر از مایع‌ها و گازها حرکت می‌کند.'],
+  ['کدام یک برای جدا کردن براده‌های آهن از شن مناسب است؟','آهنربا',['صافی','آب','ترازو'],'آهنربا براده‌های آهن را جذب می‌کند ولی شن را نه.'],
+  ['گردش زمین به دور خودش چه چیزی را به وجود می‌آورد؟','شب و روز',['فصل‌ها','ماه‌گرفتگی','جزر و مد'],'زمین هر ۲۴ ساعت یک بار دور خودش می‌چرخد و شب و روز درست می‌شود.'],
+  ['کدام بخش گیاه آب را از خاک می‌گیرد؟','ریشه',['برگ','گل','ساقه'],'ریشه آب و مواد معدنی را از خاک جذب می‌کند.'],
+  ['کدام یک سوخت فسیلی است؟','نفت',['باد','نور خورشید','آب رودخانه'],'نفت از بقایای جانداران قدیمی درست شده است.'],
+  ['وقتی آب بخار می‌شود، چه تغییری کرده است؟','مایع به گاز تبدیل شده',['جامد به مایع تبدیل شده','گاز به مایع تبدیل شده','مادهٔ جدیدی ساخته شده'],'تبخیر یعنی تبدیل مایع به گاز.'],
+  ['کدام حس با پوست انجام می‌شود؟','لامسه',['بویایی','شنوایی','چشایی'],'پوست گرما، سرما و زبری را حس می‌کند.'],
+  ['کدام وسیله دما را اندازه می‌گیرد؟','دماسنج',['ترازو','خط‌کش','زمان‌سنج'],'دماسنج دما را به درجه نشان می‌دهد.'],
+  ['کدام یک زنجیرهٔ غذایی را شروع می‌کند؟','گیاه',['خرگوش','روباه','عقاب'],'گیاهان غذا می‌سازند و بقیهٔ جانداران از آن‌ها تغذیه می‌کنند.'],
+  ['نیرویی که اجسام را به طرف زمین می‌کشد چه نام دارد؟','گرانش',['اصطکاک','مغناطیس','کشسانی'],'گرانش (جاذبهٔ زمین) همه‌چیز را به طرف زمین می‌کشد.'],
+];
+const fromList = (L, t, head) => (r, idx) => { const x=L[(idx ?? ri(r,0,L.length-1)) % L.length]; return head ? { t, q:head, o:x[0], a:x[1], s:x[2] } : mk(r, t, x[0], x[1], x[2], x[3]); };
+const GEN = {
+  seqA(r){ const a=ri(r,2,12), d=ri(r,3,9), xs=[0,1,2,3].map(i=>a+i*d), n=a+4*d;
+    return mk(r,'pattern',`عدد بعدی این دنباله چیست؟ ${xs.map(fa).join('، ')}، ؟`, n,[n+d,n-1,n+2],`هر عدد ${fa(d)} تا از عدد قبلی بیشتر است: ${fa(xs[3])} + ${fa(d)} = ${fa(n)}.`); },
+  seqG(r){ const a=ri(r,1,5), k=pickOf(r,[2,3]), xs=[0,1,2,3].map(i=>a*k**i), n=a*k**4;
+    return mk(r,'pattern',`عدد بعدی این دنباله چیست؟ ${xs.map(fa).join('، ')}، ؟`, n,[xs[3]+xs[2],n+k,xs[3]+k],`هر عدد ${fa(k)} برابرِ عدد قبلی است: ${fa(xs[3])} × ${fa(k)} = ${fa(n)}.`); },
+  seqS(r){ const a=ri(r,1,9), s0=ri(r,1,3), xs=[a]; for(let i=0;i<4;i++) xs.push(xs[i]+s0+i); const n=xs[4];
+    return mk(r,'pattern',`عدد بعدی این دنباله چیست؟ ${xs.slice(0,4).map(fa).join('، ')}، ؟`, n,[xs[3]+s0+2,n+1,n+2],`فاصلهٔ عددها هر بار یکی بیشتر می‌شود: ${fa(s0)}، ${fa(s0+1)}، ${fa(s0+2)}. پس این بار ${fa(s0+3)} تا اضافه می‌کنیم: ${fa(xs[3])} + ${fa(s0+3)} = ${fa(n)}.`); },
+  day(r){ const d=ri(r,0,6); let n=ri(r,8,30); if(n%7===0) n++; const ans=DAYS[(d+n)%7], rem=n%7;
+    return mk(r,'logic',`اگر امروز ${DAYS[d]} باشد، ${fa(n)} روز بعد چه روزی است؟`, ans,[DAYS[(d+n+1)%7],DAYS[(d+n+6)%7],DAYS[(d+n+2)%7]],`هر ۷ روز همان روز تکرار می‌شود. ${fa(n)} = ${fa(n-rem)} + ${fa(rem)}، پس کافی است ${fa(rem)} روز از ${DAYS[d]} جلو برویم: ${ans}.`); },
+  queue(r){ const nm=pickOf(r,KIDS), a=ri(r,3,9), b=ri(r,4,12), n=a+b-1;
+    return mk(r,'logic',`${nm} در یک صف، نفر ${fa(a)}م از جلو و نفر ${fa(b)}م از عقب است. صف چند نفر است؟`, n,[a+b,n-1,a+b+1],`جلوی ${nm} ${fa(a-1)} نفر و پشت سرش ${fa(b-1)} نفر هستند. با خودش: ${fa(a-1)} + ${fa(b-1)} + ۱ = ${fa(n)} نفر.`); },
+  age(r){ const nm=pickOf(r,KIDS), x=ri(r,9,13), y=ri(r,2,5), n=2*x-y;
+    return mk(r,'logic',`${nm} ${fa(x)} ساله است و ${fa(y)} سال از برادرش بزرگ‌تر است. مجموع سن این دو نفر چند سال است؟`, n,[2*x+y,2*x,x+y],`برادرش ${fa(x)} − ${fa(y)} = ${fa(x-y)} ساله است. مجموع: ${fa(x)} + ${fa(x-y)} = ${fa(n)}.`); },
+  sym(r){ const a=ri(r,2,9); let b=ri(r,2,9); if(b===a) b++; const n=2*a+b;
+    return mk(r,'logic',`اگر هر ▲ برابر ${fa(a)} و هر ● برابر ${fa(b)} باشد، حاصل ▲ + ▲ + ● چند است؟`, n,[a+b,a+2*b,2*a+2*b],`به جای هر شکل عددش را می‌گذاریم: ${fa(a)} + ${fa(a)} + ${fa(b)} = ${fa(n)}.`); },
+  clock(r){ const h=ri(r,1,5), n=h*30;
+    return mk(r,'geometry',`ساعت دقیقاً ${fa(h)}:۰۰ است. زاویهٔ کوچک‌تر بین دو عقربه چند درجه است؟`, n,[n+30,h*15,n+60],`صفحهٔ ساعت ۱۲ قسمت دارد و هر قسمت ۳۰ درجه است. از ۱۲ تا ${fa(h)}، ${fa(h)} قسمت است: ${fa(h)} × ۳۰ = ${fa(n)} درجه.`); },
+  analogy: fromList(ANALOGY,'logic'),
+  odd: fromList(ODD,'logic','کدام یک با بقیه فرق دارد؟'),
+  frac(r){ const n=pickOf(r,[7,9,11,13]), a=ri(r,1,3), b=ri(r,1,3), f=(x,y)=>`${fa(x)}/${fa(y)}`;
+    return mk(r,'numbers',`حاصل ${f(a,n)} + ${f(b,n)} چیست؟`, f(a+b,n),[f(a+b,2*n),f(a+b+1,n),f(a+b,n+1)],`مخرج‌ها یکی‌اند، پس فقط صورت‌ها را جمع می‌کنیم: ${fa(a)} + ${fa(b)} = ${fa(a+b)}. جواب ${f(a+b,n)} است.`); },
+  perc(r){ const p=pickOf(r,[10,20,25,50,75]), N=pickOf(r,[40,60,80,120,200]), n=p*N/100;
+    return mk(r,'numbers',`${fa(p)} درصدِ عدد ${fa(N)} چند است؟`, n,[n+5,n*2,n+10],`${fa(p)} درصد یعنی ${fa(p)} از ۱۰۰: ${fa(N)} × ${fa(p)} ÷ ۱۰۰ = ${fa(n)}.`); },
+  rate(r){ const th=pickOf(r,THINGS), k=ri(r,3,6), u=ri(r,3,9); let m=ri(r,7,12); const n=m*u;
+    return mk(r,'numbers',`قیمت ${fa(k)} ${th} ${fa(k*u)} هزار تومان است. ${fa(m)} ${th} چند هزار تومان می‌شود؟`, n,[n+u,k*u+m,n-u],`قیمت یک ${th}: ${fa(k*u)} ÷ ${fa(k)} = ${fa(u)} هزار تومان. پس ${fa(m)} تا: ${fa(m)} × ${fa(u)} = ${fa(n)} هزار تومان.`); },
+  peri(r){ const a=ri(r,5,12), b=ri(r,2,a-1), n=2*(a+b);
+    return mk(r,'geometry',`طول و عرض یک مستطیل ${fa(a)} و ${fa(b)} سانتی‌متر است. محیط آن چند سانتی‌متر است؟`, n,[a*b,a+b,2*a+b],`محیط مستطیل = (طول + عرض) × ۲ = (${fa(a)} + ${fa(b)}) × ۲ = ${fa(n)}.`); },
+  area(r){ const a=ri(r,5,12), b=ri(r,3,a-1), n=a*b;
+    return mk(r,'geometry',`طول و عرض یک مستطیل ${fa(a)} و ${fa(b)} سانتی‌متر است. مساحت آن چند سانتی‌متر مربع است؟`, n,[2*(a+b),a+b,n+a],`مساحت مستطیل = طول × عرض = ${fa(a)} × ${fa(b)} = ${fa(n)}.`); },
+  avg(r){ const m=ri(r,8,20), d=ri(r,1,5), e=ri(r,1,5), xs=[m-d,m+d+e,m-e];
+    return mk(r,'numbers',`میانگین سه عدد ${xs.map(fa).join('، ')} چند است؟`, m,[m+1,m-1,m+d+e],`جمع سه عدد ${fa(3*m)} است. میانگین = ${fa(3*m)} ÷ ۳ = ${fa(m)}.`); },
+  gcd(r){ const g=pickOf(r,[2,3,4,5,6]), [p,q]=pickOf(r,[[2,3],[3,4],[2,5],[3,5]]), a=g*p, b=g*q;
+    return mk(r,'numbers',`بزرگ‌ترین شمارندهٔ مشترک ${fa(a)} و ${fa(b)} کدام است؟`, g,[g*p*q,1,g===2?4:g-1],`${fa(a)} = ${fa(g)} × ${fa(p)} و ${fa(b)} = ${fa(g)} × ${fa(q)}. چون ${fa(p)} و ${fa(q)} شمارندهٔ مشترکی جز ۱ ندارند، جواب ${fa(g)} است.`); },
+  mins(r){ const h=ri(r,1,3), m=pickOf(r,[15,20,30,45]), n=60*h+m;
+    return mk(r,'numbers',`${fa(h)} ساعت و ${fa(m)} دقیقه روی هم چند دقیقه است؟`, n,[100*h+m,60*h,n+10],`هر ساعت ۶۰ دقیقه است: ${fa(h)} × ۶۰ = ${fa(60*h)}. با ${fa(m)} دقیقه می‌شود ${fa(n)} دقیقه.`); },
+  sci: fromList(SCI,'science'),
 };
+const LISTS = { analogy:ANALOGY, odd:ODD, sci:SCI };
+// الگوی نزدیک به هر سؤال دست‌نویس (برای ساختن سؤال مشابه) و سختی پایهٔ هر الگو
+const HQ_KIND = ['seqS','analogy','seqG','sym','odd','clock','day','seqA','queue','rate','frac','gcd','peri','perc','avg','sci','sci','sci','sci','sci'];
+const BETA = { seqA:-1.3, seqG:-.7, seqS:.5, day:.3, queue:.9, age:-.1, sym:-.6, clock:.2, analogy:-1, odd:-1.2, frac:.1, perc:.4, rate:-.2, peri:-.8, area:-.5, avg:.7, gcd:1.1, mins:-1, sci:-.4 };
+const PLAN = [
+  [['seqA',7],['seqG',5],['seqS',5],['day',5],['queue',5],['age',5],['sym',5],['clock',3],['analogy',5],['odd',5]],
+  [['frac',6],['perc',6],['rate',5],['peri',5],['area',5],['avg',5],['gcd',4],['mins',4],['sci',10]],
+];
+const Q = (() => {
+  const out=[], noise=rngOf(31);
+  PLAN.forEach((plan,b)=>{
+    HQ.filter(q=>q.b===b).forEach(q=>out.push({ ...q, k:HQ_KIND[HQ.indexOf(q)], beta:({easy:-1,medium:0,hard:1})[q.d] }));
+    const gen=[], seen=new Set(out.map(q=>q.q));
+    plan.forEach(([k,n])=>{ for(let j=0, s=0; j<n; s++){ const li=LISTS[k]?j:null, x=GEN[k](rngOf(1000+b*500+s*17+k.length*131+j), li ?? undefined);
+      if(seen.has(x.q) && !LISTS[k]) continue; seen.add(x.q); gen.push({ ...x, b, k, li, beta:BETA[k] }); j++; } });
+    // سؤال‌های ساخته‌شده را قاطی می‌کنیم تا هم‌الگوها پشت سر هم نیایند
+    const sh=rngOf(7+b); for(let i=gen.length-1;i>0;i--){ const j=Math.floor(sh()*(i+1)); [gen[i],gen[j]]=[gen[j],gen[i]]; }
+    out.push(...gen);
+  });
+  // دفترچهٔ اول سخت‌تر است
+  out.forEach(q=>{ q.beta += (q.b===0 ? 1 : 0) + (noise()-.5)*1.1; });
+  return out;
+})();
+const BOOKLETS = [0,1];
+const QB = b => Q.map((q,i)=>({...q,i})).filter(q=>q.b===b);
+const NB = BOOKLETS.map(b=>Q.filter(q=>q.b===b).length);
+// سؤال مشابه برای تمرین
+function SIM(i){ const q=Q[i], L=LISTS[q.k];
+  for(let s=0;s<30;s++){ const x=GEN[q.k](rngOf(5000+i*37+s), L ? (q.li ?? i)+Math.ceil(L.length/2)+s : undefined); if(x.q!==q.q) return x; }
+  return GEN.seqA(rngOf(i)); }
 
-/* ---------- رتبه‌بندی کشوری ---------- */
+/* ---------- نمره، تراز و رتبه ---------- */
+// درصد هر دفترچه با نمرهٔ منفی (هر ۳ غلط = یک درست)، و درصد کل با ضریب دفترچه‌ها
+const NEG = DATA.exam.negative;
+const bPct = (c,w,n) => (c - w*NEG)/n*100;
+const COEF = DATA.exam.booklets.map(b=>b.coef), COEF_SUM = COEF.reduce((a,b)=>a+b,0);
+const scoreOf = (c,w) => BOOKLETS.reduce((s,b)=>s+COEF[b]*bPct(c[b],w[b],NB[b]),0)/COEF_SUM;
 const NAMES = ['آرین','سارا','نیما','هستی','پارسا','یاسمن','امیرعلی','مهسا','رادین','نازنین','کیان','ترانه','سینا','آوا','بردیا','فاطمه','محمد','زهرا','علی','مریم','حسین','رها','ماهان','النا'];
 const INITS = ['ا','ب','ر','ک','م','ن','ح','ص','ج','ف','ط','ق','ش'];
-const NAT = DATA.national;
-const TOTAL = Object.values(NAT).reduce((a,b)=>a+b,0) + 1;
-const aboveOf = s => Object.keys(NAT).filter(k=>+k>s).reduce((a,k)=>a+NAT[k],0);
-// در نمرهٔ برابر، کسی که زودتر تحویل داده جلوتر است؛ کاربر حدوداً در یک‌سوم اول هم‌نمره‌ها می‌نشیند
-const rankOf = score => aboveOf(score) + Math.max(1, Math.round((NAT[score]||0)*0.3));
-const scoreAt = rank => { let c=0; for(const s of Object.keys(NAT).map(Number).sort((a,b)=>b-a)){ c+=NAT[s]; if(rank<=c) return s; } return 0; };
-const person = (seed, rank) => ({ name:NAMES[(seed*5+3)%NAMES.length]+' '+INITS[(seed*7+2)%INITS.length]+'.', city:CAPS[(seed*11+4)%CAPS.length], av:(seed*3+1)%8, rank, score:scoreAt(rank) });
-// ده نفر اول کشور، با خود کاربر اگر جزوشان باشد
-function topList(){
-  const r = S.exam.status==='published' ? result() : null;
-  const list = Array.from({length:10},(_,i)=>person(i,i+1));
-  if(r && r.rank<=10) list.splice(r.rank-1,0,{ me:true, name:'تو', city:me().city, av:S.avatar, score:r.correct });
-  return list.slice(0,10).map((x,i)=>({...x, rank:i+1, score:x.me?x.score:scoreAt(i+1)}));
+// شرکت‌کننده‌های دیگر (شبیه‌سازی‌شده). از روی جواب‌های همین‌ها سطح هر سؤال معلوم می‌شود.
+const POP = (() => {
+  const r=rngOf(77), N=DATA.exam.others, ok=Array(Q.length).fill(0), list=[];
+  const norm=()=>{ let s=0; for(let i=0;i<6;i++) s+=r(); return (s-3)/.707; };
+  for(let n=0;n<N;n++){ const th=norm(), c=[0,0], w=[0,0];
+    Q.forEach((q,i)=>{ if(r() < 1/(1+Math.exp(-1.3*(th-q.beta)))){ c[q.b]++; ok[i]++; } else if(r()<.45){ if(r()<.25){ c[q.b]++; ok[i]++; } else w[q.b]++; } });
+    list.push({ name:NAMES[(n*5+3)%NAMES.length]+' '+INITS[(n*7+2)%INITS.length]+'.', city:CAPS[(n*11+4)%CAPS.length], av:(n*3+1)%8, score:scoreOf(c,w) }); }
+  // سطح سؤال: ۵۰٪ به بالا درست زده باشند = ساده، ۳۰ تا ۵۰٪ = متوسط، کمتر = سخت
+  Q.forEach((q,i)=>{ q.rate=ok[i]/N; q.d = q.rate>=.5 ? 'easy' : q.rate>=.3 ? 'medium' : 'hard'; });
+  list.sort((a,b)=>b.score-a.score);
+  const mean=list.reduce((s,x)=>s+x.score,0)/N, sd=Math.sqrt(list.reduce((s,x)=>s+(x.score-mean)**2,0)/N);
+  return { list, mean, sd };
+})();
+const TOTAL = POP.list.length + 1;
+const tarazOf = s => Math.round(5000 + 1000*(s-POP.mean)/POP.sd);
+const rankOf = s => 1 + POP.list.filter(x=>x.score>s).length;
+POP.list.forEach(x=>x.taraz=tarazOf(x.score));
+// جدول رتبه‌بندی، با خود کاربر اگر نتیجه‌اش آمده باشد
+function board(){
+  const list=POP.list.slice();
+  if(S.exam.status==='published'){ const r=result(); list.splice(r.rank-1,0,{ me:true, name:'تو', city:me().city, av:S.avatar, score:r.score, taraz:r.taraz }); }
+  return list.map((x,i)=>({...x, rank:i+1}));
 }
 
-
 /* ============ وضعیت ============ */
-const KEY = 'azmoun-demo-v4';
+const KEY = 'azmoun-demo-v5';
 // دادهٔ هر کاربر (با شمارهٔ موبایل) جداست؛ کاربر جدید همیشه از آزمون اول شروع می‌کند
 const freshExam = () => ({ status:'available', booklet:0, idx:BOOKLETS.map(()=>0), answers:Array(Q.length).fill(null), flags:Array(Q.length).fill(false), passed:Array(Q.length).fill(false), endsAt:BOOKLETS.map(()=>null) });
-const freshUser = () => ({ profile:null, avatar:0, exam:freshExam(), missions:{ done:[] }, basket:[], story:null });
-const USER_KEYS = ['profile','avatar','exam','missions','basket','story'];
+const freshPractice = () => ({ res:{}, cur:null });
+const freshUser = () => ({ profile:null, avatar:0, exam:freshExam(), practice:freshPractice(), basket:[], story:null });
+const USER_KEYS = ['profile','avatar','exam','practice','basket','story'];
 const fresh = () => ({ loggedIn:false, phone:'', registered:[], accounts:{}, ...freshUser() });
 function stashUser(){ if(!S.phone) return; S.accounts[S.phone] = JSON.parse(JSON.stringify(Object.fromEntries(USER_KEYS.map(k=>[k,S[k]])))); }
 function loadUser(phone, forceNew){ const u = {...freshUser(), ...((!forceNew && S.accounts[phone]) || {})}; USER_KEYS.forEach(k=>S[k]=JSON.parse(JSON.stringify(u[k]))); }
@@ -233,7 +357,6 @@ let stack = [], NAV = 'tab';
 let L = { mode:'login', phone:'', otp:'', err:'', resendAt:0 };
 const freshR = () => ({ step:0, invite:'', first:'', last:'', nid:'', phone:'', birth:null, gender:'', grade:'', province:'', city:'', school:'', errs:{} });
 let R = freshR();
-let M = { id:null, view:'learn', k:0, wrong:null, right:null };
 
 /* ============ ناوبری و افکت‌ها ============ */
 const top0 = () => window.scrollTo({top:0, behavior:'instant'});
@@ -293,20 +416,24 @@ function morph(a, b){
 function morphKids(a, b){ const ac=[...a.childNodes], bc=[...b.childNodes]; bc.forEach((n,i)=>{ if(ac[i]) morph(ac[i], n); else a.appendChild(n); }); for(let i=bc.length;i<ac.length;i++) ac[i].remove(); }
 
 /* ============ محاسبه‌ها ============ */
-function result(){
-  const a=S.exam.answers; let correct=0; const by={easy:[0,0],medium:[0,0],hard:[0,0]}; const wrong=[];
-  Q.forEach((q,i)=>{ by[q.d][1]++; if(a[i]===q.a){correct++;by[q.d][0]++;} else wrong.push(i); });
-  return { correct, total:Q.length, by, wrong, rank:rankOf(correct) };
+function result(a=S.exam.answers){
+  const c=[0,0], w=[0,0], u=[0,0], wrong=[], by={easy:[0,0],medium:[0,0],hard:[0,0]};
+  Q.forEach((q,i)=>{ by[q.d][1]++; if(a[i]===q.a){ c[q.b]++; by[q.d][0]++; } else { wrong.push(i); a[i]===null ? u[q.b]++ : w[q.b]++; } });
+  const score=scoreOf(c,w);
+  return { c, w, u, correct:c[0]+c[1], bad:w[0]+w[1], blank:u[0]+u[1], total:Q.length, pb:BOOKLETS.map(b=>bPct(c[b],w[b],NB[b])), score, taraz:tarazOf(score), rank:rankOf(score), wrong, by };
 }
-function missionList(){
-  if(S.exam.status!=='published') return [];
-  const topics={}; result().wrong.forEach(i=>{ const q=Q[i]; if(!(q.t in topics) || DIFF_ORDER[q.d]<DIFF_ORDER[topics[q.t]]) topics[q.t]=q.d; });
-  return Object.keys(topics).map(t=>({id:t, level:topics[t], ...MISSIONS[t]})).sort((x,y)=>DIFF_ORDER[x.level]-DIFF_ORDER[y.level]);
-}
-const activeMission = () => missionList().find(m=>!S.missions.done.includes(m.id));
+const fa1 = x => fa((Math.round(x*10)/10).toFixed(1).replace(/\.0$/,'')).replace('.','٫').replace('-','−');
 const openBasket = () => S.basket.filter(b=>!b.solved);
 const timeLeft = () => { const e=S.exam.endsAt[S.exam.booklet]; return e ? e-Date.now() : DATA.exam.booklets[S.exam.booklet].minutes*60000; };
 const passedOf = i => S.exam.passed[i];
+// تمرین: سؤال‌هایی که غلط زده یا جواب نداده، به ترتیب سطح (اول ساده‌ها)
+const LEVELS = ['easy','medium','hard'];
+const pracList = lv => result().wrong.filter(i=>Q[i].d===lv);
+const pracDone = lv => pracList(lv).filter(i=>S.practice.res[i]).length;
+const pracAll = () => { const w=result().wrong; return [w.filter(i=>S.practice.res[i]).length, w.length]; };
+const pracState = () => { const [d,t]=pracAll(); return !t ? 'none' : !d ? 'new' : d<t ? 'progress' : 'done'; };
+const nextLevel = () => LEVELS.find(lv=>pracDone(lv)<pracList(lv).length);
+const qLabel = i => `دفترچهٔ ${fa(Q[i].b+1)} · سؤال ${fa(i-QB(Q[i].b)[0].i+1)}`;
 
 /* ============ اجزای مشترک ============ */
 const topbar = (title, extra='<span class="sp"></span>', onBack='back()', icon=I.back) => `<div class="topbar sticky"><button class="icon-btn" onclick="${onBack}" aria-label="بازگشت">${icon}</button><div class="title">${title}</div>${extra}</div>`;
@@ -316,7 +443,7 @@ const examMeta = () => `${fa(Q.length)} سؤال · ${fa(DATA.exam.booklets.redu
 const ring = (v,t,label) => { const C=2*Math.PI*42; return `<div class="ring"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" class="trk"/><circle cx="50" cy="50" r="42" class="val" style="--c:${C.toFixed(1)};--off:${(C*(1-v/t)).toFixed(1)}"/></svg><div class="ring-t"><b>${fa(v)}/${fa(t)}</b><span>${label}</span></div></div>`; };
 const testHint = html => `<div class="hint">حالت تست · ${html}</div>`;
 function navbar(active){
-  const items=[['home','خانه',I.home],['exams','آزمون‌ها',I.exam],['missions','مأموریت‌ها',I.mission],['leaderboard','رتبه‌بندی',I.rank],['profile','پروفایل',I.user]];
+  const items=[['home','خانه',I.home],['exams','آزمون و تمرین',I.exam],['leaderboard','رتبه‌بندی',I.rank],['profile','پروفایل',I.user]];
   return `<nav class="nav">${items.map(([k,l,ic])=>`<button class="${k===active?'on':''}" onclick="tab('${k}')">${k===active?'<span class="pill"></span>':''}${ic}<span>${l}</span></button>`).join('')}</nav>`;
 }
 // پراگرس آزمون: فقط وقتی دانش‌آموز با دکمه از سؤال رد می‌شود جلو می‌رود (جواب داده یا نداده)، یک تکه برای هر دفترچه
@@ -481,8 +608,8 @@ function regBack(){ if(R.step>0){ R.step--; R.errs={}; rerender('back'); } else 
 let W = 0;
 const WELCOME = [
   { art:'books',  title:'آزمون بده، هر جا که هستی', text:'آزمون‌های مدرسه رو همین‌جا بده. هر دفترچه تایمر داره و سؤال‌های سخت رو می‌تونی علامت بزنی تا بعداً بهشون برگردی.' },
-  { art:'trophy', title:'کارنامه و رتبه‌ت رو ببین', text:'بعد از اعلام نتیجه، نمره‌ت رو می‌بینی و رتبه‌ت بین همهٔ بچه‌های پایهٔ خودت توی کل کشور.' },
-  { art:'target', title:'از اشتباه‌هات یاد بگیر', text:'سؤال‌هایی رو که اشتباه زدی با توضیح مرور می‌کنی. هر کدوم رو نفهمیدی، می‌ندازیش توی سبد تا از معلمت بپرسی.' },
+  { art:'trophy', title:'کارنامه و رتبه‌ت رو ببین', text:'بعد از اعلام نتیجه، نمره‌ت رو می‌بینی و تراز و رتبه‌ت بین همهٔ شرکت‌کننده‌ها.' },
+  { art:'target', title:'از اشتباه‌هات یاد بگیر', text:'برای هر سؤالی که اشتباه زدی، راه‌حلش رو می‌بینی و یه سؤال مشابه تمرین می‌کنی. هر کدوم جا نیفتاد، می‌ندازیش توی سبد تا از معلمت بپرسی.' },
 ];
 V.welcome = () => { const s=WELCOME[W], last=W===WELCOME.length-1;
   return `<div class="screen no-nav has-act center" id="wel">
@@ -529,79 +656,86 @@ function setDate(){ DP.d=markCol($('#wd'))+1; DP.m=markCol($('#wm'))+1; DP.y=DAT
 /* ---------- خانه ---------- */
 const basketBtn = (onclick="go('basket')") => { const n=openBasket().length; return `<button id="basketBtn" class="icon-btn basket-btn" onclick="${onclick}" aria-label="سبد از معلم می‌پرسم${n?'، '+fa(n)+' سؤال':''}">${I.basket}${n?`<span class="cnt">${fa(n)}</span>`:''}</button>`; };
 const medal = (rank, me) => `<span class="medal ${me?'me':rank<=3?'m'+rank:''}">${faN(rank)}</span>`;
-function examCard(){
-  const st=S.exam.status;
-  if(st==='available') return `<div class="card center stack" style="padding:20px 18px">
-      <div class="illus">${ART.books}</div>
-      <div><span class="badge">${DATA.exam.title}</span> ${DATA.exam.free?'<span class="badge ok">رایگان</span>':''}</div>
-      <h1>اولین آزمونت آماده‌ست</h1><p class="muted">${nob(examMeta()+' · هر وقت آماده بودی شروع کن.')}</p>
-      <button class="btn btn-primary" onclick="go('rules')">شروع آزمون</button></div>`;
-  if(st==='inProgress') return `<div class="card center stack" style="padding:20px 18px">
-      <div class="illus">${ART.clock}</div><div><span class="badge">${DATA.exam.title}</span></div><h1>آزمونت نیمه‌کاره‌ست</h1>
-      <p class="muted">دفترچهٔ ${fa(S.exam.booklet+1)} · ${mmss(timeLeft())} وقت مونده</p>
-      <button class="btn btn-primary" onclick="go('exam')">ادامهٔ آزمون</button></div>`;
-  if(st==='submitted') return `<div class="card center stack" style="padding:20px 18px">
-      <div class="illus">${ART.clock}</div><div><span class="badge ok">${DATA.exam.title} تحویل داده شد</span></div><h1>منتظر نتیجه</h1>
-      <p class="muted">نتیجه ${DATA.exam.resultAt} اعلام می‌شه.</p>
-      <button class="btn btn-ghost btn-sm" onclick="publish()" style="color:#8A3E26">حالت تست: اعلام نتیجه</button></div>`;
-  const ss=storyState();
-  if(ss==='new') return `<div class="card center stack res-new" style="padding:20px 18px">
-      <div class="illus">${ART.trophy}</div><div><span class="badge pri">نتیجهٔ ${DATA.exam.title} اومد</span></div>
-      <h1>نتیجه‌ت آماده‌ست!</h1><p class="muted">${nob('ببین چطور شدی و بعدش اشتباه‌هات رو با هم مرور کنیم.')}</p>
-      <button class="btn btn-primary pulse" onclick="startStory()">دیدن نتیجهٔ آزمون</button></div>`;
-  if(ss==='progress'){ const st2=S.story, w=result().wrong.length, inRev=STEPS()[st2.step]==='review';
-    return `<div class="card center stack" style="padding:20px 18px">
-      <div class="illus">${ART.target}</div><div><span class="badge warn">نیمه‌کاره</span></div>
-      <h1>مرور نتیجه‌ت مونده</h1><p class="muted">${inRev?`${fa(st2.k)} از ${fa(w)} سؤال رو مرور کردی. از همون‌جا ادامه بده.`:'از همون‌جایی که بودی ادامه بده.'}</p>
-      ${inRev?`<div class="progress" style="margin-top:14px"><i style="width:${pct(st2.k,w)}%"></i></div>`:''}
-      <button class="btn btn-primary" onclick="go('story')">ادامه بده</button></div>`; }
-  const r=result();
-  return `<button class="card tap row between" onclick="go('result')" style="display:flex">
-      <div class="grow stack"><span class="cap">نتیجهٔ ${DATA.exam.title}</span>
-        <div style="font-size:23px;font-weight:900;line-height:1.3;margin-top:2px">رتبهٔ <span data-count="${r.rank}" data-from="${TOTAL}" data-sep="1">${faN(r.rank)}</span> کشور</div>
-        <span class="muted small">دیدن کارنامه و راه‌حل‌ها</span></div>
-      ${ring(r.correct,r.total,'درست')}</button>`;
+const BANNERS = [
+  { tone:'pri', art:'books', title:'آزمون ۲ نزدیکه', text:'پنجشنبه ۲۱ آبان، ساعت ۹ صبح', cta:'یادم بنداز' },
+  { tone:'sage', art:'bubble', title:'کلاس رفع اشکال آنلاین', text:'سؤال‌های سبدت رو با معلم حل کن', cta:'بیشتر بدونم' },
+  { tone:'terra', art:'trophy', title:'دوستت رو دعوت کن', text:'با کد دعوت، با هم رقابت کنید', cta:'گرفتن کد دعوت' },
+];
+const carousel = () => `<div class="bn-wrap"><div class="bn" id="bn" onscroll="bnDots()">${BANNERS.map(b=>`<button class="bn-it ${b.tone}" onclick="soon()"><span class="grow"><b>${b.title}</b><span class="bn-t">${b.text}</span><span class="bn-cta">${b.cta}${I.chev}</span></span><span class="bn-art">${ART[b.art]}</span></button>`).join('')}</div>
+  <div class="bn-dots" id="bnDots">${BANNERS.map((b,i)=>`<i class="${i?'':'on'}"></i>`).join('')}</div></div>`;
+let BN_HOLD=0;
+function bnIndex(){ const el=$('#bn'); return el ? Math.round(Math.abs(el.scrollLeft)/el.clientWidth) : 0; }
+function bnDots(){ const i=bnIndex(); document.querySelectorAll('#bnDots i').forEach((d,k)=>d.classList.toggle('on',k===i)); BN_HOLD=Date.now(); }
+function bnAuto(){ const el=$('#bn'); if(!el || Date.now()-BN_HOLD<4500 || $('#layer .overlay')) return; const i=(bnIndex()+1)%BANNERS.length; el.scrollTo({ left:-i*el.clientWidth, behavior:reduced()?'auto':'smooth' }); }
+// کارت وضعیت: آزمون فعلی یا تمرینِ همان آزمون (هیچ‌وقت هر دو با هم نیستند)
+function statusCard(){
+  const st=S.exam.status, x=DATA.exam;
+  const card=(art,badge,title,text,btn,extra='')=>`<div class="card status"><div class="row" style="gap:14px"><div class="grow stack-s"><div>${badge}</div><h2>${title}</h2><p class="muted small">${nob(text)}</p></div><div class="illus sm">${art}</div></div>${extra}${btn}</div>`;
+  if(st==='available') return card(ART.books,`<span class="badge">${x.title}</span> ${x.free?'<span class="badge ok">رایگان</span>':''}`,'آزمونت آماده‌ست',examMeta()+' · هر وقت آماده بودی شروع کن.',`<button class="btn btn-primary" onclick="go('rules')">شروع آزمون</button>`);
+  if(st==='inProgress') return card(ART.clock,`<span class="badge warn">نیمه‌کاره</span>`,'آزمونت نیمه‌کاره‌ست',`دفترچهٔ ${fa(S.exam.booklet+1)} · ${mmss(timeLeft())} وقت مونده`,`<button class="btn btn-primary" onclick="go('exam')">ادامهٔ آزمون</button>`);
+  if(st==='submitted') return card(ART.clock,`<span class="badge ok">تحویل داده شد</span>`,'منتظر نتیجه',`نتیجهٔ ${x.title} ${x.resultAt} اعلام می‌شه.`,`<button class="btn btn-ghost btn-sm" onclick="publish()" style="color:#8A3E26">حالت تست: اعلام نتیجه</button>`);
+  const ss=storyState(), ps=pracState(), [d,t]=pracAll();
+  if(ss==='new') return card(ART.trophy,`<span class="badge pri">نتیجهٔ ${x.title} اومد</span>`,'نتیجه‌ت آماده‌ست!','ببین چطور شدی و ترازت چند شد.',`<button class="btn btn-primary pulse" onclick="startStory()">دیدن نتیجهٔ آزمون</button>`);
+  if(ss==='progress') return card(ART.trophy,`<span class="badge warn">نیمه‌کاره</span>`,'نتیجه‌ت رو تا آخر ندیدی','از همون‌جایی که بودی ادامه بده.',`<button class="btn btn-primary" onclick="go('story')">ادامه بده</button>`);
+  if(ps==='new'||ps==='progress'){ const lv=nextLevel();
+    return card(ART.target,`<span class="badge pri">تمرین ${x.title}</span>`,ps==='new'?'تمرین‌هات آماده‌ست':'تمرینت نیمه‌کاره‌ست',`${fa(d)} از ${fa(t)} سؤال رو تمرین کردی. الان نوبت سؤال‌های ${DIFF[lv]}ه.`,`<button class="btn btn-primary" onclick="openPractice('${lv}')">${ps==='new'?'شروع تمرین':'ادامهٔ تمرین'}</button>`,`<div class="progress"><i style="width:${pct(d,t)}%"></i></div>`); }
+  return card(ART.trophy,`<span class="badge ok">همه‌چی انجام شد</span>`,ps==='none'?'همه رو درست زده بودی!':'تمرین‌هات تموم شد','آزمون بعدی: '+DATA.nextExam.when,`<button class="btn btn-ghost" onclick="go('result')">دیدن کارنامه</button>`);
 }
 V.home = () => {
-  const s=me(), pub=S.exam.status==='published', r=pub?result():null, top=topList().slice(0,3), meTop=top.some(x=>x.me);
-  const row = x => `<div class="t3-row ${x.me?'me':''}">${medal(x.rank,x.me)}<img class="avatar" src="${avatar(x.av)}" alt=""><span class="grow"><b>${x.me?'تو':x.name}</b><span class="muted small"> · ${x.city}</span></span><span class="small muted">${fa(x.score)} از ${fa(Q.length)}</span></div>`;
-  const mine = meTop ? '' : pub
-    ? `<div class="t3-row me">${medal(r.rank,true)}<img class="avatar" src="${avatar()}" alt=""><span class="grow"><b>تو</b><span class="muted small"> · ${esc(s.city)}</span></span><span class="small muted">${fa(r.correct)} از ${fa(Q.length)}</span></div>`
-    : `<div class="t3-row me"><span class="medal me">؟</span><img class="avatar" src="${avatar()}" alt=""><span class="grow"><b>تو</b><br><span class="muted small">${S.exam.status==='submitted'?'رتبه‌ت بعد از اعلام نتیجه میاد':'بعد از آزمون، رتبه‌ت اینجا میاد'}</span></span></div>`;
+  const s=me(), pub=S.exam.status==='published', r=pub?result():null, top=board().slice(0,3), nb=openBasket().length, [d,t]=pub?pracAll():[0,0];
+  const tile=(act,cap,val,sub,cls='')=>`<button class="tile ${cls}" onclick="${act}"><span class="cap">${cap}</span><b>${val}</b><span class="small muted">${sub}</span></button>`;
+  const row = x => `<div class="t3-row ${x.me?'me':''}">${medal(x.rank,x.me)}<img class="avatar" src="${avatar(x.av)}" alt=""><span class="grow"><b>${x.name}</b><span class="muted small"> · ${x.city}</span></span><span class="small muted">تراز ${faN(x.taraz)}</span></div>`;
   return `<div class="screen stack">
     <div class="row between sticky"><div class="grow"><h1>سلام ${esc(s.first)}</h1><p class="muted small">پایهٔ ${esc(s.grade)} · ${esc(s.school)}</p></div>
       <div class="row" style="gap:10px">${basketBtn()}<button class="av-btn" onclick="tab('profile')" aria-label="پروفایل"><img class="avatar" src="${avatar()}" alt=""></button></div></div>
-    ${examCard()}
+    ${carousel()}
+    ${statusCard()}
+    <div class="tile-grid">
+      ${tile("tab('leaderboard')",'رتبهٔ تو',pub?`<span data-count="${r.rank}" data-from="${TOTAL}">${fa(r.rank)}</span>`:'—',pub?`از ${fa(TOTAL)} نفر`:'بعد از نتیجه')}
+      ${tile(pub?"go('result')":"tab('exams')",'تراز',pub?`<span data-count="${r.taraz}" data-sep="1">${faN(r.taraz)}</span>`:'—',pub?'دیدن کارنامه':'بعد از نتیجه')}
+      ${tile("tab('exams')",'تمرین',pub&&t?`${fa(d)}<small> از ${fa(t)}</small>`:'—',pub?(t?'سؤال تمرین‌شده':'تمرینی نداری'):'بعد از نتیجه')}
+      ${tile("go('basket')",'سبد معلم',fa(nb),nb?'سؤال برای پرسیدن':'خالیه')}
+    </div>
     <div class="card top3">
-      <div class="row between"><b>برترین‌های کشور</b><span class="muted small">${DATA.exam.title} · ${faN(TOTAL)} نفر</span></div>
-      <div class="t3-list">${top.map(row).join('')}${mine?'<div class="gap">···</div>'+mine:''}</div>
+      <div class="row between"><b>برترین‌های ${DATA.exam.title}</b><span class="muted small">${fa(TOTAL)} شرکت‌کننده</span></div>
+      <div class="t3-list">${top.map(row).join('')}</div>
       <button class="btn btn-ghost" onclick="tab('leaderboard')">دیدن رتبه‌بندی کامل</button>
     </div>
   </div>${navbar('home')}`;
 };
-function publish(){ S.exam.status='published'; S.story=null; save(); rerender('tab'); toast('نتیجهٔ آزمون ۱ اعلام شد'); }
+function publish(){ S.exam.status='published'; S.story=null; S.practice=freshPractice(); save(); rerender('tab'); toast('نتیجهٔ '+DATA.exam.title+' اعلام شد'); }
 
-/* ---------- آزمون‌های من ---------- */
+/* ---------- آزمون و تمرین ---------- */
 V.exams = () => {
-  const st=S.exam.status, r=st==='published'?result():null;
-  const chip={available:'<span class="badge ok">قابل شرکت</span>',inProgress:'<span class="badge warn">نیمه‌کاره</span>',submitted:'<span class="badge">در انتظار نتیجه</span>',published:'<span class="badge pri">نتیجه آمده</span>'}[st];
-  const sub={available:`${examMeta()}${DATA.exam.free?' · رایگان':''}`,inProgress:`${mmss(timeLeft())} از دفترچهٔ ${fa(S.exam.booklet+1)} مونده`,submitted:`نتیجه: ${DATA.exam.resultAt}`,published:r?(storyState()==='done'?`${fa(r.correct)} از ${fa(Q.length)} درست · رتبهٔ ${faN(r.rank)} کشور`:storyState()==='new'?'دیدن نتیجهٔ آزمون':'مرور نتیجه نیمه‌کاره‌ست'):''}[st];
-  const act={available:"go('rules')",inProgress:"go('exam')",submitted:"examWait()",published:storyState()==='done'?"go('result')":storyState()==='new'?'startStory()':"go('story')"}[st];
-  return `<div class="screen stack"><h1 class="sticky">آزمون‌های من</h1>
-    <button class="list-item" onclick="${act}"><span class="grow"><span class="row between"><b>${DATA.exam.title}</b>${chip}</span><span class="muted small">${sub}</span></span><span class="chev">${I.chev}</span></button>
-    ${DATA.otherExams.map((e,i)=>`<button class="list-item" onclick="otherExam(${i})"><span class="grow"><span class="row between"><b>${e.title}</b><span class="badge">${e.state==='upcoming'?'هنوز شروع نشده':'مهلت گذشته'}</span></span><span class="muted small">${e.note}</span></span><span class="chev">${I.chev}</span></button>`).join('')}
+  const st=S.exam.status, pub=st==='published', r=pub?result():null, x=DATA.exam, nl=pub?nextLevel():null;
+  const levels = pub && r.wrong.length ? `<span class="cap sec">تمرین‌های ${x.title}</span>
+    ${LEVELS.map(lv=>{ const t=pracList(lv).length, d=pracDone(lv); if(!t) return `<div class="list-item compact static"><span class="mark ok">✓</span><span class="grow"><b>سؤال‌های ${DIFF[lv]}</b><br><span class="muted small">همه رو درست زده بودی</span></span></div>`;
+      return `<button class="list-item" onclick="openPractice('${lv}')"><span class="grow"><span class="row between"><b>سؤال‌های ${DIFF[lv]}</b>${d===t?'<span class="badge ok">تموم شد</span>':lv===nl?'<span class="badge pri">از اینجا</span>':''}</span><span class="muted small">${fa(d)} از ${fa(t)} سؤال</span><div class="progress" style="margin-top:8px"><i style="width:${pct(d,t)}%"></i></div></span><span class="chev">${I.chev}</span></button>`; }).join('')}` : '';
+  const cur = pub ? `<div class="card stack-s"><div class="row between"><b>${x.title}</b><span class="badge pri">نتیجه آمده</span></div>
+      <div class="kv2"><div><span class="cap">تراز</span><b>${faN(r.taraz)}</b></div><div><span class="cap">رتبه</span><b>${fa(r.rank)}<small> از ${fa(TOTAL)}</small></b></div><div><span class="cap">درصد کل</span><b>${fa1(r.score)}٪</b></div></div>
+      <div class="row2"><button class="btn btn-primary btn-sm" onclick="startStory(true)">${storyState()==='new'?'دیدن نتیجه':'نتیجهٔ آزمون'}</button><button class="btn btn-ghost btn-sm" onclick="go('result')">کارنامه</button></div></div>` : statusCard();
+  return `<div class="screen stack"><h1 class="sticky">آزمون و تمرین</h1>
+    ${cur}${levels}
+    <span class="cap sec">آزمون بعدی</span>
+    <button class="list-item" onclick="nextExam()"><span class="grow"><span class="row between"><b>${DATA.nextExam.title}</b><span class="badge">هنوز شروع نشده</span></span><span class="muted small">${DATA.nextExam.when}</span></span><span class="chev">${I.chev}</span></button>
+    <span class="cap sec">آزمون‌های قبلی</span>
+    ${DATA.pastExams.map((e,i)=>`<button class="list-item" onclick="pastExam(${i})"><span class="grow"><span class="row between"><b>${e.title}</b><span class="muted small">${e.date}</span></span><span class="muted small">تراز ${faN(e.taraz)} · رتبهٔ ${fa(e.rank)} از ${fa(e.total)} · تمرین ${fa(e.pd)} از ${fa(e.pt)}</span></span><span class="chev">${I.chev}</span></button>`).join('')}
   </div>${navbar('exams')}`;
 };
-function examWait(){ sheet(`<h2>نتیجه هنوز نیومده</h2><p class="muted">نتیجهٔ ${DATA.exam.title} ${DATA.exam.resultAt} اعلام می‌شه.</p><div class="acts"><button class="btn btn-primary" onclick="closeSheet()">باشه</button></div>`); }
-function otherExam(i){ const e=DATA.otherExams[i]; sheet(`<h2>${e.title}</h2><p class="muted">${e.state==='upcoming'?e.note+'. اون موقع می‌تونی شرکت کنی.':e.note+' و دیگه نمی‌شه شرکت کرد.'}</p><div class="acts"><button class="btn btn-primary" onclick="closeSheet()">باشه</button></div>`); }
+function nextExam(){ const e=DATA.nextExam; sheet(`<h2>${e.title}</h2><p class="muted">${e.when}. اون موقع از همین‌جا می‌تونی شرکت کنی.</p><div class="acts"><button class="btn btn-primary" onclick="closeSheet()">باشه</button></div>`); }
+function pastExam(i){ const e=DATA.pastExams[i]; sheet(`<div class="row between"><h2>${e.title}</h2><span class="muted small">${e.date}</span></div>
+  <div class="kv2" style="margin:14px 0"><div><span class="cap">تراز</span><b>${faN(e.taraz)}</b></div><div><span class="cap">رتبه</span><b>${fa(e.rank)}<small> از ${fa(e.total)}</small></b></div><div><span class="cap">تمرین</span><b>${fa(e.pd)}<small> از ${fa(e.pt)}</small></b></div></div>
+  <div class="acts"><button class="btn btn-primary" onclick="protoOnly()">نتیجهٔ آزمون</button><div class="row2"><button class="btn btn-ghost" onclick="protoOnly()">تمرین‌ها</button><button class="btn btn-ghost" onclick="protoOnly()">کارنامه</button></div></div>`); }
+function protoOnly(){ toast('توی این پروتوتایپ فقط '+DATA.exam.title+' کامل ساخته شده'); }
 
 /* ---------- قوانین ---------- */
 V.rules = () => { const b=DATA.exam.booklets; return `<div class="screen no-nav has-act stack">${topbar('قبل از شروع')}
-  <div><h1>${DATA.exam.title}</h1><p class="muted">${examMeta()} · چهارگزینه‌ای · بدون نمرهٔ منفی</p></div>
+  <div><h1>${DATA.exam.title}</h1><p class="muted">${examMeta()} · چهارگزینه‌ای</p></div>
   <div class="card stack"><b>آزمون ${fa(b.length)} تا دفترچه داره</b>
-    <div class="bk-steps">${b.map((x,i)=>`${i?`<span class="ar">${I.arrowL}</span>`:''}<div class="st"><b>دفترچهٔ ${fa(i+1)}</b><div class="small muted">${x.title}</div><div class="small">${fa(QB(i).length)} سؤال · ${fa(x.minutes)} دقیقه</div></div>`).join('')}</div>
+    <div class="bk-steps">${b.map((x,i)=>`${i?`<span class="ar">${I.arrowL}</span>`:''}<div class="st"><b>دفترچهٔ ${fa(i+1)}</b><div class="small muted">${x.title}</div><div class="small">${fa(NB[i])} سؤال · ${fa(x.minutes)} دقیقه</div><div class="small muted">ضریب ${fa(x.coef)}</div></div>`).join('')}</div>
     <p class="small muted">وقتی بری دفترچهٔ بعدی، دیگه به دفترچهٔ قبلی برنمی‌گردی.</p></div>
   <div class="card stack small">
+    <div class="row"><span class="mark n" style="background:var(--bad-soft);color:var(--bad)">−</span><span>جواب غلط نمرهٔ منفی داره: هر ۳ غلط، یک درست رو از بین می‌بره. اگه مطمئن نیستی، نزن.</span></div>
     <div class="row"><span class="mark n" style="background:var(--terra-soft)">${I.flag.replace('<svg','<svg width="14" height="14"')}</span><span>سؤالِ سخت رو با «علامت بزن» نشون کن تا بعداً راحت پیداش کنی.</span></div>
     <div class="row"><span class="mark n" style="background:var(--pri-soft)">${I.clock.replace('<svg','<svg width="14" height="14"')}</span><span>تایمر با بستن اپ متوقف نمی‌شه، ولی جواب‌هات ذخیره می‌مونه.</span></div>
     <div class="row"><span class="mark n" style="background:var(--green-soft)">${I.undo.replace('<svg','<svg width="14" height="14"')}</span><span>برای پاک کردن جواب، دوباره روی همون گزینه بزن.</span></div>
@@ -667,85 +801,118 @@ V.done = () => `<div class="screen no-nav has-act center" style="padding-top:60p
   ${actions(`<button class="btn btn-primary" onclick="tab('home')">برگشت به خانه</button>`)}`;
 
 /* ---------- کارنامه ---------- */
+const answerMap = (onclick) => { const a=S.exam.answers; return `<div class="tiles-wrap">${BOOKLETS.map(b=>`<div class="tiles-b"><span class="cap">دفترچهٔ ${fa(b+1)} · ${DATA.exam.booklets[b].title}</span><div class="tiles">${QB(b).map((q,k)=>{ const c=a[q.i]===null?'none':a[q.i]===q.a?'ok':'bad'; return onclick?`<button class="${c}" onclick="${onclick}(${q.i})" aria-label="سؤال ${fa(k+1)}">${fa(k+1)}</button>`:`<i class="${c}" style="--d:${250+(q.i%60)*18+b*500}ms"></i>`; }).join('')}</div></div>`).join('')}</div>`; };
+const mapLegend = `<div class="legend"><span><i style="background:var(--green)"></i>درست</span><span><i style="background:var(--bad)"></i>غلط</span><span><i style="background:var(--track)"></i>بی‌جواب</span></div>`;
 V.result = () => {
-  if(S.exam.status!=='published') return `<div class="screen no-nav">${topbar('نتیجه')}${empty(ART.clock,'نتیجه هنوز نیومده',`نتیجه ${DATA.exam.resultAt} اعلام می‌شه.`)}</div>`;
-  const r=result(), am=activeMission();
-  return `<div class="screen no-nav stack">${topbar('کارنامهٔ '+DATA.exam.title)}
-    <div class="card row between"><div class="grow"><span class="cap">نمرهٔ تو</span>
-      <div class="big" data-count="${pct(r.correct,r.total)}" data-suffix="٪">${fa(pct(r.correct,r.total))}٪</div>
-      <span class="muted small">${fa(r.correct)} از ${fa(r.total)} سؤال درست</span></div>${ring(r.correct,r.total,'درست')}</div>
-    <button class="list-item" onclick="tab('leaderboard')"><span class="grow"><span class="cap">رتبه در کشور</span><b style="font-size:20px;font-weight:900">${faN(r.rank)} از ${faN(TOTAL)}</b></span><span class="thumb">${ART.trophy}</span></button>
+  if(S.exam.status!=='published') return `<div class="screen no-nav">${topbar('کارنامه')}${empty(ART.clock,'نتیجه هنوز نیومده',`نتیجه ${DATA.exam.resultAt} اعلام می‌شه.`)}</div>`;
+  const r=result(), bk=DATA.exam.booklets;
+  return `<div class="screen no-nav has-act stack">${topbar('کارنامهٔ '+DATA.exam.title)}
+    <div class="card row between"><div class="grow"><span class="cap">تراز تو</span>
+      <div class="big" data-count="${r.taraz}" data-sep="1">${faN(r.taraz)}</div>
+      <span class="muted small">میانگین تراز همه ${faN(5000)} است</span></div>
+      <div class="rk"><span class="cap">رتبه</span><b>${fa(r.rank)}</b><span class="muted small">از ${fa(TOTAL)} نفر</span></div></div>
+    <span class="cap sec">دفترچه‌ها</span>
+    <div class="card rep">
+      <div class="rep-h"><span>دفترچه</span><span>درست</span><span>غلط</span><span>نزده</span><span>درصد</span></div>
+      ${BOOKLETS.map(b=>`<div class="rep-r"><span><b>${bk[b].title}</b><small>ضریب ${fa(bk[b].coef)}</small></span><span class="ok">${fa(r.c[b])}</span><span class="bad">${fa(r.w[b])}</span><span>${fa(r.u[b])}</span><span><b>${fa1(r.pb[b])}٪</b></span></div>`).join('')}
+      <div class="rep-r sum"><span><b>درصد کل</b><small>با ضریب‌ها</small></span><span class="ok">${fa(r.correct)}</span><span class="bad">${fa(r.bad)}</span><span>${fa(r.blank)}</span><span><b>${fa1(r.score)}٪</b></span></div>
+      <div class="note" style="margin-top:12px">${I.info}<span>هر ۳ جواب غلط، نمرهٔ یک جواب درست رو از بین می‌بره. سؤالِ نزده نمرهٔ منفی نداره.</span></div>
+    </div>
     <span class="cap sec">بر اساس سطح سؤال</span>
-    <div class="card">${['easy','medium','hard'].map(d=>{ const [c,t]=r.by[d], miss=t-c, hs=r.correct+miss;
-      return `<div class="lv"><div class="row between"><b>${DIFF[d]}</b><span class="num">${fa(c)}/${fa(t)}</span></div><div class="bar"><i style="width:${pct(c,t)}%"></i></div>
-        <p class="small ${miss?'':'muted'}" style="margin-top:8px">${miss?`اگه ${fa(miss)} سؤالِ ${DIFF[d]} رو هم درست زده بودی: <b>رتبهٔ ${faN(rankOf(hs))}</b> · ${fa(pct(hs,r.total))}٪`:'همهٔ سؤال‌های این سطح رو درست زدی.'}</p></div>`; }).join('')}
-      <div class="note" style="margin-top:12px">${I.info}<span>این رتبه‌ها فرضی‌ان و فقط برای مقایسه‌ن؛ توی رتبه‌بندی ثبت نمی‌شن.</span></div></div>
-    ${am?`<button class="list-item" onclick="openMission('${am.id}')"><span class="grow"><span class="cap">مأموریت بعدی</span><b>${am.title}</b><br><span class="muted small">از روی اشتباه‌های همین آزمون</span></span><span class="thumb">${ART.target}</span></button>`:''}
-    ${r.wrong.length?`<span class="cap sec">سؤال‌هایی که اشتباه زدی یا جواب ندادی</span>
-      ${r.wrong.map(i=>{ const my=S.exam.answers[i]; return `<button class="list-item compact" onclick="showAnswer(${i})"><span class="mark ${my===null?'n':'x'}">${my===null?'–':'✕'}</span><span class="grow"><b class="small">سؤال ${fa(i+1)} · ${DIFF[Q[i].d]}</b><br><span class="muted small">${Q[i].q.length>44?Q[i].q.slice(0,44)+'…':Q[i].q}</span></span><span class="chev">${I.chev}</span></button>`; }).join('')}`:''}
-  </div>`;
+    <div class="card">${LEVELS.map(d=>{ const [c,t]=r.by[d]; return `<div class="lv"><div class="row between"><b>${DIFF[d]}</b><span class="num">${fa(c)}/${fa(t)}</span></div><div class="bar"><i style="width:${pct(c,t)}%"></i></div></div>`; }).join('')}
+      <div class="note" style="margin-top:12px">${I.info}<span>سؤالی «ساده» حساب می‌شه که دست‌کم نصف شرکت‌کننده‌ها درست جوابش داده باشن.</span></div></div>
+    <span class="cap sec">پاسخ‌برگ · روی هر سؤال بزن</span>
+    <div class="card">${answerMap('showAnswer')}${mapLegend}</div>
+  </div>${actions(`<button class="btn btn-primary" onclick="reportSheet()">${I.down}دانلود کارنامه</button>`)}`;
 };
 function showAnswer(i){
   const q=Q[i], my=S.exam.answers[i];
-  sheet(`<div class="row between"><span class="badge">سؤال ${fa(i+1)} · ${DIFF[q.d]}</span>${my===null?'<span class="badge warn">بی‌جواب</span>':''}</div>
+  sheet(`<div class="row between"><span class="badge">${qLabel(i)} · ${DIFF[q.d]}</span>${my===null?'<span class="badge warn">بی‌جواب</span>':my===q.a?'<span class="badge ok">درست زدی</span>':''}</div>
     ${qBody(q)}
     <div class="${optsCls(q)}" style="margin-top:12px">${q.o.map((o,j)=>staticOpt(q,j,my,true)).join('')}</div>
-    <div class="card" style="margin-top:16px"><span class="cap">راه‌حل</span><p style="margin-top:4px;line-height:2">${q.s}</p></div>
+    <div class="card explain" style="margin-top:16px"><span class="cap">راه‌حل</span><p>${q.s}</p></div>
+    <p class="muted small center" style="margin-top:10px">${fa(Math.round(q.rate*100))}٪ شرکت‌کننده‌ها این سؤال رو درست زدن.</p>
     <div class="acts"><button class="btn btn-primary" onclick="closeSheet()">فهمیدم</button></div>`);
 }
 // گزینهٔ فقط‌نمایشی: جواب تو (و اگر showRight، جواب درست)
 function staticOpt(q,j,my,showRight){ const right=showRight&&j===q.a, mine=j===my;
   const tag = right?'<span class="tag ok">جواب درست</span>':mine?`<span class="tag ${showRight?'bad':'me'}">جواب تو</span>`:'';
   return `<div class="opt static ${q.oi?'img':''} ${right?'right':mine?(showRight?'wrong':'mine'):''}" style="animation:none"><span class="n">${right?'✓':mine&&showRight?'✕':fa(j+1)}</span>${q.oi?optIn(q,j):`<span class="grow">${q.o[j]}</span>`}${tag}</div>`; }
+// کارنامهٔ قابل دانلود (تصویر)
+function reportImage(){
+  const r=result(), s=me(), bk=DATA.exam.booklets, W=1080, H=1400, c=document.createElement('canvas'); c.width=W; c.height=H;
+  const x=c.getContext('2d'), F=(w,px)=>x.font=`${w} ${px}px "Yekan Bakh", Tahoma, sans-serif`, INK='#1D1D1B', MUT='#5F5B55';
+  const box=(X,Y,w,h,fill,stroke)=>{ x.beginPath(); x.roundRect(X,Y,w,h,36); x.fillStyle=fill; x.fill(); if(stroke){ x.lineWidth=4; x.strokeStyle=INK; x.stroke(); } };
+  const txt=(t,X,Y,col=INK,al='right')=>{ x.fillStyle=col; x.textAlign=al; x.fillText(t,X,Y); };
+  x.direction='rtl'; x.fillStyle='#ECE9E3'; x.fillRect(0,0,W,H);
+  F(900,64); txt('کارنامهٔ '+DATA.exam.title,W-70,130); F(500,32); txt(`${s.first} ${s.last} · پایهٔ ${s.grade} · ${s.school}`,W-70,190,MUT); txt(`${s.city}، ${s.province}`,W-70,236,MUT);
+  box(70,290,460,250,'#947EDC',true); F(600,34); txt('تراز',490,360,'#fff'); F(900,110); txt(faN(r.taraz),490,480,'#fff');
+  box(550,290,460,250,'#fff',true); F(600,34); txt('رتبه',970,360,MUT); F(900,110); txt(fa(r.rank),970,480); F(500,32); txt(`از ${fa(TOTAL)} نفر`,970-x.measureText(fa(r.rank)).width*3.6-20,480,MUT);
+  box(70,580,940,520,'#fff'); const cols=[950,560,430,300,130], head=['دفترچه','درست','غلط','نزده','درصد']; F(600,30);
+  head.forEach((h,i)=>txt(h,cols[i],650,MUT,i?'center':'right'));
+  const rows=[...BOOKLETS.map(b=>[`${bk[b].title} (ضریب ${fa(bk[b].coef)})`,r.c[b],r.w[b],r.u[b],r.pb[b]]),['درصد کل',r.correct,r.bad,r.blank,r.score]];
+  rows.forEach((row,k)=>{ const Y=750+k*120; x.fillStyle='#E4E0D8'; x.fillRect(110,Y-70,860,2); F(k===2?900:700,36); txt(row[0],cols[0],Y); F(800,40);
+    txt(fa(row[1]),cols[1],Y,'#2F6B34','center'); txt(fa(row[2]),cols[2],Y,'#B33A2B','center'); txt(fa(row[3]),cols[3],Y,INK,'center'); txt(fa1(row[4])+'٪',cols[4],Y,INK,'center'); });
+  F(500,28); txt('هر ۳ جواب غلط، نمرهٔ یک جواب درست را از بین می‌برد.',950,1065,MUT);
+  box(70,1140,940,150,'#fff'); F(600,30); LEVELS.forEach((d,i)=>{ const X=950-i*300; txt('سؤال‌های '+DIFF[d],X,1200,MUT); F(900,40); txt(`${fa(r.by[d][0])} از ${fa(r.by[d][1])}`,X,1256); F(600,30); });
+  F(500,26); txt('آزمون · کارنامهٔ دانش‌آموز',W/2,1350,MUT,'center');
+  return c;
+}
+function reportSheet(){
+  const c=reportImage(), url=c.toDataURL('image/png');
+  sheet(`<h2>کارنامهٔ ${DATA.exam.title}</h2><p class="muted small">می‌تونی این تصویر رو ذخیره کنی و به پدر و مادرت نشون بدی.</p>
+    <img class="rep-img" src="${url}" alt="تصویر کارنامه">
+    <div class="acts"><a class="btn btn-primary" href="${url}" download="karnameh-azmoun-1.png">${I.down}ذخیرهٔ تصویر</a><button class="btn btn-ghost" onclick="closeSheet()">بستن</button></div>
+    <p class="muted small center" style="margin-top:10px">اگه دکمه کار نکرد، انگشتت رو روی تصویر نگه دار و «ذخیره» رو بزن.</p>`);
+}
 
-/* ---------- نتیجهٔ آزمون: قصه و مرور ---------- */
-// مرحله‌ها: آمار ← دسته‌ها ← «اگه...» ← دعوت به مرور ← مرور سؤال‌به‌سؤال ← پایان
-const STEPS = () => result().wrong.length ? ['stats','cats','whatif','go','review','end'] : ['stats','end'];
+/* ---------- نتیجهٔ آزمون: قصهٔ چندصفحه‌ای ---------- */
+const STEPS = () => { const r=result(); return r.wrong.length ? ['stats','score','cats',...(r.bad?['compare']:[]),'go'] : ['stats','score','go']; };
 const storyState = () => !S.story ? 'new' : S.story.done ? 'done' : 'progress';
 const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
-function startStory(){ if(!S.story) S.story={ step:0, k:0, phase:'read', pick:null, res:{}, stars:0, done:false }; save(); go('story'); }
-function storyNext(){ const st=S.story; st.step=Math.min(st.step+1, STEPS().length-1); st.phase='read'; st.pick=null; if(STEPS()[st.step]==='end') st.done=true; save(); rerender('fwd'); haptic(); }
-function storyExit(){ sheet(`<h2>از مرور نتیجه بیرون می‌ری؟</h2><p class="muted">هر جا که هستی نگهش می‌داریم. از خانه می‌تونی ادامه بدی.</p>
-  <div class="acts"><button class="btn btn-primary" onclick="closeSheet()">ادامهٔ مرور</button><button class="btn btn-ghost" onclick="stack=[];go('home',{},false)">بیرون می‌رم</button></div>`); }
+// replay: دوباره دیدن قصه از اول، بدون اینکه «دیده‌شده» بودنش عوض شود
+function startStory(replay){ if(!S.story) S.story={ step:0, done:false }; else if(replay && S.story.done) S.story.step=0; save(); go('story'); }
+function storyNext(){ const st=S.story, n=STEPS().length; if(st.step>=n-1) return; st.step++; if(st.step===n-1) st.done=true; save(); rerender('fwd'); haptic(); }
+function storyBack(){ const st=S.story; if(!st.step) return; st.step--; save(); rerender('back'); haptic(); }
+function storyClose(){ closeSheet(); stack=[]; go('home',{},false); }
+function storyExit(){ if(S.story.done) return storyClose();
+  sheet(`<h2>بقیه‌ش رو بعداً می‌بینی؟</h2><p class="muted">همین‌جا نگهش می‌داریم. از خانه می‌تونی ادامه بدی.</p>
+  <div class="acts"><button class="btn btn-primary" onclick="closeSheet()">ادامه می‌دم</button><button class="btn btn-ghost" onclick="storyClose()">بیرون می‌رم</button></div>`); }
 function wrongByTopic(){ const m={}; result().wrong.forEach(i=>{ const t=Q[i].t; m[t]=(m[t]||0)+1; }); return Object.entries(m).sort((a,b)=>b[1]-a[1]); }
-
-function storyHead(){
-  const st=S.story, steps=STEPS(), cur=steps[st.step], w=result().wrong.length;
-  const bars=steps.filter(x=>x!=='end').map((x,i)=>{ const fill = i<st.step||cur==='end' ? 100 : i>st.step ? 0 : x==='review' ? pct(st.k+(st.phase==='got'?1:0), w) : 100;
-    return `<i class="${x==='review'?'rv':''}"><b class="${i===st.step&&x!=='review'?'now':''}" style="width:${fill}%"></b></i>`; }).join('');
-  return `<div class="sticky st-hd"><div class="st-bars">${bars}</div>
-    <div class="row between st-top"><span class="stars" id="starCnt">${I.star}<b>${fa(st.stars)}</b></span>
-      <div class="row" style="gap:10px">${basketBtn('peekBasket()')}<button class="st-x" onclick="storyExit()" aria-label="خروج از مرور">${I.close}</button></div></div></div>`;
-}
-function peekBasket(){ const open=openBasket();
-  sheet(`<h2>سبد «از معلم می‌پرسم»</h2>${open.length?`<p class="muted small">${fa(open.length)} سؤال توی سبدته. بعد از مرور می‌تونی یکی‌یکی ببینیشون.</p>
-    <div class="stack" style="margin-top:12px">${open.map(b=>`<div class="card flat small">${b.qi!=null?Q[b.qi].q:b.q}</div>`).join('')}</div>`
-    :'<p class="muted">هنوز چیزی توی سبدت نیست. هر سؤالی رو متوجه نشدی، بندازش اینجا.</p>'}
-    <div class="acts"><button class="btn btn-primary" onclick="closeSheet()">ادامهٔ مرور</button></div>`); }
+function storyHead(){ const st=S.story, steps=STEPS();
+  return `<div class="sticky st-hd"><div class="st-bars">${steps.map((x,i)=>`<i><b class="${i===st.step?'now':''}" style="width:${i<=st.step?100:0}%"></b></i>`).join('')}</div>
+    <div class="row between st-top"><button class="icon-btn" onclick="storyBack()" aria-label="صفحهٔ قبل" ${st.step?'':'style="visibility:hidden"'}>${I.back}</button>
+      <button class="st-x" onclick="storyExit()" aria-label="بستن">${I.close}</button></div></div>`; }
 
 V.story = () => {
   if(S.exam.status!=='published') return V.home();
-  if(!S.story) S.story={ step:0, k:0, phase:'read', pick:null, res:{}, stars:0, done:false };
-  const st=S.story, cur=STEPS()[st.step], r=result(), w=r.wrong.length;
-  const un=r.wrong.filter(i=>S.exam.answers[i]===null).length, bad=w-un;
-  let body='', act='';
+  if(!S.story) S.story={ step:0, done:false };
+  const st=S.story, steps=STEPS(); st.step=Math.min(st.step,steps.length-1);
+  const cur=steps[st.step], r=result(), w=r.wrong.length, bk=DATA.exam.booklets;
+  let body='', act=`<button class="btn btn-primary" onclick="storyNext()">بعدی</button>`;
 
   if(cur==='stats'){
-    const order=Q.map((q,i)=>S.exam.answers[i]===null?'none':S.exam.answers[i]===q.a?'ok':'bad');
     const p=pct(r.correct,r.total), verdict = p>=80?'عالی بود! واقعاً خوب پیش رفتی.':p>=50?'خوب بود؛ ولی می‌تونی بهتر هم بشی.':'شروع خوبیه. بیا ببینیم کجاها جا موند.';
     body=`<div class="st-body center">
       <span class="cap">${DATA.exam.title} · نتیجه</span>
       <h1 class="st-h">از ${fa(r.total)} سؤال، <span class="hl" data-count="${r.correct}" data-delay="300">${fa(r.correct)}</span> تا رو درست زدی</h1>
-      <div class="tiles-wrap" aria-hidden="true">${BOOKLETS.map(b=>`<div class="tiles-b"><span class="cap">دفترچهٔ ${fa(b+1)}</span><div class="tiles">${QB(b).map(q=>`<i class="${order[q.i]}" style="--d:${300+q.i*55}ms">${fa(q.i-QB(b)[0].i+1)}</i>`).join('')}</div></div>`).join('')}</div>
+      <div aria-hidden="true">${answerMap()}</div>
       <div class="st-stats">
-        <div class="stt ok" style="--d:1.3s"><b data-count="${r.correct}" data-delay="1300">${fa(r.correct)}</b><span>درست</span></div>
-        <div class="stt bad" style="--d:1.5s"><b data-count="${bad}" data-delay="1500">${fa(bad)}</b><span>غلط</span></div>
-        <div class="stt none" style="--d:1.7s"><b data-count="${un}" data-delay="1700">${fa(un)}</b><span>بی‌جواب</span></div>
+        <div class="stt ok" style="--d:1.5s"><b data-count="${r.correct}" data-delay="1500">${fa(r.correct)}</b><span>درست</span></div>
+        <div class="stt bad" style="--d:1.7s"><b data-count="${r.bad}" data-delay="1700">${fa(r.bad)}</b><span>غلط</span></div>
+        <div class="stt none" style="--d:1.9s"><b data-count="${r.blank}" data-delay="1900">${fa(r.blank)}</b><span>بی‌جواب</span></div>
       </div>
-      <p class="muted st-line" style="--d:2s">${verdict}</p></div>`;
-    act=`<button class="btn btn-primary" onclick="storyNext()">${w?'بعدی':'بریم ادامه'}</button>`;
+      <p class="muted st-line" style="--d:2.2s">${verdict}</p></div>`;
   }
-
+  if(cur==='score'){
+    body=`<div class="st-body center">
+      <span class="cap">تراز و رتبه</span>
+      <h1 class="st-h">ترازت شد</h1>
+      <div class="taraz"><b data-count="${r.taraz}" data-from="5000" data-sep="1" data-delay="350" data-dur="1100">${faN(5000)}</b></div>
+      <div class="wf-chips"><span class="chip-up" style="--d:1.6s">رتبهٔ ${fa(r.rank)} از ${fa(TOTAL)} نفر</span><span class="chip-up plain" style="--d:1.8s">میانگین همه: ${faN(5000)}</span></div>
+      <div class="cats" style="text-align:right">${BOOKLETS.map((b,i)=>`<div class="cat-row" style="--d:${2+i*.18}s"><div class="row between"><b>${bk[b].title}</b><span class="muted small">ضریب ${fa(bk[b].coef)}</span></div><div class="row" style="gap:10px;margin-top:8px"><div class="cbar grow" style="margin:0"><i class="${r.pb[b]>=50?'good':''}" style="--w:${Math.max(3,Math.min(100,r.pb[b]))}%"></i></div><b class="pc">${fa1(r.pb[b])}٪</b></div></div>`).join('')}</div>
+      <p class="muted small st-line" style="--d:2.5s">${nob('هر ۳ جواب غلط، نمرهٔ یک جواب درست رو از بین می‌بره.')}</p></div>`;
+  }
   if(cur==='cats'){
     const cats=wrongByTopic(), max=cats[0][1];
     body=`<div class="st-body">
@@ -753,102 +920,100 @@ V.story = () => {
       <h1 class="st-h">این‌ها از کجا بودن؟</h1>
       <div class="cats">${cats.map(([t,n],i)=>`<div class="cat-row" style="--d:${250+i*170}ms"><div class="row between"><b>${TOPIC[t]}</b><span class="cat-n">${fa(n)} سؤال</span></div><div class="cbar"><i style="--w:${pct(n,max)}%"></i></div></div>`).join('')}</div>
       <p class="muted st-line" style="--d:${350+cats.length*170}ms">${nob(cats.length>1?`بیشتر از همه توی «${TOPIC[cats[0][0]]}» جا موندی.`:`همه‌شون از «${TOPIC[cats[0][0]]}» بودن.`)}</p></div>`;
-    act=`<button class="btn btn-primary" onclick="storyNext()">بعدی</button>`;
   }
-
-  if(cur==='whatif'){
-    const one=rankOf(r.correct+1), jump1=r.rank-one, cats=wrongByTopic();
-    const steps=[...Array(Math.min(w,4)).keys()].map(n=>n+1).map(n=>({n, rank:rankOf(r.correct+n)}));
-    const ahead=pct(TOTAL-r.rank,TOTAL);
+  if(cur==='compare'){
+    // اگر سؤال‌های غلط را اصلاً جواب نمی‌داد (نمرهٔ منفی نمی‌گرفت)
+    const s2=scoreOf(r.c,[0,0]), rank2=rankOf(s2), up=r.rank-rank2, t2=tarazOf(s2);
     body=`<div class="st-body">
       <span class="cap">فقط برای مقایسه</span>
-      <h1 class="st-h">فقط یک جواب درستِ بیشتر، چقدر می‌ارزید؟</h1>
+      <h1 class="st-h">اگه اون ${fa(r.bad)} سؤالی که غلط زدی رو اصلاً جواب نمی‌دادی…</h1>
       <div class="card wf">
-        <div class="wf-now"><span class="muted small">رتبهٔ الان تو</span><b class="ltr">${faN(r.rank)}</b></div>
+        <div class="wf-now"><span class="muted small">رتبهٔ الان تو</span><b>${fa(r.rank)}</b></div>
         <div class="wf-arrow">${I.arrowL}</div>
-        <div class="wf-then"><span class="small">با یک سؤال بیشتر</span><b class="ltr" data-count="${one}" data-from="${r.rank}" data-sep="1" data-delay="500">${faN(r.rank)}</b></div>
+        <div class="wf-then"><span class="small">رتبه‌ت می‌شد</span><b data-count="${rank2}" data-from="${r.rank}" data-delay="500">${fa(r.rank)}</b></div>
       </div>
-      <div class="wf-chips"><span class="chip-up" style="--d:1.5s">یعنی ${faN(jump1)} نفر رو جلو می‌زدی</span></div>
-      ${steps.length>1?`<span class="cap sec" style="margin-top:22px">هر سؤال، یک پله بالاتر</span>
-      <div class="card ladder">${steps.map((x,i)=>`<div class="ld-row" style="--d:${1.7+i*.16}s"><span class="ld-n">+${fa(x.n)}</span><div class="grow"><div class="row between"><b>رتبهٔ ${faN(x.rank)}</b><span class="muted small">${faN(r.rank-x.rank)} نفر جلوتر</span></div><div class="cbar"><i style="--w:${Math.max(6,pct(r.rank-x.rank,r.rank))}%"></i></div></div></div>`).join('')}</div>`:''}
-      ${cats.length>1?`<span class="cap sec" style="margin-top:22px">اگه فقط یک دسته رو درست زده بودی</span>
-      <div class="card" style="padding:6px 14px">${cats.map(([t,n],i)=>`<div class="wf-row" style="--d:${2.3+i*.12}s"><span class="grow">${TOPIC[t]} <span class="muted small">(${fa(n)} سؤال)</span></span><b>رتبهٔ ${faN(rankOf(r.correct+n))}</b></div>`).join('')}</div>`:''}
-      <p class="muted small center st-line" style="--d:2.6s">همین الان هم از ${fa(ahead)}٪ شرکت‌کننده‌ها جلوتری.</p>
-      <div class="note" style="margin-top:14px">${I.info}<span>این رتبه‌ها فرضی‌ان و توی رتبه‌بندی کشوری ثبت نمی‌شن.</span></div></div>`;
-    act=`<button class="btn btn-primary" onclick="storyNext()">بعدی</button>`;
+      <div class="wf-chips"><span class="chip-up" style="--d:1.5s">${up?`${fa(up)} پله بالاتر`:'رتبه‌ت همین می‌موند'}</span><span class="chip-up plain" style="--d:1.7s">تراز ${faN(t2)} به‌جای ${faN(r.taraz)}</span></div>
+      <div class="card neg st-line" style="--d:1.9s"><b>${fa(r.bad)} جواب غلط = ${fa1(r.bad*NEG)} نمرهٔ منفی</b><p class="muted small">${nob('یعنی جواب‌های غلط، نمرهٔ این تعداد از جواب‌های درستت رو از بین بردن.')}</p></div>
+      <p class="st-line tip" style="--d:2.1s">${nob('وقتی مطمئن نیستی، نزدن بهتر از غلط زدنه.')}</p>
+      <div class="note">${I.info}<span>این رتبه فرضیه و توی رتبه‌بندی ثبت نمی‌شه.</span></div></div>`;
   }
-
   if(cur==='go'){
-    body=`<div class="st-body center">
-      <div class="illus go-art">${ART.target}</div>
-      <h1 class="st-h">بیا با هم مرورشون کنیم</h1>
-      <p class="muted st-lead">${nob(`${fa(w)} سؤال رو یکی‌یکی با توضیح می‌بینی. اگه فهمیدی، جواب درست رو بزن و ستاره بگیر. اگه نفهمیدی، بندازش توی سبد تا از معلمت بپرسی.`)}</p>
-      <div class="go-legend"><span>${I.star}هر جواب درست، یک ستاره</span><span>${I.basket}سؤال‌های نفهمیده، توی سبد</span></div></div>`;
-    act=`<button class="btn btn-primary pulse" onclick="storyNext()">شروع مرور</button>`;
+    if(!w){ body=`<div class="st-body center"><div class="illus end-art">${ART.trophy}</div><h1 class="st-h">همه رو درست زدی!</h1><p class="muted st-lead">${nob('هیچ سؤالی برای تمرین نمونده. ایول، دمت گرم!')}</p></div>`;
+      act=`<button class="btn btn-primary" onclick="storyClose()">برگشت به خانه</button><button class="btn btn-ghost" onclick="stack=[{name:'home',p:{}}];go('result')">دیدن کارنامه</button>`; }
+    else { const lv=nextLevel()||'easy';
+      body=`<div class="st-body center">
+        <div class="illus go-art">${ART.target}</div>
+        <h1 class="st-h">حالا بریم سراغ تمرین</h1>
+        <p class="muted st-lead">${nob(`برای هر سؤالی که غلط زدی یا جواب ندادی، اول راه‌حلش رو می‌بینی و بعد یه سؤال مشابه حل می‌کنی. از ساده‌ها شروع می‌کنیم.`)}</p>
+        <div class="lv-chips">${LEVELS.map((d,i)=>{ const n=pracList(d).length; return `<span class="lv-chip ${n?'':'off'}" style="--d:${.5+i*.15}s"><b>${fa(n)}</b>${DIFF[d]}</span>`; }).join('')}</div></div>`;
+      act=`<button class="btn btn-primary pulse" onclick="openPractice('${lv}',true)">${pracState()==='new'?'شروع تمرین':'ادامهٔ تمرین'}</button><button class="btn btn-ghost" onclick="storyClose()">بعداً</button>`; }
   }
-
-  if(cur==='review'){
-    const i=r.wrong[st.k], q=Q[i], my=S.exam.answers[i], ph=st.phase, last=st.k===w-1;
-    const opts = ph==='read'
-      ? q.o.map((o,j)=>staticOpt(q,j,my,false)).join('')
-      : q.o.map((o,j)=>{ const ok=ph==='got'&&j===q.a, no=ph==='answer'&&st.pick===j;
-          return `<button class="opt ${q.oi?'img':''} ${ok?'right':''} ${no?'wrong':''}" ${ph==='got'?'disabled':''} onclick="reviewPick(${j})"><span class="n">${ok?'✓':no?'✕':fa(j+1)}</span>${optIn(q,j)}</button>`; }).join('');
-    body=`<div class="qwrap stack">
-      <div class="row between small"><span class="muted">سؤال ${fa(st.k+1)} از ${fa(w)} · ${TOPIC[q.t]}</span>${my===null?'<span class="badge warn">جواب نداده بودی</span>':'<span class="badge">غلط زده بودی</span>'}</div>
-      <div class="rv-card card" id="rvCard">${qBody(q)}<div class="${optsCls(q)}" style="margin-top:12px">${opts}</div></div>
-      ${ph==='read'?`<div class="card explain"><span class="cap">توضیح</span><p>${q.s}</p></div>`:''}
-      ${ph==='answer'?`<p class="ask ${st.pick!==null?'no':''}">${st.pick!==null?'نه، این نبود. یه بار دیگه فکر کن یا توضیح رو دوباره بخون.':'حالا خودت جواب درست رو بزن.'}</p>`:''}
-      ${ph==='got'?`<div class="got"><span class="got-star">${I.star}</span><b>آفرین! یک ستاره گرفتی.</b></div>`:''}
-    </div>`;
-    act = ph==='read' ? `<button class="btn btn-primary" onclick="understood()">${I.check}متوجه شدم</button><button class="btn btn-ghost" onclick="toBasket()">${I.basket}متوجه نشدم؛ بندازش توی سبد</button>`
-        : ph==='answer' ? `<div class="row2"><button class="btn btn-ghost" onclick="reread()">دوباره توضیح</button><button class="btn btn-ghost" onclick="toBasket()">${I.basket}بنداز توی سبد</button></div>`
-        : `<button class="btn btn-primary" onclick="nextReview()">${last?'تموم شد؛ بریم ببینیم!':'سؤال بعدی'}</button>`;
-  }
-
-  if(cur==='end'){
-    const got=Object.values(st.res).filter(v=>v==='got').length, inB=Object.values(st.res).filter(v=>v==='basket').length, nb=openBasket().length;
-    if(!w) body=`<div class="st-body center"><div class="illus end-art">${ART.trophy}</div><h1 class="st-h">همه رو درست زدی!</h1><p class="muted st-lead">${nob('هیچ سؤالی برای مرور نمونده. ایول، دمت گرم!')}</p></div>`;
-    else if(!inB) body=`<div class="st-body center"><div class="illus end-art">${ART.trophy}</div>
-      <h1 class="st-h">ایول، دمت گرم!</h1><p class="muted st-lead">${nob(`هر ${fa(got)} سؤال رو یاد گرفتی. دفعهٔ بعد این‌ها دیگه غافلگیرت نمی‌کنن.`)}</p>
-      <div class="star-total">${I.star}<b data-count="${st.stars}" data-delay="400">${fa(st.stars)}</b><span>ستاره گرفتی</span></div></div>`;
-    else body=`<div class="st-body center"><div class="illus end-art">${ART.bubble}</div>
-      <h1 class="st-h">آفرین، مرورت تموم شد!</h1>
-      <p class="muted st-lead">${nob(`${fa(got)} سؤال رو یاد گرفتی و ${fa(inB)} سؤال انداختی توی سبد.`)}</p>
-      <div class="star-total">${I.star}<b data-count="${st.stars}" data-delay="400">${fa(st.stars)}</b><span>ستاره گرفتی</span></div>
-      <div class="card basket-call"><span class="basket-big">${I.basket}<span class="cnt">${fa(nb)}</span></span><div class="grow"><b>${fa(nb)} سؤال توی سبدت هست</b><p class="small muted">می‌خوای ببینیشون؟ می‌تونی سر کلاس از معلمت بپرسی.</p></div></div></div>`;
-    act = w&&inB ? `<button class="btn btn-primary" onclick="stack=[{name:'home',p:{}}];route={name:'basket',p:{}};rerender('fwd')">دیدن سبد</button><button class="btn btn-ghost" onclick="tab('home')">بعداً؛ برگشت به خانه</button>`
-                 : `<button class="btn btn-primary" onclick="tab('home')">برگشت به خانه</button><button class="btn btn-ghost" onclick="stack=[{name:'home',p:{}}];go('result')">دیدن کارنامه</button>`;
-  }
-  return `<div class="screen no-nav has-act story story-${cur}">${cur==='end'?'':storyHead()}${body}</div>${actions(act)}`;
+  return `<div class="screen no-nav has-act story story-${cur}">${storyHead()}${body}</div>${actions(act)}`;
 };
 function storyFx(){
-  const cur=STEPS()[S.story?.step];
-  if(cur==='stats') setTimeout(()=>{ if(route.name==='story' && STEPS()[S.story.step]==='stats' && pct(result().correct,Q.length)>=50){ const h=$('.st-stats'); if(h){ const b=h.getBoundingClientRect(); burst(b.left+b.width/2,b.top); } } },2000);
-  if(cur==='whatif') setTimeout(()=>{ const t=$('.wf-then b'); if(t && route.name==='story'){ const b=t.getBoundingClientRect(); burst(b.left+b.width/2,b.top+b.height/2); haptic(20); } },1450);
-  if(cur==='end'){ const go=()=>{ const t=$('.end-art'); if(t && route.name==='story'){ const b=t.getBoundingClientRect(); burst(b.left+b.width/2,b.top+b.height/2); } };
-    setTimeout(go,350); setTimeout(go,900); setTimeout(()=>{ if(route.name==='story') burst(innerWidth*.25,140); },1300); setTimeout(()=>{ if(route.name==='story') burst(innerWidth*.75,140); },1500); haptic(30); }
+  const cur=STEPS()[S.story?.step], at=(sel,ms)=>setTimeout(()=>{ const t=$(sel); if(t && route.name==='story' && STEPS()[S.story.step]===cur){ const b=t.getBoundingClientRect(); burst(b.left+b.width/2,b.top+b.height/2); haptic(20); } },ms);
+  if(cur==='score') at('.taraz',1500);
+  if(cur==='compare') at('.wf-then b',1450);
+  if(cur==='go' && !result().wrong.length){ at('.end-art',350); at('.end-art',900); }
 }
-function understood(){ S.story.phase='answer'; S.story.pick=null; save(); render(); kick('#rvCard','pulse-in'); haptic(); }
-function reread(){ S.story.phase='read'; S.story.pick=null; save(); render(); }
-function reviewPick(j){
-  const st=S.story, i=result().wrong[st.k], q=Q[i]; if(st.phase!=='answer') return;
-  if(j!==q.a){ st.pick=j; save(); render(); haptic(30); return; }
-  st.phase='got'; st.pick=null; st.res[i]='got'; save(); render(); haptic(15);
-  const opt=document.querySelectorAll('#rvCard .opt')[j]; if(!opt) return;
-  const r=opt.getBoundingClientRect(); burst(r.left+r.width/2, r.top+r.height/2);
-  const star=document.createElement('span'); star.className='fly-star'; star.innerHTML=I.star;
-  fly(star, {left:r.left+r.width/2-22, top:r.top+r.height/2-22, width:44, height:44}, $('#starCnt'), {scaleTo:.5, arc:-90, dur:800}).then(()=>{ st.stars++; save(); render(); kick('#starCnt','bump'); haptic(10); });
-}
-function nextReview(){ const st=S.story; if(st.k>=result().wrong.length-1){ st.k=result().wrong.length; storyNext(); return; } st.k++; st.phase='read'; st.pick=null; save(); render(); kick('.qwrap','q-next'); top0(); }
-// انداختن سؤال توی سبد: کارت سؤال کوچک می‌شود و با یک قوس می‌افتد توی دکمهٔ سبد (مثل فرستادن پست در دایرکت)
+
+/* ---------- تمرین (همان مأموریت‌ها): راه‌حل ← سؤال مشابه ← آفرین یا سبد ---------- */
+function openPractice(lv, fromStory){ if(fromStory){ S.story.done=true; stack=[{name:'exams',p:{}}]; route={name:'practice',p:{lv}}; save(); closeSheet(); rerender('fwd'); return; } go('practice',{lv}); }
+const pracCur = lv => { const qi=pracList(lv).find(i=>!S.practice.res[i]); if(qi==null) return null; const c=S.practice.cur; if(!c || c.qi!==qi) S.practice.cur={ qi, phase:'explain', pick:null }; return S.practice.cur; };
+function peekBasket(){ const open=openBasket();
+  sheet(`<h2>سبد «از معلم می‌پرسم»</h2>${open.length?`<p class="muted small">${fa(open.length)} سؤال توی سبدته. بعد از تمرین می‌تونی یکی‌یکی ببینیشون.</p>
+    <div class="stack" style="margin-top:12px">${open.slice(-6).reverse().map(b=>`<div class="card flat small">${Q[b.qi].q}</div>`).join('')}</div>`
+    :'<p class="muted">هنوز چیزی توی سبدت نیست. هر سؤالی برات جا نیفتاد، بندازش اینجا تا از معلمت بپرسی.</p>'}
+    <div class="acts"><button class="btn btn-primary" onclick="closeSheet()">ادامهٔ تمرین</button></div>`); }
+V.practice = () => {
+  if(S.exam.status!=='published') return V.home();
+  const lv=route.p.lv||'easy', list=pracList(lv), done=pracDone(lv), c=pracCur(lv);
+  const head=`<div class="sticky"><div class="topbar"><button class="icon-btn" onclick="back()" aria-label="بازگشت">${I.back}</button>
+      <div class="title">تمرین · سؤال‌های ${DIFF[lv]}<div class="small muted" style="font-weight:500">${c?`${fa(done+1)} از ${fa(list.length)}`:'تموم شد'}</div></div>${basketBtn('peekBasket()')}</div>
+      <div class="progress"><i style="width:${pct(done+(c&&(c.phase==='ok')?1:0),list.length)}%"></i></div></div>`;
+  if(!c){ // پایان این سطح
+    const res=list.map(i=>S.practice.res[i]), ok=res.filter(x=>x==='ok').length, inB=res.filter(x=>x==='basket').length, nl=nextLevel(), nb=openBasket().length;
+    return `<div class="screen no-nav has-act practice">${head}<div class="st-body center">
+      <div class="illus end-art">${inB?ART.bubble:ART.trophy}</div>
+      <h1 class="st-h">${!list.length?'اینجا تمرینی نداری':ok===list.length?'ایول، دمت گرم!':'آفرین، این سطح تموم شد!'}</h1>
+      <p class="muted st-lead">${nob(!list.length?`همهٔ سؤال‌های ${DIFF[lv]} رو توی آزمون درست زده بودی.`:`از ${fa(list.length)} سؤالِ ${DIFF[lv]}، ${fa(ok)} تا رو درست حل کردی${inB?` و ${fa(inB)} تا رو انداختی توی سبد`:''}.`)}</p>
+      ${nb?`<button class="card tap basket-call" style="display:flex;width:100%" onclick="go('basket')"><span class="basket-big">${I.basket}<span class="cnt">${fa(nb)}</span></span><div class="grow"><b>${fa(nb)} سؤال توی سبدت هست</b><p class="small muted">می‌خوای ببینیشون؟ می‌تونی سر کلاس از معلمت بپرسی.</p></div><span class="chev">${I.chev}</span></button>`:''}
+      </div></div>${actions(nl?`<button class="btn btn-primary" onclick="route.p.lv='${nl}';rerender('fwd')">تمرین سؤال‌های ${DIFF[nl]}</button><button class="btn btn-ghost" onclick="tab('exams')">بعداً</button>`:`<button class="btn btn-primary" onclick="tab('home')">برگشت به خانه</button><button class="btn btn-ghost" onclick="stack=[{name:'home',p:{}}];go('result')">دیدن کارنامه</button>`)}`;
+  }
+  const qi=c.qi, q=Q[qi], my=S.exam.answers[qi], ph=c.phase, sq=SIM(qi);
+  let body, act;
+  if(ph==='explain'){
+    body=`<div class="row between small"><span class="muted">${qLabel(qi)} · ${TOPIC[q.t]}</span>${my===null?'<span class="badge warn">جواب نداده بودی</span>':'<span class="badge">غلط زده بودی</span>'}</div>
+      <div class="rv-card card" id="rvCard">${qBody(q)}<div class="${optsCls(q)}" style="margin-top:12px">${q.o.map((o,j)=>staticOpt(q,j,my,true)).join('')}</div></div>
+      <div class="card explain"><span class="cap">راه‌حل</span><p>${q.s}</p></div>`;
+    act=`<button class="btn btn-primary" onclick="pracSimilar()">حالا یه سؤال مشابه حل کن</button>`;
+  } else {
+    const opts=sq.o.map((o,j)=>{ const right=ph!=='similar'&&j===sq.a, no=ph==='no'&&c.pick===j;
+      return `<button class="opt ${right?'right':''} ${no?'wrong':''}" ${ph==='similar'?'':'disabled'} onclick="pracPick(${j})"><span class="n">${right?'✓':no?'✕':fa(j+1)}</span><span class="grow">${o}</span>${right?'<span class="tag ok">جواب درست</span>':no?'<span class="tag bad">جواب تو</span>':''}</button>`; }).join('');
+    body=`<div class="row between small"><span class="badge pri">سؤال مشابه</span><span class="muted">${TOPIC[q.t]}</span></div>
+      <div class="rv-card card" id="rvCard"><p class="q-text">${nob(sq.q)}</p><div class="stack" style="margin-top:12px">${opts}</div></div>
+      ${ph==='ok'?`<div class="got"><b>آفرین! درست بود.</b></div>`:''}
+      ${ph==='no'?`<div class="card explain"><span class="cap">راه‌حل</span><p>${sq.s}</p></div><p class="ask">${nob('این یکی درست نشد. بندازش توی سبد تا از معلمت بپرسی.')}</p>`:''}`;
+    act = ph==='similar' ? `<button class="btn btn-ghost" onclick="pracExplain()">دوباره راه‌حل رو ببینم</button>`
+        : ph==='ok' ? `<button class="btn btn-primary" onclick="pracNext('ok')">${done+1>=list.length?'تموم شد!':'سؤال بعدی'}</button>`
+        : `<button class="btn btn-primary" onclick="toBasket()">${I.basket}بنداز توی سبد</button><button class="btn btn-ghost" onclick="pracNext('skip')">فعلاً نه؛ سؤال بعدی</button>`;
+  }
+  return `<div class="screen no-nav has-act practice ${ph==='no'?'act2':''}">${head}<div class="qwrap stack">${body}</div></div>${actions(act)}`;
+};
+function pracSimilar(){ S.practice.cur.phase='similar'; save(); render(); kick('.qwrap','q-next'); top0(); haptic(); }
+function pracExplain(){ S.practice.cur.phase='explain'; save(); render(); kick('.qwrap','q-prev'); top0(); }
+function pracPick(j){ const c=S.practice.cur, sq=SIM(c.qi); if(c.phase!=='similar') return; c.pick=j;
+  if(j===sq.a){ c.phase='ok'; save(); render(); haptic(15); const o=document.querySelectorAll('#rvCard .opt')[j]; if(o){ const r=o.getBoundingClientRect(); burst(r.left+r.width/2,r.top+r.height/2); } kick('.got','pop-in'); }
+  else { c.phase='no'; save(); render(); kick(document.querySelectorAll('#rvCard .opt')[j],'shake'); haptic(30); } }
+function pracNext(res){ const c=S.practice.cur; S.practice.res[c.qi]=res; S.practice.cur=null; save(); render(); kick('.qwrap','q-next'); top0(); if(!pracCur(route.p.lv)){ NAV='fwd'; render(); const t=$('.end-art'); if(t){ const b=t.getBoundingClientRect(); setTimeout(()=>burst(b.left+b.width/2,b.top+b.height/2),350); haptic(25); } } }
+// انداختن سؤال توی سبد: کارت کوچک می‌شود و با یک قوس می‌افتد توی دکمهٔ سبد (مثل فرستادن پست در دایرکت)
+let TOSS=false;
 function toBasket(){
-  const st=S.story, i=result().wrong[st.k], card=$('#rvCard'); if(!card || st.busy) return; st.busy=true;
-  if(!S.basket.find(b=>b.key==='exam-'+i&&!b.solved)) S.basket.push({ key:'exam-'+i, id:Date.now(), qi:i, mission:`${DATA.exam.title} · سؤال ${fa(i+1)}`, my:S.exam.answers[i], solved:false });
-  st.res[i]='basket';
+  const c=S.practice.cur, card=$('#rvCard'); if(!c || !card || TOSS) return; TOSS=true; const i=c.qi;
+  if(!S.basket.find(b=>b.qi===i&&!b.solved)) S.basket.push({ id:Date.now(), qi:i, from:`${DATA.exam.title} · ${qLabel(i)}`, my:S.exam.answers[i], solved:false });
   const r=card.getBoundingClientRect(), clone=card.cloneNode(true); clone.removeAttribute('id'); clone.classList.add('flying');
   card.style.visibility='hidden'; card.closest('.qwrap').classList.add('tossing'); haptic(12);
-  const after=()=>{ st.busy=false; save(); render(); kick('#basketBtn','bump'); kick('#basketBtn .cnt','pop-in'); haptic(18); setTimeout(nextReview,420); };
-  fly(clone, r, $('#basketBtn'), {scaleTo:.04, arc:-70, dur:760, rot:-14}).then(after);
+  fly(clone, r, $('#basketBtn'), {scaleTo:.04, arc:-70, dur:760, rot:-14}).then(()=>{ TOSS=false; save(); render(); kick('#basketBtn','bump'); kick('#basketBtn .cnt','pop-in'); haptic(18); setTimeout(()=>pracNext('basket'),380); });
 }
 function fly(node, from, toEl, {dur=700, scaleTo=.08, arc=-60, rot=-10}={}){
   return new Promise(res=>{
@@ -866,24 +1031,23 @@ function fly(node, from, toEl, {dur=700, scaleTo=.08, arc=-60, rot=-10}={}){
   });
 }
 
-/* ---------- رتبه‌بندی کشوری ---------- */
+/* ---------- رتبه‌بندی ---------- */
 V.leaderboard = () => {
-  const st=S.exam.status, pub=st==='published', r=pub?result():null, top=topList();
-  const pod=(x,cls)=>`<div class="pod ${cls} ${x.me?'me':''}">${cls==='p1'?I.crown:''}<img class="avatar" src="${avatar(x.av)}" alt=""><div class="nm">${x.me?'تو':x.name}</div><div class="sc">${x.city}</div><div class="blk">${fa(x.rank)}</div></div>`;
-  const lrow = x => `<div class="lb-row ${x.me?'me':''}"><span class="rank">${faN(x.rank)}</span><img class="avatar" src="${avatar(x.av)}" alt=""><span class="grow">${x.me?'<b>تو</b>':x.name}<br><span class="muted small">${x.city}</span></span><span class="muted small">${fa(x.score)} از ${fa(Q.length)}</span></div>`;
-  const at = rank => rank<=10 ? top[rank-1] : rank===r?.rank ? { me:true, name:'تو', city:me().city, av:S.avatar, rank, score:r.correct } : person(rank, rank);
-  const ranks = [...new Set((pub?[4,5,6,7,r.rank-1,r.rank,r.rank+1]:[4,5,6,7,8,9,10]).filter(k=>k>=4&&k<=TOTAL))].sort((a,b)=>a-b);
-  let rows='', prev=3; ranks.forEach(k=>{ if(k>prev+1) rows+='<div class="gap">···</div>'; rows+=lrow(at(k)); prev=k; });
-  if(prev<TOTAL) rows+=`<div class="gap">···</div><p class="small muted center" style="padding:4px 0 6px">${faN(TOTAL)} شرکت‌کننده از ${fa(Object.keys(PROVINCES).length)} استان</p>`;
+  const st=S.exam.status, pub=st==='published', r=pub?result():null, B=board(), top=B.slice(0,3);
+  const pod=(x,cls)=>`<div class="pod ${cls} ${x.me?'me':''}">${cls==='p1'?I.crown:''}<img class="avatar" src="${avatar(x.av)}" alt=""><div class="nm">${x.name}</div><div class="sc">تراز ${faN(x.taraz)}</div><div class="blk">${fa(x.rank)}</div></div>`;
+  const lrow = x => `<div class="lb-row ${x.me?'me':''}"><span class="rank">${fa(x.rank)}</span><img class="avatar" src="${avatar(x.av)}" alt=""><span class="grow">${x.me?'<b>تو</b>':x.name}<br><span class="muted small">${x.city}</span></span><span class="muted small">تراز ${faN(x.taraz)}</span></div>`;
+  const ranks = [...new Set((pub?[4,5,6,7,8,r.rank-2,r.rank-1,r.rank,r.rank+1,r.rank+2]:[4,5,6,7,8,9,10,11,12]).filter(k=>k>=4&&k<=B.length))].sort((a,b)=>a-b);
+  let rows='', prev=3; ranks.forEach(k=>{ if(k>prev+1) rows+='<div class="gap">···</div>'; rows+=lrow(B[k-1]); prev=k; });
+  if(prev<B.length) rows+=`<div class="gap">···</div>`;
   const myCard = pub
-    ? `<div class="card row between"><span>جایگاه تو در کشور</span><b><span data-count="${r.rank}" data-from="${TOTAL}" data-sep="1">${faN(r.rank)}</span> از ${faN(TOTAL)}</b></div>`
+    ? `<div class="card row between"><span>جایگاه تو</span><b><span data-count="${r.rank}" data-from="${TOTAL}">${fa(r.rank)}</span> از ${fa(TOTAL)} · تراز ${faN(r.taraz)}</b></div>`
     : `<div class="card row" style="gap:14px"><img class="avatar" src="${avatar()}" alt="" style="width:46px;height:46px;border:1.6px solid var(--ink)"><div class="grow"><b>تو هنوز رتبه نداری</b><p class="small muted">${st==='submitted'?`رتبه‌ت بعد از اعلام نتیجه (${DATA.exam.resultAt}) اینجا میاد.`:'بعد از شرکت در آزمون و اعلام نتیجه، جایگاهت اینجا میاد.'}</p></div></div>
        ${st==='available'?`<button class="btn btn-primary" onclick="go('rules')">شروع آزمون</button>`:st==='inProgress'?`<button class="btn btn-primary" onclick="go('exam')">ادامهٔ آزمون</button>`:''}`;
-  return `<div class="screen stack"><div class="sticky"><h1>رتبه‌بندی کشوری</h1><p class="muted small">${DATA.exam.title} · پایهٔ ${esc(me().grade)} · ${faN(TOTAL)} شرکت‌کننده</p></div>
+  return `<div class="screen stack"><div class="sticky"><h1>رتبه‌بندی</h1><p class="muted small">${DATA.exam.title} · پایهٔ ${esc(me().grade)} · ${fa(TOTAL)} شرکت‌کننده</p></div>
     <div class="card podium-card"><div class="podium">${pod(top[1],'p2')}${pod(top[0],'p1')}${pod(top[2],'p3')}</div></div>
     ${myCard}
     <div class="card" style="padding:8px 12px">${rows}</div>
-    <div class="note">${I.info}<span>رتبه فقط از نمرهٔ آزمون حساب می‌شه و در نمرهٔ برابر، کسی که زودتر تحویل داده جلوتره. مرور سؤال‌ها و سبد، رتبه رو تغییر نمی‌دن.</span></div>
+    <div class="note">${I.info}<span>رتبه از روی تراز آزمون حساب می‌شه. تمرین‌ها و سبد، رتبه رو تغییر نمی‌دن.</span></div>
   </div>${navbar('leaderboard')}`;
 };
 
@@ -898,102 +1062,29 @@ V.profile = () => { const s=me(), ph=S.phone||'09121234567'; return `<div class=
     <button class="list-item compact" onclick="soon()"><span class="chev">${I.edit}</span><span class="grow"><b>ویرایش اطلاعات</b></span><span class="chev">${I.chev}</span></button>
     <button class="list-item compact" onclick="soon()"><span class="chev">${I.chat}</span><span class="grow"><b>پیام‌ها و پشتیبانی</b></span><span class="chev">${I.chev}</span></button>
     <button class="list-item compact" onclick="soon()"><span class="chev">${I.card}</span><span class="grow"><b>مالی و اطلاعات پرداخت</b></span><span class="chev">${I.chev}</span></button>
-    <button class="list-item compact" onclick="logout()"><span class="chev" style="color:var(--bad)">${I.out}</span><span class="grow"><b style="color:var(--bad)">خروج از حساب</b></span></button>
+    <button class="list-item compact" onclick="logoutAsk()"><span class="chev" style="color:var(--bad)">${I.out}</span><span class="grow"><b style="color:var(--bad)">خروج از حساب</b></span></button>
     <div class="row" style="flex-wrap:wrap;gap:10px;margin-top:20px"><button class="btn btn-ghost btn-sm" style="color:#8A3E26" onclick="retakeExam()">حالت تست: دوباره آزمون بده</button><button class="btn btn-ghost btn-sm" style="color:#8A3E26" onclick="resetDemo()">حالت تست: پاک کردن همه‌چیز</button></div>
   </div>${navbar('profile')}`; };
 function soon(){ toast('این بخش هنوز ساخته نشده'); }
 function pickAvatar(){ sheet(`<h2>عکس پروفایلت رو انتخاب کن</h2><div class="av-grid">${ASSET.avatars.map((a,i)=>`<button class="av-opt ${i===S.avatar?'on':''}" onclick="setAvatar(${i})"><img src="${a}" alt="آواتار ${fa(i+1)}"></button>`).join('')}</div><div class="acts"><button class="btn btn-ghost" onclick="closeSheet()">بستن</button></div>`); }
 function setAvatar(i){ S.avatar=i; save(); closeSheet(); render(); kick('.pf-av .avatar','bump'); haptic(); toast('عکس پروفایلت عوض شد'); }
+function logoutAsk(){ sheet(`<h2>از حسابت خارج می‌شی؟</h2><p class="muted">جواب‌ها و تمرین‌هات سر جاشون می‌مونن. برای برگشتن باید دوباره با شماره‌ت وارد بشی.</p><div class="acts"><button class="btn btn-primary btn-danger-fill" onclick="logout()">آره، خارج می‌شم</button><button class="btn btn-ghost" onclick="closeSheet()">نه، می‌مونم</button></div>`); }
 function logout(){ stashUser(); S.loggedIn=false; save(); closeSheet(); stack=[]; route={name:'login',p:{}}; L={mode:'login',phone:'',otp:'',err:'',resendAt:0}; rerender('tab'); }
-function retakeExam(){ S.exam=freshExam(); S.missions={done:[]}; S.basket=[]; S.story=null; stashUser(); save(); stack=[]; go('home',{},false); toast('آزمون از اول آماده‌ست'); }
+function retakeExam(){ S.exam=freshExam(); S.practice=freshPractice(); S.basket=[]; S.story=null; stashUser(); save(); stack=[]; go('home',{},false); toast('آزمون از اول آماده‌ست'); }
 function resetDemo(){ S=fresh(); save(); closeSheet(); stack=[]; route={name:'login',p:{}}; L={mode:'login',phone:'',otp:'',err:'',resendAt:0}; R=freshR(); rerender('tab'); }
-
-/* ---------- مأموریت‌ها ---------- */
-V.missions = () => {
-  if(S.exam.status!=='published') return `<div class="screen stack"><h1 class="sticky">مأموریت‌ها</h1>${empty(ART.target,'هنوز مأموریتی نداری','بعد از اعلام نتیجهٔ آزمون، از روی اشتباه‌هات مأموریت‌های تمرینی برات ساخته می‌شه.')}</div>${navbar('missions')}`;
-  const list=missionList();
-  if(!list.length) return `<div class="screen stack"><h1 class="sticky">مأموریت‌ها</h1>${empty(ART.paper,'تمرین جبرانی نداری','همهٔ سؤال‌های آزمون رو درست جواب دادی!')}</div>${navbar('missions')}`;
-  const isDone=m=>S.missions.done.includes(m.id), doneN=list.filter(isDone).length, sug=list.findIndex(m=>!isDone(m));
-  return `<div class="screen stack"><div class="sticky"><h1>مأموریت‌ها</h1><p class="muted">از روی اشتباه‌های ${DATA.exam.title} ساخته شدن. هر کدوم رو خواستی شروع کن.</p></div>
-    <div class="row between small"><span class="muted">مأموریت‌های انجام‌شده</span><b>${fa(doneN)} از ${fa(list.length)}</b></div>
-    <div class="progress"><i style="width:${pct(doneN,list.length)}%"></i></div>
-    <div class="card tl" style="padding:8px 0">${list.map((m,i)=>{ const d=isDone(m);
-      return `<div class="tl-step ${d?'done':'cur'}"><span class="tl-ic">${d?I.check:I.play}</span><div class="grow"><div class="row between" style="gap:8px"><b>${m.title}</b>${!d&&i===sug?'<span class="badge pri">پیشنهاد</span>':''}</div><p class="small muted">سطح ${DIFF[m.level]} · ${fa(m.qs.length)} سؤال${d?' · انجام شد':''}</p>
-        <button class="btn ${d?'btn-ghost':'btn-primary'} btn-sm" style="margin-top:10px" onclick="openMission('${m.id}')">${d?'دوباره انجام بده':'شروع مأموریت'}</button></div></div>`; }).join('')}</div>
-    ${sug<0?`<div class="card center stack">${ART.paper.replace('<svg','<svg style="width:120px"')}<b>همهٔ مأموریت‌ها تموم شد!</b><p class="muted small">آفرین. مأموریت‌های جدید بعد از آزمون بعدی میان.</p></div>`:''}
-    <div class="note">${I.info}<span>مأموریت‌ها رتبه رو تغییر نمی‌دن؛ رتبه فقط از آزمون حساب می‌شه.</span></div>
-  </div>${navbar('missions')}`;
-};
-function openMission(id){ M={id,view:'learn',k:0,wrong:null,right:null,finished:false}; go('mission',{id}); }
-const curMission = () => missionList().find(x=>x.id===route.p.id);
-const nextMission = () => { const l=missionList(); return l.find(x=>x.id!==route.p.id && !S.missions.done.includes(x.id)); };
-const finishActs = () => { const n=nextMission(); return n
-  ? `<button class="btn btn-primary" onclick="startNextMission()">شروع مأموریت بعدی: ${n.title}</button><button class="btn btn-ghost" onclick="backToMissions()">برگشت به مأموریت‌ها</button>`
-  : `<button class="btn btn-primary" onclick="backToMissions()">برگشت به مأموریت‌ها</button>`; };
-V.mission = () => {
-  const m=curMission(); if(!m) return V.missions();
-  if(M.view==='learn') return `<div class="screen no-nav has-act stack">${topbar(m.title)}
-    <div class="illus sm">${ART.books}</div>
-    <div><span class="badge pri">آموزش · سطح ${DIFF[m.level]}</span></div>
-    <div class="card"><p style="line-height:2.1">${m.learn}</p></div>
-    <p class="small muted">بعدش ${fa(m.qs.length)} سؤال سنجش داری. اگه سؤالی برات سخت بود، می‌تونی بذاریش توی سبد تا از معلمت بپرسی.</p>
-  </div>${actions(`<button class="btn btn-primary" onclick="M.view='quiz';rerender('fwd')">شروع سؤال‌ها</button>`)}`;
-  const q=m.qs[M.k], last=M.k===m.qs.length-1, locked=M.wrong!==null||M.right!==null||M.finished;
-  const act = M.finished ? actions(finishActs())
-            : M.wrong!==null ? actions(`<button class="btn btn-primary" onclick="retryQ()">دوباره جواب می‌دم</button><div class="row2"><button class="btn btn-ghost" onclick="lessonSheet()">مرور آموزش</button><button class="btn btn-ghost" onclick="askTeacher()">از معلم می‌پرسم</button></div>`)
-            : M.right!==null ? actions(`<button class="btn btn-primary" onclick="nextQ()">سؤال بعدی</button>`) : '';
-  return `<div class="screen no-nav ${act?'has-act':''} stack">${topbar(m.title)}
-    <div class="row between small"><span class="muted">سؤال سنجش ${fa(M.k+1)} از ${fa(m.qs.length)}</span>${M.finished?'<span class="badge ok">مأموریت تموم شد</span>':''}</div>
-    <div class="progress"><i style="width:${pct(M.k+(M.right!==null||M.finished?1:0),m.qs.length)}%"></i></div>
-    <div class="qwrap stack">${qBody(q)}
-      <div class="stack">${q.o.map((o,j)=>`<button class="opt ${M.wrong===j?'wrong':''} ${M.right===j?'right':''}" ${locked?'disabled':''} onclick="answerMission(${j})"><span class="n">${M.right===j?'✓':M.wrong===j?'✕':fa(j+1)}</span>${o}</button>`).join('')}</div>
-      ${M.wrong!==null&&!M.finished?`<div class="row small" style="color:var(--bad);font-weight:700"><span class="mark x">✕</span>این جواب درست نبود. می‌خوای چی کار کنی؟</div>`:''}
-    </div></div>${act}`;
-};
-function answerMission(j){
-  const m=curMission(), q=m.qs[M.k]; if(M.wrong!==null||M.right!==null||M.finished) return;
-  if(j!==q.a){ M.wrong=j; render(); haptic(30); return; }
-  M.right=j; if(M.k===m.qs.length-1) completeMission(); render(); haptic(15); setTimeout(rightSheet,380);
-}
-function completeMission(){ const m=curMission(); if(!S.missions.done.includes(m.id)) S.missions.done.push(m.id); M.finished=true; save(); }
-function rightSheet(){
-  const m=curMission(), q=m.qs[M.k], last=M.k===m.qs.length-1;
-  sheet(`<div class="center"><div class="success-ic sm">${I.check}</div><h2>${last?'آفرین! مأموریت تموم شد':'آفرین! درست جواب دادی'}</h2></div>
-    <div class="card" style="margin-top:12px"><span class="cap">راه‌حل</span><p style="margin-top:4px;line-height:2">${q.s}</p></div>
-    <div class="acts">${last?finishActs():`<button class="btn btn-primary" onclick="nextQ()">سؤال بعدی</button>`}</div>`);
-  setTimeout(()=>{ const c=$('.sheet .success-ic'); if(c){ const r=c.getBoundingClientRect(); burst(r.left+r.width/2, r.top+r.height/2); } },300);
-}
-function finishSheet(added){
-  const m=curMission();
-  sheet(`<div class="center"><div class="success-ic sm">${I.check}</div><h2>مأموریت «${m.title}» تموم شد</h2><p class="muted small">${added?'سؤال آخر به سبد «از معلم می‌پرسم» اضافه شد. ':''}یادت نره سؤال‌های سبد رو از معلمت بپرسی.</p></div>
-    <div class="acts">${finishActs()}</div>`);
-  setTimeout(()=>{ const c=$('.sheet .success-ic'); if(c){ const r=c.getBoundingClientRect(); burst(r.left+r.width/2, r.top+r.height/2); haptic(25); } },300);
-}
-function retryQ(){ M.wrong=null; render(); kick('.qwrap','q-prev'); }
-function lessonSheet(){ const m=curMission(); sheet(`<span class="badge pri">آموزش</span><h2 style="margin-top:8px">${m.title}</h2><p style="line-height:2.1">${m.learn}</p>
-  <div class="acts"><button class="btn btn-primary" onclick="closeSheet()">برگشت به سؤال</button></div>`); }
-function askTeacher(){
-  const m=curMission(), q=m.qs[M.k], key=m.id+'-'+M.k;
-  if(!S.basket.find(b=>b.key===key&&!b.solved)) S.basket.push({key, id:Date.now(), mission:m.title, q:q.q, o:q.o, my:M.wrong, solved:false});
-  save(); haptic(12);
-  if(M.k===m.qs.length-1){ completeMission(); render(); setTimeout(()=>finishSheet(true),300); } else { toast('به سبد «از معلم می‌پرسم» اضافه شد'); nextQ(); }
-}
-function nextQ(){ closeSheet(); M.k++; M.wrong=null; M.right=null; render(); kick('.qwrap','q-next'); top0(); }
-function startNextMission(){ const n=nextMission(); closeSheet(); if(!n) return backToMissions(); M={id:n.id,view:'learn',k:0,wrong:null,right:null,finished:false}; route={name:'mission',p:{id:n.id}}; rerender('fwd'); }
-function backToMissions(){ closeSheet(); stack=[]; go('missions',{},false); }
 
 /* ---------- سبد: از معلم می‌پرسم ---------- */
 V.basket = () => { const open=openBasket(), solved=S.basket.length-open.length;
   return `<div class="screen no-nav stack">${topbar('از معلم می‌پرسم')}
-    ${open.length?open.map(b=>`<button class="list-item" onclick="go('basketItem',{id:${b.id}})"><span class="grow"><b class="small">${b.qi!=null?Q[b.qi].q:b.q}</b><br><span class="muted small">${b.mission}</span></span><span class="chev">${I.chev}</span></button>`).join('')
-      :empty(ART.bubble,'سبدت خالیه','وقتی موقع مرور نتیجه سؤالی رو متوجه نشدی، بندازش توی سبد تا از معلمت بپرسی.')}
+    ${open.length?open.map(b=>`<button class="list-item" onclick="go('basketItem',{id:${b.id}})"><span class="grow"><b class="small">${Q[b.qi].q}</b><br><span class="muted small">${b.from}</span></span><span class="chev">${I.chev}</span></button>`).join('')
+      :empty(ART.bubble,'سبدت خالیه','وقتی توی تمرین سؤالی برات جا نیفتاد، بندازش توی سبد تا از معلمت بپرسی.')}
     ${solved?`<p class="muted small center">${fa(solved)} سؤال حل‌شده از سبد بیرون رفته.</p>`:''}
   </div>`; };
-V.basketItem = () => { const b=S.basket.find(x=>x.id===route.p.id); if(!b) return V.basket(); const q=b.qi!=null?Q[b.qi]:b;
+V.basketItem = () => { const b=S.basket.find(x=>x.id===route.p.id); if(!b) return V.basket(); const q=Q[b.qi];
   return `<div class="screen no-nav has-act stack">${topbar('سؤال من')}
-    <div><span class="badge">${b.mission}</span></div>
+    <div><span class="badge">${b.from}</span></div>
     ${qBody(q)}
-    <div class="${optsCls(q)}">${q.o.map((o,j)=>staticOpt(q,j,b.my,false)).join('')}</div>
+    <div class="${optsCls(q)}">${q.o.map((o,j)=>staticOpt(q,j,b.my,true)).join('')}</div>
     <div class="note">${I.info}<span>این سؤال رو سر کلاس یا از همون راهی که با معلمت در ارتباطی بپرس.</span></div>
     <b>اشکالت رفع شد؟</b>
   </div>${actions(`<button class="btn btn-primary" onclick="solve(${b.id})">آره، حل شد</button><div class="row2"><button class="btn btn-ghost" onclick="back();toast('سؤال برای پیگیری توی سبد می‌مونه')">هنوز نه</button><button class="btn btn-ghost btn-danger" onclick="removeItem(${b.id})">حذف از سبد</button></div>`)}`; };
@@ -1009,17 +1100,76 @@ function render(){
     if(sc){ sc.classList.add('enter-'+kind); if(kind==='tab') [...sc.children].forEach((c,i)=>c.style.setProperty('--i',Math.min(i,8))); }
     growBars(app); countUp(app); NAV=null;
     if(route.name==='story') storyFx();
+    if(route.name==='home') bnDots();
   } else { const t=document.createElement('div'); t.innerHTML=html; morphKids(app,t); }
   if(route.name==='otp') tickResend();
   if(route.name==='welcome') bindSwipe();
   document.body.classList.toggle('scrolled', scrollY>4);
 }
 window.addEventListener('scroll',()=>document.body.classList.toggle('scrolled', scrollY>4),{passive:true});
+let TICK=0;
 setInterval(()=>{
   if(route.name==='otp') tickResend();
+  if(route.name==='home' && ++TICK%5===0) bnAuto();
   const e=S.exam; if(e.status!=='inProgress' || !e.endsAt[e.booklet]) return;
   const left=timeLeft();
   if(left<=0){ if(e.booklet<BOOKLETS.length-1) goNextBooklet(true); else submitExam(true); return; }
   const t=$('#timer'); if(t){ t.textContent=mmss(left); t.classList.toggle('low',left<180000); }
 },1000);
+/* ============ ابزار پیش‌نمایش (preview.html از این‌ها استفاده می‌کند) ============ */
+const DEV_PERF = { strong:[.9,.04], mid:[.6,.16], weak:[.34,.26] };
+function devFill(perf){ const P=DEV_PERF[perf]||DEV_PERF.mid, r=rngOf((perf||'mid').length*97+5);
+  S.exam=freshExam(); S.exam.status='published'; S.exam.passed=S.exam.passed.map(()=>true);
+  S.exam.answers=Q.map(q=>{ const pc=Math.min(.98,Math.max(.05,P[0]+(q.rate-.45)*.6)), u=r(); return u<pc ? q.a : u<pc+P[1] ? null : (q.a+1+Math.floor(r()*3))%4; }); }
+function devUser(){ if(S.loggedIn && S.profile) return; S.loggedIn=true; S.phone='09121112233'; if(!S.registered.includes(S.phone)) S.registered.push(S.phone); loadUser(S.phone,true);
+  S.profile={ first:'سارا', last:'احمدی', grade:'ششم', province:'تهران', city:'تهران', school:'دبستان فرهنگ', gender:'دختر', birth:{y:1393,m:5,d:12}, nid:'0012345679' }; S.avatar=2; }
+function devGo(id, perf){
+  closeSheet(); stack=[]; const [g,a]=id.split(':'); let name=g, p={}, after=null;
+  const auth=()=>{ if(S.loggedIn){ stashUser(); S.loggedIn=false; } L={mode:'login',phone:'',otp:'',err:'',resendAt:0}; R=freshR(); };
+  const pub=()=>{ devUser(); devFill(perf); S.story=null; S.practice=freshPractice(); S.basket=[]; };
+  const seen=()=>{ pub(); S.story={step:STEPS().length-1,done:true}; };
+  const sit=b=>{ devUser(); S.exam=freshExam(); S.exam.status='inProgress'; S.exam.booklet=b; if(b) QB(0).forEach(q=>S.exam.passed[q.i]=true); S.exam.endsAt[b]=Date.now()+DATA.exam.booklets[b].minutes*60000-(b?0:754000); name='exam'; };
+  const drill=(n,mode)=>{ const w=result().wrong; w.slice(0,n).forEach((i,k)=>{ const bk=mode==='mix'&&k%3===2; S.practice.res[i]=bk?'basket':'ok'; if(bk) S.basket.push({id:1000+i,qi:i,from:`${DATA.exam.title} · ${qLabel(i)}`,my:S.exam.answers[i],solved:false}); }); };
+  if(g==='login'){ auth(); }
+  else if(g==='unregistered'){ auth(); L.phone=DATA.login.unregistered; }
+  else if(g==='otp'){ auth(); L.phone='09121112233'; L.resendAt=Date.now()+60000; }
+  else if(g==='invite'){ auth(); }
+  else if(g==='register'){ auth(); name='register'; Object.assign(R,{step:+a,invite:'AZ1405',first:'سارا',last:'احمدی',nid:'0012345679'}); if(+a>1) Object.assign(R,{birth:{y:1393,m:5,d:12},gender:'دختر'}); if(+a>2) Object.assign(R,{grade:'ششم',province:'تهران',city:'تهران',school:'دبستان فرهنگ'}); }
+  else if(g==='welcome'){ devUser(); W=+a||0; }
+  else if(g==='home'){ name='home';
+    if(a==='available'){ devUser(); S.exam=freshExam(); S.story=null; S.practice=freshPractice(); S.basket=[]; }
+    if(a==='progress'){ sit(0); name='home'; }
+    if(a==='wait'){ pub(); S.exam.status='submitted'; }
+    if(a==='new') pub();
+    if(a==='story'){ pub(); S.story={step:2,done:false}; }
+    if(a==='practice'){ seen(); drill(7,'mix'); }
+    if(a==='done'){ seen(); drill(999,'mix'); } }
+  else if(g==='rules'){ devUser(); S.exam=freshExam(); }
+  else if(g==='exam'){ sit(a==='b2'||a==='img2'||a==='last'?1:0); const e=S.exam;
+    if(a==='img') e.idx[0]=7; if(a==='img2') e.idx[1]=2; if(a==='long') e.idx[0]=14;
+    if(a==='mid'){ QB(0).slice(0,22).forEach((q,k)=>{ e.passed[q.i]=true; if(k%5!==3) e.answers[q.i]=(q.a+(k%4===0?1:0))%4; if(k%7===2) e.flags[q.i]=true; }); e.idx[0]=22; }
+    if(a==='grid'){ QB(0).slice(0,22).forEach((q,k)=>{ e.passed[q.i]=true; if(k%5!==3) e.answers[q.i]=q.a; if(k%7===2) e.flags[q.i]=true; }); e.idx[0]=22; after=examGrid; }
+    if(a==='last'){ QB(1).forEach((q,k)=>{ e.passed[q.i]=true; if(k%6) e.answers[q.i]=q.a; }); e.idx[1]=NB[1]-1; after=finishExam; } }
+  else if(g==='done'){ pub(); S.exam.status='submitted'; }
+  else if(g==='story'){ pub(); const n=STEPS(), k=Math.max(0,n.indexOf(a)); S.story={step:k,done:k===n.length-1}; }
+  else if(g==='practice'){ seen(); const lv=nextLevel()||'easy'; p={lv}; const c=pracCur(lv);
+    if(c && a!=='explain' && a!=='end'){ const sq=SIM(c.qi); c.phase=a; if(a==='ok') c.pick=sq.a; if(a==='no') c.pick=(sq.a+1)%4; }
+    if(a==='end'){ pracList(lv).forEach((i,k)=>{ const bk=k%3===1; S.practice.res[i]=bk?'basket':'ok'; if(bk) S.basket.push({id:1000+i,qi:i,from:`${DATA.exam.title} · ${qLabel(i)}`,my:S.exam.answers[i],solved:false}); }); S.practice.cur=null; } }
+  else if(g==='exams'){ if(a==='before'){ devUser(); S.exam=freshExam(); S.story=null; S.practice=freshPractice(); } else { seen(); drill(a==='done'?999:5,'mix'); } }
+  else if(g==='result'){ seen(); }
+  else if(g==='report'){ seen(); name='result'; after=reportSheet; }
+  else if(g==='answer'){ seen(); name='result'; after=()=>showAnswer(result().wrong[0] ?? 0); }
+  else if(g==='leaderboard'){ if(a==='before'){ devUser(); S.exam=freshExam(); } else seen(); }
+  else if(g==='basket'){ seen(); if(a!=='empty') drill(12,'mix'); if(a==='item'){ name='basketItem'; p={id:S.basket[0].id}; stack=[{name:'basket',p:{}}]; } }
+  else if(g==='profile'){ devUser(); }
+  else if(g==='logout'){ devUser(); name='profile'; after=logoutAsk; }
+  else if(g==='avatar'){ devUser(); name='profile'; after=pickAvatar; }
+  else if(g==='reset'){ S=fresh(); auth(); name='login'; }
+  if(['practice','basket','basketItem','result','story','rules'].includes(name) && !stack.length) stack=[{name:name==='practice'?'exams':'home',p:{}}];
+  route={name,p}; save(); NAV='tab'; render(); scrollTo(0,0);
+  if(after) setTimeout(after,350);
+}
+window.addEventListener('message', e=>{ const d=e.data && e.data.azmoun; if(d && d.go) devGo(d.go, d.perf); });
+window.DEV = devGo;
+
 render();
