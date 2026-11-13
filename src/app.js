@@ -441,7 +441,6 @@ const actions = html => `<div class="actions">${html}</div>`;
 const empty = (art, title, text) => `<div class="empty"><div class="illus sm">${art}</div><h2>${title}</h2><p class="muted">${text}</p></div>`;
 const examMeta = () => `${fa(Q.length)} سؤال · ${fa(DATA.exam.booklets.reduce((s,x)=>s+x.minutes,0))} دقیقه`;
 const ring = (v,t,label) => { const C=2*Math.PI*42; return `<div class="ring"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" class="trk"/><circle cx="50" cy="50" r="42" class="val" style="--c:${C.toFixed(1)};--off:${(C*(1-v/t)).toFixed(1)}"/></svg><div class="ring-t"><b>${fa(v)}/${fa(t)}</b><span>${label}</span></div></div>`; };
-const testHint = html => `<div class="hint">حالت تست · ${html}</div>`;
 function navbar(active){
   const items=[['home','خانه',I.home],['exams','آزمون و تمرین',I.exam],['leaderboard','رتبه‌بندی',I.rank],['profile','پروفایل',I.user]];
   return `<nav class="nav">${items.map(([k,l,ic])=>`<button class="${k===active?'on':''}" onclick="tab('${k}')">${k===active?'<span class="pill"></span>':''}${ic}<span>${l}</span></button>`).join('')}</nav>`;
@@ -468,7 +467,6 @@ V.login = () => `<div class="screen no-nav has-act stack">
     <div class="f"><label class="f-label" for="phone">شمارهٔ موبایل</label>
       <input id="phone" class="field ltr ${L.err?'err':''}" type="tel" inputmode="numeric" autocomplete="tel" maxlength="11" placeholder="۰۹۱۲ ۳۴۵ ۶۷۸۹" value="${fa(L.phone)}" oninput="onPhone(this)" onkeydown="if(event.key==='Enter')submitPhone()">
       ${L.err?`<div class="err-msg">${L.err}</div>`:''}</div>
-    ${testHint(`کد پیامک: <b class="ltr">${fa(DATA.login.testCode)}</b> · شمارهٔ ثبت‌نشده: <b class="ltr">${fa(DATA.login.unregistered)}</b>`)}
   </div>${actions(`<button id="phoneBtn" class="btn btn-primary" onclick="submitPhone()" ${L.phone.length===11?'':'disabled'}>دریافت کد</button>
     <button class="btn btn-ghost" onclick="startRegister()">ثبت‌نام با کد دعوت</button>`)}`;
 function onPhone(el){ const v=toEn(el.value).replace(/\D/g,'').slice(0,11); L.phone=v; el.value=fa(v); $('#phoneBtn').disabled=v.length!==11; if(L.err){ L.err=''; render(); } }
@@ -494,7 +492,6 @@ V.otp = () => `<div class="screen no-nav has-act stack">${topbar('')}
     <div class="f"><input id="otp" class="field otp ltr ${L.err?'err':''}" type="tel" inputmode="numeric" autocomplete="one-time-code" maxlength="5" placeholder="•••••" oninput="onOtp(this)" aria-label="کد تأیید">
       ${L.err?`<div class="err-msg">${L.err}</div>`:''}</div>
     <div id="resend"></div>
-    ${testHint(`کد پیامک: <b class="ltr">${fa(DATA.login.testCode)}</b>`)}
   </div>${actions(`<button class="btn btn-primary" id="otpBtn" onclick="submitOtp()" disabled>${L.mode==='register'?'تأیید و ورود':'ورود'}</button>`)}`;
 function onOtp(el){ const v=toEn(el.value).replace(/\D/g,'').slice(0,5); el.value=fa(v); L.otp=v; if(L.err){ L.err=''; render(); } $('#otpBtn').disabled=v.length!==5; if(v.length===5) submitOtp(); }
 function submitOtp(){
@@ -525,7 +522,6 @@ V.invite = () => `<div class="screen no-nav has-act stack">${topbar('ثبت‌ن
     <div><h1>کد دعوت</h1><p class="muted">کد دعوتی که از مدرسه گرفتی رو وارد کن.</p></div>
     <div class="f"><input id="invite" class="field ltr ${R.errs.invite?'err':''}" style="text-transform:uppercase;text-align:center;letter-spacing:4px" maxlength="10" autocomplete="off" autocapitalize="characters" placeholder="------" value="${esc(R.invite)}" oninput="onInvite(this)" onkeydown="if(event.key==='Enter')submitInvite()" aria-label="کد دعوت">
       ${R.errs.invite?`<div class="err-msg">${R.errs.invite}</div>`:''}</div>
-    ${testHint(`کد دعوت: <b class="ltr">${DATA.login.invite}</b>`)}
   </div>${actions(`<button class="btn btn-primary" id="invBtn" onclick="submitInvite()" ${R.invite.trim()?'':'disabled'}>ادامه</button>`)}`;
 function onInvite(el){ R.invite=toEn(el.value).toUpperCase().replace(/\s/g,''); $('#invBtn').disabled=!R.invite; if(R.errs.invite){ delete R.errs.invite; render(); } }
 function submitInvite(){
@@ -564,7 +560,6 @@ V.register = () => { const st=REG_STEPS[R.step], last=R.step===REG_STEPS.length-
       <p class="small muted" style="margin-top:14px">مرحلهٔ ${fa(R.step+1)} از ${fa(REG_STEPS.length)}</p>
       <h1>${st.title}</h1><p class="muted" style="margin-bottom:20px">${st.sub}</p>
       ${st.keys.map(k=>FIELDS[k]()).join('')}
-      ${R.step===0?`<div style="margin-top:18px">${testHint(`یه کد ملی معتبر: <b class="ltr">${fa('0012345679')}</b>`)}</div>`:''}
     </div>
   </div>${actions(`<button class="btn btn-primary" id="regBtn" onclick="regNext()">${last?'ارسال کد تأیید':'ادامه'}</button>`)}`; };
 const pickField = (key, label, ph, off) => fld(key,label,`<button class="field field-btn ${R.errs[key]?'err':''}" onclick="openPick('${key}')" ${off?'disabled':''}>${R[key]?`<span>${esc(R[key])}</span>`:`<span class="muted">${ph}</span>`}${I.down}</button>`);
@@ -673,9 +668,9 @@ function statusCard(){
   const card=(art,badge,title,text,btn,extra='')=>`<div class="card status"><div class="row" style="gap:14px"><div class="grow stack-s"><div>${badge}</div><h2>${title}</h2><p class="muted small">${nob(text)}</p></div><div class="illus sm">${art}</div></div>${extra}${btn}</div>`;
   if(st==='available') return card(ART.books,`<span class="badge">${x.title}</span> ${x.free?'<span class="badge ok">رایگان</span>':''}`,'آزمونت آماده‌ست',examMeta()+' · هر وقت آماده بودی شروع کن.',`<button class="btn btn-primary" onclick="go('rules')">شروع آزمون</button>`);
   if(st==='inProgress') return card(ART.clock,`<span class="badge warn">نیمه‌کاره</span>`,'آزمونت نیمه‌کاره‌ست',`دفترچهٔ ${fa(S.exam.booklet+1)} · ${mmss(timeLeft())} وقت مونده`,`<button class="btn btn-primary" onclick="go('exam')">ادامهٔ آزمون</button>`);
-  if(st==='submitted') return card(ART.clock,`<span class="badge ok">تحویل داده شد</span>`,'منتظر نتیجه',`نتیجهٔ ${x.title} ${x.resultAt} اعلام می‌شه.`,`<button class="btn btn-ghost btn-sm" onclick="publish()" style="color:#8A3E26">حالت تست: اعلام نتیجه</button>`);
+  if(st==='submitted') return card(ART.clock,`<span class="badge ok">تحویل داده شد</span>`,'منتظر نتیجه',`نتیجهٔ ${x.title} ${x.resultAt} اعلام می‌شه.`,'');
   const ss=storyState(), ps=pracState(), [d,t]=pracAll();
-  if(ss==='new') return card(ART.trophy,`<span class="badge pri">نتیجهٔ ${x.title} اومد</span>`,'نتیجه‌ت آماده‌ست!','ببین چطور شدی و ترازت چند شد.',`<button class="btn btn-primary pulse" onclick="startStory()">دیدن نتیجهٔ آزمون</button>`);
+  if(ss==='new') return card(ART.trophy,`<span class="badge pri">نتیجهٔ ${x.title} اومد</span>`,'نتیجه‌ت آماده‌ست!','ببین چطور شدی و رتبه‌ت چند شد.',`<button class="btn btn-primary pulse" onclick="startStory()">دیدن نتیجهٔ آزمون</button>`);
   if(ss==='progress') return card(ART.trophy,`<span class="badge warn">نیمه‌کاره</span>`,'نتیجه‌ت رو تا آخر ندیدی','از همون‌جایی که بودی ادامه بده.',`<button class="btn btn-primary" onclick="go('story')">ادامه بده</button>`);
   if(ps==='new'||ps==='progress'){ const lv=nextLevel();
     return card(ART.target,`<span class="badge pri">تمرین ${x.title}</span>`,ps==='new'?'تمرین‌هات آماده‌ست':'تمرینت نیمه‌کاره‌ست',`${fa(d)} از ${fa(t)} سؤال رو تمرین کردی. الان نوبت سؤال‌های ${DIFF[lv]}ه.`,`<button class="btn btn-primary" onclick="openPractice('${lv}')">${ps==='new'?'شروع تمرین':'ادامهٔ تمرین'}</button>`,`<div class="progress"><i style="width:${pct(d,t)}%"></i></div>`); }
@@ -703,7 +698,6 @@ V.home = () => {
     </div>
   </div>${navbar('home')}`;
 };
-function publish(){ S.exam.status='published'; S.story=null; S.practice=freshPractice(); save(); rerender('tab'); toast('نتیجهٔ '+DATA.exam.title+' اعلام شد'); }
 
 /* ---------- آزمون و تمرین ---------- */
 V.exams = () => {
@@ -906,10 +900,10 @@ V.story = () => {
   }
   if(cur==='score'){
     body=`<div class="st-body center">
-      <span class="cap">تراز و رتبه</span>
-      <h1 class="st-h">ترازت شد</h1>
-      <div class="taraz"><b data-count="${r.taraz}" data-from="5000" data-sep="1" data-delay="350" data-dur="1100">${faN(5000)}</b></div>
-      <div class="wf-chips"><span class="chip-up" style="--d:1.6s">رتبهٔ ${fa(r.rank)} از ${fa(TOTAL)} نفر</span><span class="chip-up plain" style="--d:1.8s">میانگین همه: ${faN(5000)}</span></div>
+      <span class="cap">رتبهٔ تو</span>
+      <h1 class="st-h">بین ${fa(TOTAL)} نفر، شدی نفرِ</h1>
+      <div class="taraz"><b data-count="${r.rank}" data-from="${TOTAL}" data-delay="350" data-dur="1100">${fa(TOTAL)}</b></div>
+      <div class="wf-chips"><span class="chip-up" style="--d:1.6s">از ${fa(TOTAL-r.rank)} نفر جلوتری</span><span class="chip-up plain" style="--d:1.8s">درصد کل: ${fa1(r.score)}٪</span></div>
       <div class="cats" style="text-align:right">${BOOKLETS.map((b,i)=>`<div class="cat-row" style="--d:${2+i*.18}s"><div class="row between"><b>${bk[b].title}</b><span class="muted small">ضریب ${fa(bk[b].coef)}</span></div><div class="row" style="gap:10px;margin-top:8px"><div class="cbar grow" style="margin:0"><i class="${r.pb[b]>=50?'good':''}" style="--w:${Math.max(3,Math.min(100,r.pb[b]))}%"></i></div><b class="pc">${fa1(r.pb[b])}٪</b></div></div>`).join('')}</div>
       <p class="muted small st-line" style="--d:2.5s">${nob('هر ۳ جواب غلط، نمرهٔ یک جواب درست رو از بین می‌بره.')}</p></div>`;
   }
@@ -923,7 +917,7 @@ V.story = () => {
   }
   if(cur==='compare'){
     // اگر سؤال‌های غلط را اصلاً جواب نمی‌داد (نمرهٔ منفی نمی‌گرفت)
-    const s2=scoreOf(r.c,[0,0]), rank2=rankOf(s2), up=r.rank-rank2, t2=tarazOf(s2);
+    const s2=scoreOf(r.c,[0,0]), rank2=rankOf(s2), up=r.rank-rank2;
     body=`<div class="st-body">
       <span class="cap">فقط برای مقایسه</span>
       <h1 class="st-h">اگه اون ${fa(r.bad)} سؤالی که غلط زدی رو اصلاً جواب نمی‌دادی…</h1>
@@ -932,7 +926,7 @@ V.story = () => {
         <div class="wf-arrow">${I.arrowL}</div>
         <div class="wf-then"><span class="small">رتبه‌ت می‌شد</span><b data-count="${rank2}" data-from="${r.rank}" data-delay="500">${fa(r.rank)}</b></div>
       </div>
-      <div class="wf-chips"><span class="chip-up" style="--d:1.5s">${up?`${fa(up)} پله بالاتر`:'رتبه‌ت همین می‌موند'}</span><span class="chip-up plain" style="--d:1.7s">تراز ${faN(t2)} به‌جای ${faN(r.taraz)}</span></div>
+      <div class="wf-chips"><span class="chip-up" style="--d:1.5s">${up?`${fa(up)} پله بالاتر`:'رتبه‌ت همین می‌موند'}</span><span class="chip-up plain" style="--d:1.7s">درصد کل ${fa1(s2)}٪ به‌جای ${fa1(r.score)}٪</span></div>
       <div class="card neg st-line" style="--d:1.9s"><b>${fa(r.bad)} جواب غلط = ${fa1(r.bad*NEG)} نمرهٔ منفی</b><p class="muted small">${nob('یعنی جواب‌های غلط، نمرهٔ این تعداد از جواب‌های درستت رو از بین بردن.')}</p></div>
       <p class="st-line tip" style="--d:2.1s">${nob('وقتی مطمئن نیستی، نزدن بهتر از غلط زدنه.')}</p>
       <div class="note">${I.info}<span>این رتبه فرضیه و توی رتبه‌بندی ثبت نمی‌شه.</span></div></div>`;
@@ -1063,15 +1057,12 @@ V.profile = () => { const s=me(), ph=S.phone||'09121234567'; return `<div class=
     <button class="list-item compact" onclick="soon()"><span class="chev">${I.chat}</span><span class="grow"><b>پیام‌ها و پشتیبانی</b></span><span class="chev">${I.chev}</span></button>
     <button class="list-item compact" onclick="soon()"><span class="chev">${I.card}</span><span class="grow"><b>مالی و اطلاعات پرداخت</b></span><span class="chev">${I.chev}</span></button>
     <button class="list-item compact" onclick="logoutAsk()"><span class="chev" style="color:var(--bad)">${I.out}</span><span class="grow"><b style="color:var(--bad)">خروج از حساب</b></span></button>
-    <div class="row" style="flex-wrap:wrap;gap:10px;margin-top:20px"><button class="btn btn-ghost btn-sm" style="color:#8A3E26" onclick="retakeExam()">حالت تست: دوباره آزمون بده</button><button class="btn btn-ghost btn-sm" style="color:#8A3E26" onclick="resetDemo()">حالت تست: پاک کردن همه‌چیز</button></div>
   </div>${navbar('profile')}`; };
 function soon(){ toast('این بخش هنوز ساخته نشده'); }
 function pickAvatar(){ sheet(`<h2>عکس پروفایلت رو انتخاب کن</h2><div class="av-grid">${ASSET.avatars.map((a,i)=>`<button class="av-opt ${i===S.avatar?'on':''}" onclick="setAvatar(${i})"><img src="${a}" alt="آواتار ${fa(i+1)}"></button>`).join('')}</div><div class="acts"><button class="btn btn-ghost" onclick="closeSheet()">بستن</button></div>`); }
 function setAvatar(i){ S.avatar=i; save(); closeSheet(); render(); kick('.pf-av .avatar','bump'); haptic(); toast('عکس پروفایلت عوض شد'); }
 function logoutAsk(){ sheet(`<h2>از حسابت خارج می‌شی؟</h2><p class="muted">جواب‌ها و تمرین‌هات سر جاشون می‌مونن. برای برگشتن باید دوباره با شماره‌ت وارد بشی.</p><div class="acts"><button class="btn btn-primary btn-danger-fill" onclick="logout()">آره، خارج می‌شم</button><button class="btn btn-ghost" onclick="closeSheet()">نه، می‌مونم</button></div>`); }
 function logout(){ stashUser(); S.loggedIn=false; save(); closeSheet(); stack=[]; route={name:'login',p:{}}; L={mode:'login',phone:'',otp:'',err:'',resendAt:0}; rerender('tab'); }
-function retakeExam(){ S.exam=freshExam(); S.practice=freshPractice(); S.basket=[]; S.story=null; stashUser(); save(); stack=[]; go('home',{},false); toast('آزمون از اول آماده‌ست'); }
-function resetDemo(){ S=fresh(); save(); closeSheet(); stack=[]; route={name:'login',p:{}}; L={mode:'login',phone:'',otp:'',err:'',resendAt:0}; R=freshR(); rerender('tab'); }
 
 /* ---------- سبد: از معلم می‌پرسم ---------- */
 V.basket = () => { const open=openBasket(), solved=S.basket.length-open.length;
@@ -1100,6 +1091,7 @@ function render(){
     if(sc){ sc.classList.add('enter-'+kind); if(kind==='tab') [...sc.children].forEach((c,i)=>c.style.setProperty('--i',Math.min(i,8))); }
     growBars(app); countUp(app); NAV=null;
     if(route.name==='story') storyFx();
+    sbar();
     if(route.name==='home') bnDots();
   } else { const t=document.createElement('div'); t.innerHTML=html; morphKids(app,t); }
   if(route.name==='otp') tickResend();
@@ -1116,6 +1108,18 @@ setInterval(()=>{
   if(left<=0){ if(e.booklet<BOOKLETS.length-1) goNextBooklet(true); else submitExam(true); return; }
   const t=$('#timer'); if(t){ t.textContent=mmss(left); t.classList.toggle('low',left<180000); }
 },1000);
+/* ---------- نشانگر اسکرول داخل اپ (به‌جای اسکرول‌بار مرورگر) ---------- */
+let SB_T=0;
+function sbar(show){
+  let el=$('#sbar'); if(!el){ el=document.createElement('div'); el.id='sbar'; el.innerHTML='<i></i>'; el.setAttribute('aria-hidden','true'); document.body.appendChild(el); }
+  const doc=document.documentElement, H=innerHeight, full=doc.scrollHeight, app=$('#app').getBoundingClientRect();
+  if(full<=H+4){ el.classList.remove('on'); return; }
+  const top=10, track=H-20, th=Math.max(36, track*H/full), y=top+(track-th)*(scrollY/(full-H));
+  el.style.left=(app.left+3)+'px'; el.firstChild.style.cssText=`height:${th}px;transform:translateY(${y}px)`;
+  if(show){ el.classList.add('on'); clearTimeout(SB_T); SB_T=setTimeout(()=>el.classList.remove('on'),900); }
+}
+addEventListener('scroll',()=>sbar(true),{passive:true}); addEventListener('resize',()=>sbar());
+
 /* ============ ابزار پیش‌نمایش (preview.html از این‌ها استفاده می‌کند) ============ */
 const DEV_PERF = { strong:[.9,.04], mid:[.6,.16], weak:[.34,.26] };
 function devFill(perf){ const P=DEV_PERF[perf]||DEV_PERF.mid, r=rngOf((perf||'mid').length*97+5);

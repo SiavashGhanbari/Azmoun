@@ -13,6 +13,12 @@
 html,body{margin:0;height:100%}
 /* بدون اسکرول افقی؛ clip برخلاف hidden هدرهای چسبان را خراب نمی‌کند */
 body{overflow-x:hidden;overscroll-behavior-x:none}
+/* اسکرول‌بار مرورگر پنهان است؛ به‌جایش نشانگر باریک داخل اپ (#sbar) */
+html,.sheet,.pick-list{scrollbar-width:none}
+html::-webkit-scrollbar,body::-webkit-scrollbar,.sheet::-webkit-scrollbar{display:none}
+#sbar{position:fixed;top:0;bottom:0;width:4px;z-index:40;pointer-events:none;opacity:0;transition:opacity .35s}
+#sbar.on{opacity:1;transition-duration:.12s}
+#sbar i{display:block;width:4px;border-radius:4px;background:rgba(29,29,27,.38);will-change:transform}
 html{touch-action:pan-y pinch-zoom}
 body{background:#DCD8D0;color:var(--ink);font-family:'Yekan Bakh',Tahoma,sans-serif;font-size:15px;line-height:1.75;-webkit-font-smoothing:antialiased}
 button,input{font:inherit;color:inherit}
@@ -92,7 +98,6 @@ body.scrolled .sticky{box-shadow:0 1px 0 var(--line),0 10px 16px -14px rgba(40,3
 .field-btn svg{width:18px;height:18px;color:var(--muted)}
 .otp{letter-spacing:18px;text-align:center;font-size:26px;font-weight:800}
 .err-msg{color:var(--bad);font-size:13px;margin-top:6px}
-.hint{border:1.4px dashed #C9B9A6;color:var(--muted);border-radius:14px;padding:10px 12px;font-size:12.5px}
 .seg{display:flex;gap:10px}
 .seg button,.chips button{flex:1;min-height:48px;border-radius:14px;border:1.6px solid var(--ink);background:var(--card);font-weight:700;box-shadow:0 2px 0 var(--ink);transition:transform .12s,box-shadow .12s,background-color .2s}
 .seg button:active,.chips button:active{transform:translateY(2px);box-shadow:0 0 0 var(--ink)}
