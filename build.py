@@ -14,7 +14,10 @@ SRC = ROOT / 'src'
 def read(p): return (SRC / p).read_text(encoding='utf-8')
 
 FONT = 'data:font/ttf;base64,' + base64.b64encode((SRC / 'fonts/YekanBakh-VF.ttf').read_bytes()).decode()
-JS = read('app.js').replace('/*__ASSETS__*/', read('assets.js'))
+# آواتارها: همهٔ فایل‌های src/avatars به ترتیب نام
+AV = [ 'data:image/jpeg;base64,' + base64.b64encode(p.read_bytes()).decode() for p in sorted((SRC / 'avatars').glob('*.jpg')) ]
+import json
+JS = read('app.js').replace('/*__ASSETS__*/', read('assets.js') + 'ASSET.avatars = ' + json.dumps(AV) + ';\n')
 
 def page(css, js, theme, extra=''):
     return f'''<!doctype html>

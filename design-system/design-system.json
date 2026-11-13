@@ -3,65 +3,156 @@
   "assetGroups": {
     "Avatars": {
       "files": {
-        "avatar-1.jpg": {
-          "blob": "4702a9fc9c598e3a018c06827cf8c7a0",
-          "name": "avatar-1.jpg",
-          "size": 9764,
+        "alien.jpg": {
+          "blob": "263abdb3b73a6a07868ba752aabe185f",
+          "name": "alien.jpg",
+          "size": 9714,
           "type": "image/jpeg"
         },
-        "avatar-2.jpg": {
-          "blob": "aebcb27a03c061fe8dcafae6f1b0fd22",
-          "name": "avatar-2.jpg",
-          "size": 8501,
+        "artist-man.jpg": {
+          "blob": "4e1aef8dc1ca4b2e23f519c77fde530b",
+          "name": "artist-man.jpg",
+          "size": 6045,
           "type": "image/jpeg"
         },
-        "avatar-3.jpg": {
-          "blob": "dd1cfe562cdd7c74e369ce976ea379ad",
-          "name": "avatar-3.jpg",
-          "size": 8497,
+        "astronaut.jpg": {
+          "blob": "f9810f74142af7bb3003e067ced25b58",
+          "name": "astronaut.jpg",
+          "size": 10749,
           "type": "image/jpeg"
         },
-        "avatar-4.jpg": {
-          "blob": "9a58e41cb53cef207edbebaa553d010b",
-          "name": "avatar-4.jpg",
-          "size": 8098,
+        "cool-man.jpg": {
+          "blob": "576627074ad16088833f25d5ba75617e",
+          "name": "cool-man.jpg",
+          "size": 9096,
           "type": "image/jpeg"
         },
-        "avatar-5.jpg": {
-          "blob": "261e6dd24c6c85d77fe1ab58cb14dd6f",
-          "name": "avatar-5.jpg",
-          "size": 7170,
+        "dress-girl.jpg": {
+          "blob": "22bf51a19121189ffb623fdfca691725",
+          "name": "dress-girl.jpg",
+          "size": 7156,
           "type": "image/jpeg"
         },
-        "avatar-6.jpg": {
-          "blob": "ec2a97e494fa2daed9a27829cd0358d0",
-          "name": "avatar-6.jpg",
-          "size": 7668,
+        "engenior.jpg": {
+          "blob": "0b428e64dd80a6f13a253091ce9491fa",
+          "name": "engenior.jpg",
+          "size": 11035,
           "type": "image/jpeg"
         },
-        "avatar-7.jpg": {
-          "blob": "b66ad568dbd2a9875bf9d54c66b245c1",
-          "name": "avatar-7.jpg",
-          "size": 8649,
+        "french-man.jpg": {
+          "blob": "7ca6bc6465904d51b4d341beec3f6e6c",
+          "name": "french-man.jpg",
+          "size": 9696,
           "type": "image/jpeg"
         },
-        "avatar-8.jpg": {
-          "blob": "e720c452fc2ea0a882a621170f61eb50",
-          "name": "avatar-8.jpg",
-          "size": 7762,
+        "gamer-man.jpg": {
+          "blob": "38bcb5f8a986199b7189202b1056c3de",
+          "name": "gamer-man.jpg",
+          "size": 9673,
+          "type": "image/jpeg"
+        },
+        "glass-boy.jpg": {
+          "blob": "7519976d6f2904f51aecd9edf094d01e",
+          "name": "glass-boy.jpg",
+          "size": 9411,
+          "type": "image/jpeg"
+        },
+        "hihop-man.jpg": {
+          "blob": "38c09a6967db8acd47126e5aa93f12fc",
+          "name": "hihop-man.jpg",
+          "size": 8441,
+          "type": "image/jpeg"
+        },
+        "hijab-woman.jpg": {
+          "blob": "f2476859eb1a07033acb0528298297db",
+          "name": "hijab-woman.jpg",
+          "size": 6029,
+          "type": "image/jpeg"
+        },
+        "knife-woman.jpg": {
+          "blob": "15d5fe00a44900ea51958c8339aff82c",
+          "name": "knife-woman.jpg",
+          "size": 8590,
+          "type": "image/jpeg"
+        },
+        "laugh-woman.jpg": {
+          "blob": "c6094100c46488afaccd027549ebc2a4",
+          "name": "laugh-woman.jpg",
+          "size": 8959,
+          "type": "image/jpeg"
+        },
+        "mexico.jpg": {
+          "blob": "e26f49991a887a11bf92db8454431603",
+          "name": "mexico.jpg",
+          "size": 9878,
+          "type": "image/jpeg"
+        },
+        "old-man.jpg": {
+          "blob": "522ebd17d113873bd42c2e9c63d161b8",
+          "name": "old-man.jpg",
+          "size": 7547,
+          "type": "image/jpeg"
+        },
+        "relax-woman.jpg": {
+          "blob": "6af09c47f1c86e88cbde4aa97f5c0fe9",
+          "name": "relax-woman.jpg",
+          "size": 9232,
+          "type": "image/jpeg"
+        },
+        "rock.jpg": {
+          "blob": "1aaf6222032a8aacfb57eff9cb8459f6",
+          "name": "rock.jpg",
+          "size": 7942,
+          "type": "image/jpeg"
+        },
+        "tea-woman.jpg": {
+          "blob": "04730093b912f699a6715dd85c7c1782",
+          "name": "tea-woman.jpg",
+          "size": 9805,
+          "type": "image/jpeg"
+        },
+        "tintin.jpg": {
+          "blob": "06f79e85d9522b655f3313d5c7e844db",
+          "name": "tintin.jpg",
+          "size": 10526,
+          "type": "image/jpeg"
+        },
+        "woman-phone-lover.jpg": {
+          "blob": "feffb708c8077d7eb72e395bac827abc",
+          "name": "woman-phone-lover.jpg",
+          "size": 9414,
+          "type": "image/jpeg"
+        },
+        "woman.jpg": {
+          "blob": "308cec5c4ea404b050a6a189cabab6a2",
+          "name": "woman.jpg",
+          "size": 9061,
           "type": "image/jpeg"
         }
       },
       "name": "Avatars",
       "order": [
-        "avatar-1.jpg",
-        "avatar-2.jpg",
-        "avatar-3.jpg",
-        "avatar-4.jpg",
-        "avatar-5.jpg",
-        "avatar-6.jpg",
-        "avatar-7.jpg",
-        "avatar-8.jpg"
+        "alien.jpg",
+        "artist-man.jpg",
+        "astronaut.jpg",
+        "cool-man.jpg",
+        "dress-girl.jpg",
+        "engenior.jpg",
+        "french-man.jpg",
+        "gamer-man.jpg",
+        "glass-boy.jpg",
+        "hihop-man.jpg",
+        "hijab-woman.jpg",
+        "knife-woman.jpg",
+        "laugh-woman.jpg",
+        "mexico.jpg",
+        "old-man.jpg",
+        "relax-woman.jpg",
+        "rock.jpg",
+        "tea-woman.jpg",
+        "tintin.jpg",
+        "woman-phone-lover.jpg",
+        "woman.jpg"
       ],
       "tile": "s"
     },
@@ -328,10 +419,10 @@
     "Avatars"
   ],
   "lastChange": {
-    "at": "2026-11-13T16:25:00Z",
+    "at": "2026-11-13T16:50:00Z",
     "by": "Siavash",
     "via": "Claude · Cowork",
-    "note": "PracticePath و SpeedHud به‌جای PracticeLevels؛ قاعده‌ی سبد (سؤال اصلی + سؤال مشابه، خروجی PDF) و هم‌اندازه بودن دکمه‌های هدر خانه"
+    "note": "۲۱ آواتار جدید (Humation) به‌جای هشت آواتار قبلی"
   },
   "layout": "files",
   "libraries": [],

@@ -320,7 +320,7 @@ const POP = (() => {
   const norm=()=>{ let s=0; for(let i=0;i<6;i++) s+=r(); return (s-3)/.707; };
   for(let n=0;n<N;n++){ const th=norm(), c=[0,0], w=[0,0];
     Q.forEach((q,i)=>{ if(r() < 1/(1+Math.exp(-1.3*(th-q.beta)))){ c[q.b]++; ok[i]++; } else if(r()<.45){ if(r()<.25){ c[q.b]++; ok[i]++; } else w[q.b]++; } });
-    list.push({ name:NAMES[(n*5+3)%NAMES.length]+' '+INITS[(n*7+2)%INITS.length]+'.', city:CAPS[(n*11+4)%CAPS.length], av:(n*3+1)%8, score:scoreOf(c,w) }); }
+    list.push({ name:NAMES[(n*5+3)%NAMES.length]+' '+INITS[(n*7+2)%INITS.length]+'.', city:CAPS[(n*11+4)%CAPS.length], av:(n*5+2)%ASSET.avatars.length, score:scoreOf(c,w) }); }
   // سطح سؤال: ۵۰٪ به بالا درست زده باشند = ساده، ۳۰ تا ۵۰٪ = متوسط، کمتر = سخت
   Q.forEach((q,i)=>{ q.rate=ok[i]/N; q.d = q.rate>=.5 ? 'easy' : q.rate>=.3 ? 'medium' : 'hard'; });
   list.sort((a,b)=>b.score-a.score);
@@ -1277,7 +1277,7 @@ function devFill(perf){ const P=DEV_PERF[perf]||DEV_PERF.mid, r=rngOf((perf||'mi
   S.exam=freshExam(); S.exam.status='published'; S.exam.passed=S.exam.passed.map(()=>true);
   S.exam.answers=Q.map(q=>{ const pc=Math.min(.98,Math.max(.05,P[0]+(q.rate-.45)*.6)), u=r(); return u<pc ? q.a : u<pc+P[1] ? null : (q.a+1+Math.floor(r()*3))%4; }); }
 function devUser(){ if(S.loggedIn && S.profile) return; S.loggedIn=true; S.phone='09121112233'; if(!S.registered.includes(S.phone)) S.registered.push(S.phone); loadUser(S.phone,true);
-  S.profile={ first:'سارا', last:'احمدی', grade:'ششم', province:'تهران', city:'تهران', school:'دبستان فرهنگ', gender:'دختر', birth:{y:1393,m:5,d:12}, nid:'0012345679' }; S.avatar=2; }
+  S.profile={ first:'سارا', last:'احمدی', grade:'ششم', province:'تهران', city:'تهران', school:'دبستان فرهنگ', gender:'دختر', birth:{y:1393,m:5,d:12}, nid:'0012345679' }; S.avatar=10; }
 function devGo(id, perf){
   closeSheet(); stack=[]; G=null; const [g,a]=id.split(':'); let name=g, p={}, after=null;
   const auth=()=>{ if(S.loggedIn){ stashUser(); S.loggedIn=false; } L={mode:'login',phone:'',otp:'',err:'',resendAt:0}; R=freshR(); };
