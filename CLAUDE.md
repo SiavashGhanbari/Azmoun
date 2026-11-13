@@ -1,7 +1,7 @@
 # Azmoun — working rules
 
 - Source of truth is `src/`. Never hand-edit `index.html`; run `python3 build.py`.
-- Design system lives in `design-system/` (brand book `README.md`, `tokens.json`, `components/*`). Read its README before any UI change and follow it: clickable things get a soft `edge` border + hard shadow in the same colour (never black borders), display-only cards a soft shadow; primary colour only for the main action; no bare text buttons; no horizontal page scroll; generous whitespace (20px gutters, 16px stack gap, 32px between sections); Persian digits; no orphan last word (`nob()`).
+- Design system lives in `design-system/` (brand book `README.md`, `tokens.json`, `components/*`). Read its README before any UI change and follow it: clickable things get an ink (black) border + hard shadow — do not soften these, display-only cards a soft shadow; primary colour only for the main action; no bare text buttons; no horizontal page scroll; generous whitespace (20px gutters, 16px stack gap, 32px between sections); Persian digits; no orphan last word (`nob()`).
 - Any new or changed UI pattern must be reflected in the design system in the same change: update the component README + `preview.html`, regenerate `components/bundle.css` from `src/style.css`, and update the published "آزمون" Design System artifact.
 - Show changes in the preview first (`preview.html`: phone frame + jump panel). Add a jump entry in `preview.html` and a matching `devGo` scenario in `src/app.js` for every new screen or state.
 - Do not push to GitHub until Siavash explicitly asks.
