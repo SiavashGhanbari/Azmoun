@@ -357,7 +357,7 @@ const avatar = (i=S.avatar) => ASSET.avatars[i % ASSET.avatars.length];
 let route = { name: S.loggedIn ? 'home' : 'login', p:{} };
 let stack = [], NAV = 'tab';
 let L = { mode:'login', phone:'', otp:'', err:'', resendAt:0 };
-const freshR = () => ({ step:0, invite:'', first:'', last:'', nid:'', phone:'', birth:null, gender:'', grade:'', province:'', city:'', school:'', errs:{} });
+const freshR = () => ({ step:0, invite:'', first:'', last:'', nid:'', phone:'', birth:null, gender:'', grade:'', province:'', city:'', school:'', avatar:0, errs:{} });
 let R = freshR();
 
 /* ============ ناوبری و افکت‌ها ============ */
@@ -516,7 +516,7 @@ function submitOtp(){
     stashUser();
     if(L.mode==='register'){
       loadUser(R.phone, true);
-      S.profile={ first:R.first.trim(), last:R.last.trim(), grade:R.grade, province:R.province, city:R.city, school:R.school, gender:R.gender, birth:R.birth, nid:R.nid };
+      S.avatar=R.avatar||0; S.profile={ first:R.first.trim(), last:R.last.trim(), grade:R.grade, province:R.province, city:R.city, school:R.school, gender:R.gender, birth:R.birth, nid:R.nid };
       if(!S.registered.includes(R.phone)) S.registered.push(R.phone);
     } else loadUser(L.phone);
     S.loggedIn=true; S.phone=L.phone; stashUser(); save();
@@ -550,10 +550,19 @@ const REG_STEPS = [
   { title:'اسمت چیه؟', sub:'همون‌طور که توی شناسنامه‌ت نوشته شده.', keys:['first','last','nid'] },
   { title:'یه کم از خودت بگو', sub:'برای ساختن کارنامه‌ت لازمه.', keys:['birth','gender'] },
   { title:'کجا درس می‌خونی؟', sub:'کلاس و مدرسه‌ت رو انتخاب کن.', keys:['grade','province','city','school'] },
+  { title:'یه عکس برای خودت انتخاب کن', sub:'ورق بزن و هر کدوم رو دوست داشتی وسط نگه دار. بعداً هم می‌تونی عوضش کنی.', keys:['avatar'] },
   { title:'شمارهٔ موبایلت چنده؟', sub:'کد تأیید به این شماره پیامک می‌شه.', keys:['phone'] },
 ];
 const enterNext = `onkeydown="if(event.key==='Enter')regNext()"`;
+// کروسل انتخاب آواتار: آواتارِ وسط انتخاب‌شده است
+let AVC=0;
+const avCarousel = (id, sel) => { AVC=sel; const n=ASSET.avatars.length; return `<div class="avc-wrap"><div class="avc" id="${id}" onscroll="avcScroll('${id}')">${ASSET.avatars.map((a,i)=>`<button class="avc-it ${i===sel?'on':''}" onclick="avcGo('${id}',${i})" aria-label="عکس ${fa(i+1)} از ${fa(n)}" aria-pressed="${i===sel}"><img src="${a}" alt=""></button>`).join('')}</div></div>
+  <div class="avc-ctl"><button class="icon-btn" onclick="avcGo('${id}',Math.max(0,AVC-1))" aria-label="عکس قبلی">${I.back}</button><b id="${id}n">${fa(sel+1)} از ${fa(n)}</b><button class="icon-btn" onclick="avcGo('${id}',Math.min(${n-1},AVC+1))" aria-label="عکس بعدی">${I.chev}</button></div>`; };
+function avcIndex(id){ const el=$('#'+id), c=el.getBoundingClientRect(), mid=c.left+c.width/2; let best=0, bd=1e9; [...el.children].forEach((b,i)=>{ const r=b.getBoundingClientRect(), d=Math.abs(r.left+r.width/2-mid); if(d<bd){ bd=d; best=i; } }); return best; }
+function avcScroll(id){ const i=avcIndex(id); if(i===AVC) return; AVC=i; [...$('#'+id).children].forEach((b,k)=>{ b.classList.toggle('on',k===i); b.setAttribute('aria-pressed',k===i); }); $('#'+id+'n').textContent=`${fa(i+1)} از ${fa(ASSET.avatars.length)}`; if(id==='avcR') R.avatar=i; haptic(5); }
+function avcGo(id,i,instant){ const el=$('#'+id); if(!el) return; const b=el.children[i], rb=b.getBoundingClientRect(), rc=el.getBoundingClientRect(); el.scrollBy({ left:(rb.left+rb.width/2)-(rc.left+rc.width/2), behavior:instant||reduced()?'auto':'smooth' }); if(instant){ AVC=-1; avcScroll(id); } }
 const FIELDS = {
+  avatar:() => `<div id="f-avatar">${avCarousel('avcR',R.avatar||0)}</div>`,
   first: () => fld('first','نام',`<input class="field txt ${R.errs.first?'err':''}" value="${esc(R.first)}" autocomplete="given-name" ${enterNext} oninput="R.first=this.value;clr('first')">`),
   last:  () => fld('last','نام خانوادگی',`<input class="field txt ${R.errs.last?'err':''}" value="${esc(R.last)}" autocomplete="family-name" ${enterNext} oninput="R.last=this.value;clr('last')">`),
   nid:   () => fld('nid','کد ملی',`<input class="field ltr ${R.errs.nid?'err':''}" type="tel" inputmode="numeric" maxlength="10" placeholder="۰۰۱۲۳۴۵۶۷۹" value="${fa(R.nid)}" ${enterNext} oninput="onDigits(this,'nid',10)">`),
@@ -1184,7 +1193,7 @@ V.leaderboard = () => {
   if(prev<B.length) rows+=`<div class="gap">···</div>`;
   const myCard = pub
     ? `<div class="card row between"><span>جایگاه تو</span><b><span data-count="${r.rank}" data-from="${TOTAL}">${fa(r.rank)}</span> از ${fa(TOTAL)} · تراز ${faN(r.taraz)}</b></div>`
-    : `<div class="card row" style="gap:14px"><img class="avatar" src="${avatar()}" alt="" style="width:46px;height:46px;border:1.6px solid var(--ink)"><div class="grow"><b>تو هنوز رتبه نداری</b><p class="small muted">${st==='submitted'?`رتبه‌ت بعد از اعلام نتیجه (${DATA.exam.resultAt}) اینجا میاد.`:'بعد از شرکت در آزمون و اعلام نتیجه، جایگاهت اینجا میاد.'}</p></div></div>
+    : `<div class="card row" style="gap:14px"><img class="avatar" src="${avatar()}" alt="" style="width:46px;height:46px;border:1.6px solid var(--edge)"><div class="grow"><b>تو هنوز رتبه نداری</b><p class="small muted">${st==='submitted'?`رتبه‌ت بعد از اعلام نتیجه (${DATA.exam.resultAt}) اینجا میاد.`:'بعد از شرکت در آزمون و اعلام نتیجه، جایگاهت اینجا میاد.'}</p></div></div>
        ${st==='available'?`<button class="btn btn-primary" onclick="go('rules')">شروع آزمون</button>`:st==='inProgress'?`<button class="btn btn-primary" onclick="go('exam')">ادامهٔ آزمون</button>`:''}`;
   return `<div class="screen stack"><div class="sticky"><h1>رتبه‌بندی</h1><p class="muted small">${DATA.exam.title} · پایهٔ ${esc(me().grade)} · ${fa(TOTAL)} شرکت‌کننده</p></div>
     <div class="card podium-card"><div class="podium">${pod(top[1],'p2')}${pod(top[0],'p1')}${pod(top[2],'p3')}</div></div>
@@ -1208,7 +1217,7 @@ V.profile = () => { const s=me(), ph=S.phone||'09121234567'; return `<div class=
     <button class="list-item compact" onclick="logoutAsk()"><span class="chev" style="color:var(--bad)">${I.out}</span><span class="grow"><b style="color:var(--bad)">خروج از حساب</b></span></button>
   </div>${navbar('profile')}`; };
 function soon(){ toast('این بخش هنوز ساخته نشده'); }
-function pickAvatar(){ sheet(`<h2>عکس پروفایلت رو انتخاب کن</h2><div class="av-grid">${ASSET.avatars.map((a,i)=>`<button class="av-opt ${i===S.avatar?'on':''}" onclick="setAvatar(${i})"><img src="${a}" alt="آواتار ${fa(i+1)}"></button>`).join('')}</div><div class="acts"><button class="btn btn-ghost" onclick="closeSheet()">بستن</button></div>`); }
+function pickAvatar(){ sheet(`<h2>عکس پروفایلت رو انتخاب کن</h2><p class="muted small">ورق بزن و هر کدوم رو دوست داشتی وسط نگه دار.</p>${avCarousel('avcP',S.avatar)}<div class="acts"><button class="btn btn-primary" onclick="setAvatar(AVC)">همین رو می‌خوام</button><button class="btn btn-ghost" onclick="closeSheet()">بی‌خیال</button></div>`); setTimeout(()=>avcGo('avcP',S.avatar,true),30); }
 function setAvatar(i){ S.avatar=i; save(); closeSheet(); render(); kick('.pf-av .avatar','bump'); haptic(); toast('عکس پروفایلت عوض شد'); }
 function logoutAsk(){ sheet(`<h2>از حسابت خارج می‌شی؟</h2><p class="muted">جواب‌ها و تمرین‌هات سر جاشون می‌مونن. برای برگشتن باید دوباره با شماره‌ت وارد بشی.</p><div class="acts"><button class="btn btn-primary btn-danger-fill" onclick="logout()">آره، خارج می‌شم</button><button class="btn btn-ghost" onclick="closeSheet()">نه، می‌مونم</button></div>`); }
 function logout(){ stashUser(); S.loggedIn=false; save(); closeSheet(); stack=[]; route={name:'login',p:{}}; L={mode:'login',phone:'',otp:'',err:'',resendAt:0}; rerender('tab'); }
@@ -1242,6 +1251,7 @@ function render(){
     if(sc){ sc.classList.add('enter-'+kind); if(kind==='tab') [...sc.children].forEach((c,i)=>c.style.setProperty('--i',Math.min(i,8))); }
     growBars(app); countUp(app); NAV=null;
     if(route.name==='story') storyFx();
+    if(route.name==='register' && $('#avcR')) avcGo('avcR',R.avatar||0,true);
     sbar();
     if(route.name==='home') bnDots();
   } else { const t=document.createElement('div'); t.innerHTML=html; morphKids(app,t); }
@@ -1289,7 +1299,7 @@ function devGo(id, perf){
   else if(g==='unregistered'){ auth(); L.phone=DATA.login.unregistered; }
   else if(g==='otp'){ auth(); L.phone='09121112233'; L.resendAt=Date.now()+60000; }
   else if(g==='invite'){ auth(); }
-  else if(g==='register'){ auth(); name='register'; Object.assign(R,{step:+a,invite:'AZ1405',first:'سارا',last:'احمدی',nid:'0012345679'}); if(+a>1) Object.assign(R,{birth:{y:1393,m:5,d:12},gender:'دختر'}); if(+a>2) Object.assign(R,{grade:'ششم',province:'تهران',city:'تهران',school:'دبستان فرهنگ'}); }
+  else if(g==='register'){ auth(); name='register'; Object.assign(R,{step:+a,invite:'AZ1405',first:'سارا',last:'احمدی',nid:'0012345679'}); if(+a>1) Object.assign(R,{birth:{y:1393,m:5,d:12},gender:'دختر'}); if(+a>2) Object.assign(R,{grade:'ششم',province:'تهران',city:'تهران',school:'دبستان فرهنگ'}); if(+a>3) R.avatar=10; }
   else if(g==='welcome'){ devUser(); W=+a||0; }
   else if(g==='home'){ name='home';
     if(a==='available'){ devUser(); S.exam=freshExam(); S.story=null; S.practice=freshPractice(); S.basket=[]; }

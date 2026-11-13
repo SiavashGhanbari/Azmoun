@@ -4,7 +4,8 @@
   --bg: #ece9e3;
   --surface: #f7f5f1;
   --card: #ffffff;
-  --ink: #1d1d1b;
+  --ink: #2b2926;
+  --edge: #857f76;
   --muted: #6e6a63;
   --line: #d6d0c6;
   --track: #d9d9e3;
@@ -42,13 +43,14 @@
   --space-6: 16px;
   --space-7: 20px;
   --space-8: 24px;
+  --space-9: 32px;
   --radius-sm: 14px;
   --radius-md: 16px;
   --radius-lg: 22px;
   --radius-sheet: 28px;
   --radius-pill: 999px;
-  --hard: 0 3px 0 #1d1d1b;
-  --hard-sm: 0 2px 0 #1d1d1b;
+  --hard: 0 3px 0 #857f76;
+  --hard-sm: 0 2px 0 #857f76;
   --soft: 0 1px 2px rgba(40,30,10,0.05), 0 12px 30px -14px rgba(40,30,10,0.22);
   --nav: 0 8px 28px -6px rgba(30,25,15,0.25), 0 0 0 1px rgba(0,0,0,0.04);
   --knob: 0 2px 6px rgba(47,93,53,0.35);
