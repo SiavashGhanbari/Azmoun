@@ -27,13 +27,25 @@ const SIZES = { i13:[390,844], se:[375,667] };
       await click('.st-top .icon-btn'); await click('.actions .btn-primary');
       await click(btn('شروع تمرین'), 700);
       await click(btn('حالا یه سؤال مشابه حل کن'));
+      await click('.topbar .icon-btn'); console.log('back from similar ->', await p.evaluate(() => [route.name, S.practice.cur.phase]));
+      await click(btn('حالا یه سؤال مشابه حل کن'));
       let a = await p.evaluate(() => SIM(S.practice.cur.qi).a); await click(`#rvCard .opt >> nth=${a}`, 600);
       await p.screenshot({ path:`${out}/flow-practice-ok.png` }); await click(btn('سؤال بعدی'));
       await click(btn('حالا یه سؤال مشابه حل کن'));
       a = await p.evaluate(() => SIM(S.practice.cur.qi).a); await click(`#rvCard .opt >> nth=${(a+1)%4}`, 600);
       await click(btn('بنداز توی سبد'), 200); await p.screenshot({ path:`${out}/flow-basket-flying.png` }); await p.waitForTimeout(1500);
-      const st = await p.evaluate(() => [Object.values(S.practice.res).join(','), openBasket().length, route.name]);
-      console.log('practice', st);
+      console.log('practice', await p.evaluate(() => [Object.values(S.practice.res).join(','), JSON.stringify(S.basket.map(b=>[b.qi,b.sim])), route.name]));
+      // بازی سرعت: یک دور برد (همه درست) و یک دور باخت (سه غلط)
+      await p.evaluate(() => DEV('speed:intro')); await p.waitForTimeout(400); await click(btn('بزن بریم!'), 2300);
+      for (let i=0;i<8;i++){ const k = await p.evaluate(() => G.qs[G.k].a); await click(`.gopts .opt >> nth=${k}`, 900); }
+      await p.waitForTimeout(600); console.log('speed win', await p.evaluate(() => [G.phase, G.lives, JSON.stringify(S.practice.speed)])); await p.screenshot({ path:`${out}/flow-speed-won.png` });
+      await click(btn('یه دور دیگه'), 2300);
+      for (let i=0;i<3;i++){ const k = await p.evaluate(() => (G.qs[G.k].a+1)%4); await click(`.gopts .opt >> nth=${k}`, 1600); }
+      console.log('speed lose', await p.evaluate(() => [G.phase, G.lives])); await p.screenshot({ path:`${out}/flow-speed-lost.png` });
+      // PDF سبد
+      await p.evaluate(() => DEV('basket:pdf')); await p.waitForTimeout(2500);
+      const pdf = await p.evaluate(async () => { const b = new Uint8Array(await PDF_BLOB.arrayBuffer()); let s=''; for (let i=0;i<b.length;i+=8192) s+=String.fromCharCode.apply(null, b.subarray(i,i+8192)); return btoa(s); });
+      fs.writeFileSync(`${out}/basket.pdf`, Buffer.from(pdf,'base64')); console.log('pdf bytes', Buffer.from(pdf,'base64').length);
       await p.evaluate(() => DEV('logout')); await p.waitForTimeout(700); await click(btn('آره، خارج می‌شم'), 600);
       console.log('after logout', await p.evaluate(() => [route.name, S.loggedIn]));
       const d = await p.evaluate(() => ({ total:TOTAL, levels:['easy','medium','hard'].map(l=>Q.filter(q=>q.d===l).length), byB:[0,1].map(b=>['easy','medium','hard'].map(l=>Q.filter(q=>q.b===b&&q.d===l).length)), opts:Q.filter(q=>new Set(q.o).size!==4).length, dup:Q.length-new Set(Q.map(q=>q.q)).size, simSame:Q.filter((q,i)=>SIM(i).q===q.q).length }));

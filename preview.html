@@ -76,9 +76,10 @@ const GROUPS = [
   ['خانه', [['home:available','قبل از آزمون'],['home:progress','آزمون نیمه‌کاره'],['home:wait','منتظر نتیجه'],['home:new','نتیجه اومده'],['home:story','نتیجه نیمه‌دیده'],['home:practice','وسط تمرین'],['home:done','همه‌چی تموم']]],
   ['آزمون', [['rules','قوانین'],['exam:q','سؤال اول'],['exam:mid','وسط دفترچهٔ ۱'],['exam:img','گزینهٔ تصویری'],['exam:grid','همهٔ سؤالات'],['exam:b2','دفترچهٔ ۲'],['exam:img2','گزینهٔ تصویری ۲'],['exam:last','تحویل آزمون'],['done','تحویل داده شد']]],
   ['نتیجهٔ آزمون (استوری)', [['story:stats','۱ · آمار'],['story:score','۲ · رتبه'],['story:cats','۳ · دسته‌ها'],['story:compare','۴ · مقایسه'],['story:go','۵ · دعوت به تمرین']]],
-  ['تمرین', [['exams','صفحهٔ آزمون و تمرین'],['practice:explain','راه‌حل'],['practice:similar','سؤال مشابه'],['practice:ok','جواب درست'],['practice:no','جواب غلط'],['practice:end','پایان یک سطح'],['exams:done','همهٔ تمرین‌ها تموم'],['exams:before','قبل از آزمون']]],
+  ['تمرین', [['exams','مسیر تمرین'],['practice:explain','راه‌حل'],['practice:similar','سؤال مشابه'],['practice:ok','جواب درست'],['practice:no','جواب غلط'],['practice:end','پایان یک سطح'],['exams:done','همهٔ تمرین‌ها تموم'],['exams:before','قبل از آزمون']]],
+  ['مسیر سرعت (دفترچهٔ ۲)', [['speed:intro','شروع'],['speed:count','شمارش'],['speed:play','وسط بازی'],['speed:streak','چند تا پشت هم'],['speed:wrong','جواب غلط'],['speed:lost','باخت'],['speed:won','برد']]],
   ['کارنامه و رتبه', [['result','کارنامه'],['report','دانلود کارنامه'],['answer','پاسخ یک سؤال'],['leaderboard','رتبه‌بندی'],['leaderboard:before','رتبه‌بندی قبل از آزمون']]],
-  ['سبد و پروفایل', [['basket','سبد پر'],['basket:empty','سبد خالی'],['basket:item','یک سؤال از سبد'],['profile','پروفایل'],['avatar','انتخاب عکس'],['logout','خروج از حساب']]],
+  ['سبد و پروفایل', [['basket','سبد پر'],['basket:empty','سبد خالی'],['basket:item','یک سؤال از سبد'],['basket:pdf','خروجی PDF'],['profile','پروفایل'],['avatar','انتخاب عکس'],['logout','خروج از حساب']]],
   ['ورود و ثبت‌نام', [['login','ورود'],['otp','کد پیامک'],['unregistered','شمارهٔ ثبت‌نشده'],['invite','کد دعوت'],['register:0','فرم ۱'],['register:1','فرم ۲'],['register:2','فرم ۳'],['register:3','فرم ۴'],['welcome:0','معرفی ۱'],['welcome:1','معرفی ۲'],['welcome:2','معرفی ۳']]],
 ];
 const SIZES = { '13':[390,844,'iPhone 13'], se:[375,667,'iPhone SE'] };
@@ -87,7 +88,7 @@ let state = { d:'13', perf:'mid', go:'home:available' };
 try { Object.assign(state, JSON.parse(localStorage.getItem('azmoun-preview') || '{}')); } catch(e) {}
 const keep = () => { try { localStorage.setItem('azmoun-preview', JSON.stringify(state)); } catch(e) {} };
 
-$('#groups').innerHTML = GROUPS.map(([t,items],i)=>`<details ${i<3?'open':''}><summary>${t}</summary><div class="jumps">${items.map(([id,l])=>`<button data-go="${id}">${l}</button>`).join('')}</div></details>`).join('');
+$('#groups').innerHTML = GROUPS.map(([t,items],i)=>`<details ${i<4?'open':''}><summary>${t}</summary><div class="jumps">${items.map(([id,l])=>`<button data-go="${id}">${l}</button>`).join('')}</div></details>`).join('');
 function send(){ frame.contentWindow && frame.contentWindow.postMessage({ azmoun:{ go:state.go, perf:state.perf } }, '*'); }
 function mark(){
   document.querySelectorAll('[data-go]').forEach(b=>b.classList.toggle('on', b.dataset.go===state.go));

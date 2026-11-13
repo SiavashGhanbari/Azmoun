@@ -328,10 +328,10 @@
     "Avatars"
   ],
   "lastChange": {
-    "at": "2026-11-13T15:10:00Z",
+    "at": "2026-11-13T16:25:00Z",
     "by": "Siavash",
     "via": "Claude · Cowork",
-    "note": "TarazBadge شد RankBadge (قصه‌ی نتیجه فقط رتبه نشان می‌دهد)، قاعده‌ی نشانگر اسکرول داخل اپ و حذف ابزار تست از اپ"
+    "note": "PracticePath و SpeedHud به‌جای PracticeLevels؛ قاعده‌ی سبد (سؤال اصلی + سؤال مشابه، خروجی PDF) و هم‌اندازه بودن دکمه‌های هدر خانه"
   },
   "layout": "files",
   "libraries": [],

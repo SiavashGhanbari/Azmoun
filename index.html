@@ -505,6 +505,59 @@ a.btn{text-decoration:none}
 .practice.act2{padding-bottom:170px}
 .got{font-size:17px}
 
+/* ============ مسیر تمرین و بازی سرعت ============ */
+.basket-btn.lg{width:46px;height:46px}
+.basket-btn.lg svg{width:22px;height:22px}
+.path{position:relative;display:flex;flex-direction:column;gap:12px;padding-right:0}
+.path::before{content:"";position:absolute;right:21px;top:40px;bottom:22px;border-right:2.5px dashed var(--line)}
+.path-h{display:flex;align-items:baseline;gap:8px;padding:6px 56px 0 0;font-size:13px;color:var(--muted)}
+.path-h b{color:var(--ink);font-size:15px;font-weight:900}
+.stn{display:flex;align-items:center;gap:12px;width:100%;text-align:right;position:relative}
+.stn-node{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--card);border:1.6px solid var(--ink);box-shadow:0 3px 0 var(--ink);font-weight:900;font-size:16px;position:relative;z-index:1}
+.stn-node svg{width:20px;height:20px}
+.stn.done .stn-node{background:var(--green);color:var(--ink)}
+.stn.cur .stn-node{background:var(--pri);color:#fff;animation:pulse 2.2s ease-in-out infinite}
+.stn-card{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;background:var(--card);border:1.6px solid var(--ink);border-radius:20px;box-shadow:var(--hard);padding:12px 14px;transition:box-shadow .14s var(--ease)}
+.stn:active .stn-card{box-shadow:0 0 0 var(--ink)}
+.stn-card .progress{display:block;margin-top:6px}
+.stn-card .progress i{display:block}
+.path-end{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:13px;font-weight:700}
+.path-end .stn-node{box-shadow:none;border-style:dashed;background:var(--bg)}
+.path-end.on{color:var(--green-dk)} .path-end.on .stn-node{background:var(--green);border-style:solid}
+.hearts{display:inline-flex;gap:3px;direction:ltr}
+.hearts i{display:grid;width:26px;height:26px}
+.hearts svg{width:26px;height:26px;fill:var(--bad);stroke:var(--ink)}
+.hearts i.off svg{fill:transparent;stroke:var(--muted);opacity:.5}
+.heart-break{animation:hbreak .6s var(--ease)}
+@keyframes hbreak{0%{transform:scale(1)}30%{transform:scale(1.5) rotate(-12deg)}60%{transform:scale(.7) rotate(8deg)}100%{transform:none}}
+.gdots{display:flex;gap:5px;margin-top:4px}
+.gdots i{flex:1;height:8px;border-radius:8px;background:var(--track);transition:background-color .25s,transform .25s var(--spring)}
+.gdots i.ok{background:var(--green)} .gdots i.bad{background:var(--bad)} .gdots i.cur{background:var(--ink);transform:scaleY(1.4)}
+.gdots.big{max-width:280px;margin:18px auto 0!important}
+.gdots.big i{height:12px}
+.gtime-row{display:flex;align-items:center;gap:10px;margin-top:10px}
+.gtime-row b{min-width:26px;text-align:center;font-weight:900;font-size:18px;font-variant-numeric:tabular-nums}
+.gtime{flex:1;height:14px;border-radius:14px;background:var(--card);border:1.6px solid var(--ink);overflow:hidden;direction:ltr}
+.gtime i{display:block;height:100%;background:var(--pri);border-radius:0 10px 10px 0}
+.gtime.low i{background:var(--bad)}
+.gtime.low{animation:shake .5s var(--ease) infinite}
+.streak{display:inline-flex;align-items:center;gap:4px;background:var(--mustard,#EBCB7E);border:1.4px solid var(--ink);border-radius:99px;padding:1px 10px 1px 8px;font-weight:900;font-size:13px;color:var(--ink)}
+.streak svg{width:15px;height:15px;fill:var(--ink)}
+.gcard{padding:18px 16px;text-align:center}
+.gcard .q-text{text-align:center}
+.gopts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.gopts.one{grid-template-columns:1fr}
+.gopts .opt{min-height:60px}
+.ask.yes{color:var(--green-dk)}
+.gcount{min-height:60vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.gcount b{font-size:120px;font-weight:900;line-height:1;width:180px;height:180px;display:grid;place-items:center;border-radius:50%;background:var(--pri);color:#fff;border:1.6px solid var(--ink);box-shadow:var(--hard)}
+.end-art.lost svg{animation:shake .6s .2s var(--ease)}
+.speed .st-stats .stt b{font-size:28px}
+.speed.act2{padding-bottom:190px}
+.q-text.sm{font-size:17px;line-height:1.9}
+.card.linked{background:var(--surface);box-shadow:none;border:1.4px dashed var(--line);position:relative}
+.card.linked::before{content:"";position:absolute;right:28px;top:-22px;height:20px;border-right:2px dashed var(--line)}
+
 /* ============ موشن ============ */
 .screen.enter-fwd{animation:inFwd .42s var(--ease) both}
 .screen.enter-back{animation:inBack .42s var(--ease) both}
@@ -602,6 +655,8 @@ const I = {
   chat: SVGI('<path d="M4 5h16v11H9l-5 4z"/>'),
   card: SVGI('<rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/>'),
   out: SVGI('<path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10"/>'),
+  heart: SVGI('<path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.500 15.4 12 20 12 20z"/>','stroke-width="1.8"'),
+  bolt: SVGI('<path d="M13 3 5 13.5h6L10 21l8-10.500h-6z"/>','stroke-width="1.8"'),
   basket: SVGI('<path d="M3.5 9h17l-1.6 9.2a2 2 0 0 1-2 1.8H7.1a2 2 0 0 1-2-1.8z"/><path d="M8 9l3-5M16 9l-3-5M9.5 13v3M14.5 13v3"/>','stroke-width="2"'),
   star: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8l2.7 5.6 6.1.8-4.5 4.2 1.1 6.1L12 16.6l-5.4 2.9 1.1-6.1-4.5-4.2 6.1-.8z" fill="#EBCB7E" stroke="#1D1D1B" stroke-width="1.6" stroke-linejoin="round"/></svg>',
   search: SVGI('<circle cx="11" cy="11" r="6.5"/><path d="m20 20-4-4"/>','stroke-width="2"'),
@@ -902,10 +957,10 @@ function board(){
 }
 
 /* ============ وضعیت ============ */
-const KEY = 'azmoun-demo-v5';
+const KEY = 'azmoun-demo-v6';
 // دادهٔ هر کاربر (با شمارهٔ موبایل) جداست؛ کاربر جدید همیشه از آزمون اول شروع می‌کند
 const freshExam = () => ({ status:'available', booklet:0, idx:BOOKLETS.map(()=>0), answers:Array(Q.length).fill(null), flags:Array(Q.length).fill(false), passed:Array(Q.length).fill(false), endsAt:BOOKLETS.map(()=>null) });
-const freshPractice = () => ({ res:{}, cur:null });
+const freshPractice = () => ({ res:{}, cur:null, speed:{} });
 const freshUser = () => ({ profile:null, avatar:0, exam:freshExam(), practice:freshPractice(), basket:[], story:null });
 const USER_KEYS = ['profile','avatar','exam','practice','basket','story'];
 const fresh = () => ({ loggedIn:false, phone:'', registered:[], accounts:{}, ...freshUser() });
@@ -993,11 +1048,22 @@ const timeLeft = () => { const e=S.exam.endsAt[S.exam.booklet]; return e ? e-Dat
 const passedOf = i => S.exam.passed[i];
 // تمرین: سؤال‌هایی که غلط زده یا جواب نداده، به ترتیب سطح (اول ساده‌ها)
 const LEVELS = ['easy','medium','hard'];
-const pracList = lv => result().wrong.filter(i=>Q[i].d===lv);
+// دفترچهٔ ۱: تمرین با راه‌حل و سؤال مشابه، به ترتیب سطح. دفترچهٔ ۲: بازی سرعت برای هر دسته.
+const pracList = lv => result().wrong.filter(i=>Q[i].b===0 && Q[i].d===lv);
 const pracDone = lv => pracList(lv).filter(i=>S.practice.res[i]).length;
-const pracAll = () => { const w=result().wrong; return [w.filter(i=>S.practice.res[i]).length, w.length]; };
-const pracState = () => { const [d,t]=pracAll(); return !t ? 'none' : !d ? 'new' : d<t ? 'progress' : 'done'; };
 const nextLevel = () => LEVELS.find(lv=>pracDone(lv)<pracList(lv).length);
+const SPEED = { n:8, secs:15, lives:3 };
+const speedTopics = () => { const m={}; result().wrong.forEach(i=>{ if(Q[i].b===1) m[Q[i].t]=(m[Q[i].t]||0)+1; }); return Object.entries(m).sort((a,b)=>b[1]-a[1]).map(x=>x[0]); };
+// ایستگاه‌های مسیر تمرین
+function stations(){ const out=[];
+  LEVELS.forEach(lv=>{ const t=pracList(lv).length, d=pracDone(lv); if(t) out.push({ type:'lv', key:lv, title:`سؤال‌های ${DIFF[lv]}`, total:t, done:d, ok:d===t }); });
+  speedTopics().forEach(t=>{ const sp=S.practice.speed[t]||{}; out.push({ type:'speed', key:t, title:TOPIC[t], ok:!!sp.won, best:sp.best, tries:sp.tries||0 }); });
+  return out; }
+const pracAll = () => { const s=stations(); return [s.filter(x=>x.ok).length, s.length]; };
+const pracState = () => { const s=stations(), d=s.filter(x=>x.ok).length; return !s.length ? 'none' : d===s.length ? 'done' : (d || s.some(x=>x.done||x.tries)) ? 'progress' : 'new'; };
+const nextStation = () => stations().find(x=>!x.ok);
+function goStation(type,key,fromStory){ const r={ name:type==='lv'?'practice':'speed', p:type==='lv'?{lv:key}:{t:key} }; G=null;
+  if(fromStory){ S.story.done=true; stack=[{name:'exams',p:{}}]; route=r; save(); closeSheet(); rerender('fwd'); return; } go(r.name,r.p); }
 const qLabel = i => `دفترچهٔ ${fa(Q[i].b+1)} · سؤال ${fa(i-QB(Q[i].b)[0].i+1)}`;
 
 /* ============ اجزای مشترک ============ */
@@ -1214,7 +1280,7 @@ function setDate(){ DP.d=markCol($('#wd'))+1; DP.m=markCol($('#wm'))+1; DP.y=DAT
   R.birth={...DP}; delete R.errs.birth; closeSheet(); render(); haptic(); }
 
 /* ---------- خانه ---------- */
-const basketBtn = (onclick="go('basket')") => { const n=openBasket().length; return `<button id="basketBtn" class="icon-btn basket-btn" onclick="${onclick}" aria-label="سبد از معلم می‌پرسم${n?'، '+fa(n)+' سؤال':''}">${I.basket}${n?`<span class="cnt">${fa(n)}</span>`:''}</button>`; };
+const basketBtn = (onclick="go('basket')", cls='') => { const n=openBasket().length; return `<button id="basketBtn" class="icon-btn basket-btn ${cls}" onclick="${onclick}" aria-label="سبد از معلم می‌پرسم${n?'، '+fa(n)+' سؤال':''}">${I.basket}${n?`<span class="cnt">${fa(n)}</span>`:''}</button>`; };
 const medal = (rank, me) => `<span class="medal ${me?'me':rank<=3?'m'+rank:''}">${faN(rank)}</span>`;
 const BANNERS = [
   { tone:'pri', art:'books', title:'آزمون ۲ نزدیکه', text:'پنجشنبه ۲۱ آبان، ساعت ۹ صبح', cta:'یادم بنداز' },
@@ -1237,8 +1303,8 @@ function statusCard(){
   const ss=storyState(), ps=pracState(), [d,t]=pracAll();
   if(ss==='new') return card(ART.trophy,`<span class="badge pri">نتیجهٔ ${x.title} اومد</span>`,'نتیجه‌ت آماده‌ست!','ببین چطور شدی و رتبه‌ت چند شد.',`<button class="btn btn-primary pulse" onclick="startStory()">دیدن نتیجهٔ آزمون</button>`);
   if(ss==='progress') return card(ART.trophy,`<span class="badge warn">نیمه‌کاره</span>`,'نتیجه‌ت رو تا آخر ندیدی','از همون‌جایی که بودی ادامه بده.',`<button class="btn btn-primary" onclick="go('story')">ادامه بده</button>`);
-  if(ps==='new'||ps==='progress'){ const lv=nextLevel();
-    return card(ART.target,`<span class="badge pri">تمرین ${x.title}</span>`,ps==='new'?'تمرین‌هات آماده‌ست':'تمرینت نیمه‌کاره‌ست',`${fa(d)} از ${fa(t)} سؤال رو تمرین کردی. الان نوبت سؤال‌های ${DIFF[lv]}ه.`,`<button class="btn btn-primary" onclick="openPractice('${lv}')">${ps==='new'?'شروع تمرین':'ادامهٔ تمرین'}</button>`,`<div class="progress"><i style="width:${pct(d,t)}%"></i></div>`); }
+  if(ps==='new'||ps==='progress'){ const ns=nextStation();
+    return card(ART.target,`<span class="badge pri">تمرین ${x.title}</span>`,ps==='new'?'مسیر تمرینت آماده‌ست':'مسیر تمرینت نیمه‌کاره‌ست',`${fa(d)} از ${fa(t)} ایستگاه رو رد کردی. ایستگاه بعدی: ${ns.type==='speed'?'مسیر سرعت · ':''}${ns.title}.`,`<button class="btn btn-primary" onclick="goStation('${ns.type}','${ns.key}')">${ps==='new'?'شروع تمرین':'ادامهٔ تمرین'}</button>`,`<div class="progress"><i style="width:${pct(d,t)}%"></i></div>`); }
   return card(ART.trophy,`<span class="badge ok">همه‌چی انجام شد</span>`,ps==='none'?'همه رو درست زده بودی!':'تمرین‌هات تموم شد','آزمون بعدی: '+DATA.nextExam.when,`<button class="btn btn-ghost" onclick="go('result')">دیدن کارنامه</button>`);
 }
 V.home = () => {
@@ -1247,13 +1313,13 @@ V.home = () => {
   const row = x => `<div class="t3-row ${x.me?'me':''}">${medal(x.rank,x.me)}<img class="avatar" src="${avatar(x.av)}" alt=""><span class="grow"><b>${x.name}</b><span class="muted small"> · ${x.city}</span></span><span class="small muted">تراز ${faN(x.taraz)}</span></div>`;
   return `<div class="screen stack">
     <div class="row between sticky"><div class="grow"><h1>سلام ${esc(s.first)}</h1><p class="muted small">پایهٔ ${esc(s.grade)} · ${esc(s.school)}</p></div>
-      <div class="row" style="gap:10px">${basketBtn()}<button class="av-btn" onclick="tab('profile')" aria-label="پروفایل"><img class="avatar" src="${avatar()}" alt=""></button></div></div>
+      <div class="row" style="gap:10px">${basketBtn("go('basket')",'lg')}<button class="av-btn" onclick="tab('profile')" aria-label="پروفایل"><img class="avatar" src="${avatar()}" alt=""></button></div></div>
     ${carousel()}
     ${statusCard()}
     <div class="tile-grid">
       ${tile("tab('leaderboard')",'رتبهٔ تو',pub?`<span data-count="${r.rank}" data-from="${TOTAL}">${fa(r.rank)}</span>`:'—',pub?`از ${fa(TOTAL)} نفر`:'بعد از نتیجه')}
       ${tile(pub?"go('result')":"tab('exams')",'تراز',pub?`<span data-count="${r.taraz}" data-sep="1">${faN(r.taraz)}</span>`:'—',pub?'دیدن کارنامه':'بعد از نتیجه')}
-      ${tile("tab('exams')",'تمرین',pub&&t?`${fa(d)}<small> از ${fa(t)}</small>`:'—',pub?(t?'سؤال تمرین‌شده':'تمرینی نداری'):'بعد از نتیجه')}
+      ${tile("tab('exams')",'تمرین',pub&&t?`${fa(d)}<small> از ${fa(t)}</small>`:'—',pub?(t?'ایستگاهِ ردشده':'تمرینی نداری'):'بعد از نتیجه')}
       ${tile("go('basket')",'سبد معلم',fa(nb),nb?'سؤال برای پرسیدن':'خالیه')}
     </div>
     <div class="card top3">
@@ -1266,10 +1332,15 @@ V.home = () => {
 
 /* ---------- آزمون و تمرین ---------- */
 V.exams = () => {
-  const st=S.exam.status, pub=st==='published', r=pub?result():null, x=DATA.exam, nl=pub?nextLevel():null;
-  const levels = pub && r.wrong.length ? `<span class="cap sec">تمرین‌های ${x.title}</span>
-    ${LEVELS.map(lv=>{ const t=pracList(lv).length, d=pracDone(lv); if(!t) return `<div class="list-item compact static"><span class="mark ok">✓</span><span class="grow"><b>سؤال‌های ${DIFF[lv]}</b><br><span class="muted small">همه رو درست زده بودی</span></span></div>`;
-      return `<button class="list-item" onclick="openPractice('${lv}')"><span class="grow"><span class="row between"><b>سؤال‌های ${DIFF[lv]}</b>${d===t?'<span class="badge ok">تموم شد</span>':lv===nl?'<span class="badge pri">از اینجا</span>':''}</span><span class="muted small">${fa(d)} از ${fa(t)} سؤال</span><div class="progress" style="margin-top:8px"><i style="width:${pct(d,t)}%"></i></div></span><span class="chev">${I.chev}</span></button>`; }).join('')}` : '';
+  const st=S.exam.status, pub=st==='published', r=pub?result():null, x=DATA.exam, sts=pub?stations():[], ns=sts.find(z=>!z.ok);
+  const stn=(z,n)=>{ const cur=z===ns, sp=z.type==='speed';
+    const sub = sp ? (z.ok?`بردی · رکورد ${secs(z.best)} ثانیه`:z.tries?`${fa(z.tries)} بار امتحان کردی`:`${fa(SPEED.n)} سؤال سریع · ${fa(SPEED.lives)} جون`) : `${fa(z.done)} از ${fa(z.total)} سؤال`;
+    return `<button class="stn ${z.ok?'done':cur?'cur':''}" onclick="goStation('${z.type}','${z.key}')"><span class="stn-node">${z.ok?I.check:sp?I.bolt:fa(n)}</span><span class="stn-card"><span class="row between"><b>${z.title}</b>${z.ok?'<span class="badge ok">تموم شد</span>':cur?'<span class="badge pri">از اینجا</span>':''}</span><span class="muted small">${sub}</span>${sp?'':`<span class="progress"><i style="width:${pct(z.done,z.total)}%"></i></span>`}</span></button>`; };
+  const lvS=sts.filter(z=>z.type==='lv'), spS=sts.filter(z=>z.type==='speed');
+  const levels = sts.length ? `<span class="cap sec">مسیر تمرین ${x.title}</span><div class="path">
+      ${lvS.length?`<div class="path-h"><b>دفترچهٔ ۱</b><span>راه‌حل و سؤال مشابه</span></div>${lvS.map((z,i)=>stn(z,i+1)).join('')}`:''}
+      ${spS.length?`<div class="path-h"><b>دفترچهٔ ۲</b><span>مسیر سرعت</span></div>${spS.map((z,i)=>stn(z,i+1)).join('')}`:''}
+      <div class="path-end ${ns?'':'on'}"><span class="stn-node">${I.flag}</span><span>${ns?'پایان مسیر':'به آخر مسیر رسیدی!'}</span></div></div>` : '';
   const cur = pub ? `<div class="card stack-s"><div class="row between"><b>${x.title}</b><span class="badge pri">نتیجه آمده</span></div>
       <div class="kv2"><div><span class="cap">تراز</span><b>${faN(r.taraz)}</b></div><div><span class="cap">رتبه</span><b>${fa(r.rank)}<small> از ${fa(TOTAL)}</small></b></div><div><span class="cap">درصد کل</span><b>${fa1(r.score)}٪</b></div></div>
       <div class="row2"><button class="btn btn-primary btn-sm" onclick="startStory(true)">${storyState()==='new'?'دیدن نتیجه':'نتیجهٔ آزمون'}</button><button class="btn btn-ghost btn-sm" onclick="go('result')">کارنامه</button></div></div>` : statusCard();
@@ -1499,13 +1570,13 @@ V.story = () => {
   if(cur==='go'){
     if(!w){ body=`<div class="st-body center"><div class="illus end-art">${ART.trophy}</div><h1 class="st-h">همه رو درست زدی!</h1><p class="muted st-lead">${nob('هیچ سؤالی برای تمرین نمونده. ایول، دمت گرم!')}</p></div>`;
       act=`<button class="btn btn-primary" onclick="storyClose()">برگشت به خانه</button><button class="btn btn-ghost" onclick="stack=[{name:'home',p:{}}];go('result')">دیدن کارنامه</button>`; }
-    else { const lv=nextLevel()||'easy';
+    else { const ns=nextStation()||stations()[0], b1=LEVELS.reduce((n,l)=>n+pracList(l).length,0), b2=speedTopics().length;
       body=`<div class="st-body center">
         <div class="illus go-art">${ART.target}</div>
         <h1 class="st-h">حالا بریم سراغ تمرین</h1>
-        <p class="muted st-lead">${nob(`برای هر سؤالی که غلط زدی یا جواب ندادی، اول راه‌حلش رو می‌بینی و بعد یه سؤال مشابه حل می‌کنی. از ساده‌ها شروع می‌کنیم.`)}</p>
-        <div class="lv-chips">${LEVELS.map((d,i)=>{ const n=pracList(d).length; return `<span class="lv-chip ${n?'':'off'}" style="--d:${.5+i*.15}s"><b>${fa(n)}</b>${DIFF[d]}</span>`; }).join('')}</div></div>`;
-      act=`<button class="btn btn-primary pulse" onclick="openPractice('${lv}',true)">${pracState()==='new'?'شروع تمرین':'ادامهٔ تمرین'}</button><button class="btn btn-ghost" onclick="storyClose()">بعداً</button>`; }
+        <p class="muted st-lead">${nob(`برای سؤال‌های دفترچهٔ ۱ راه‌حل رو می‌بینی و یه سؤال مشابه حل می‌کنی. برای دفترچهٔ ۲ یه بازی سرعت داریم.`)}</p>
+        <div class="lv-chips"><span class="lv-chip ${b1?'':'off'}" style="--d:.5s"><b>${fa(b1)}</b>سؤال با راه‌حل</span><span class="lv-chip ${b2?'':'off'}" style="--d:.65s"><b>${fa(b2)}</b>مرحلهٔ سرعت</span></div></div>`;
+      act=`<button class="btn btn-primary pulse" onclick="goStation('${ns.type}','${ns.key}',true)">${pracState()==='new'?'شروع تمرین':'ادامهٔ تمرین'}</button><button class="btn btn-ghost" onclick="storyClose()">بعداً</button>`; }
   }
   return `<div class="screen no-nav has-act story story-${cur}">${storyHead()}${body}</div>${actions(act)}`;
 };
@@ -1517,7 +1588,6 @@ function storyFx(){
 }
 
 /* ---------- تمرین (همان مأموریت‌ها): راه‌حل ← سؤال مشابه ← آفرین یا سبد ---------- */
-function openPractice(lv, fromStory){ if(fromStory){ S.story.done=true; stack=[{name:'exams',p:{}}]; route={name:'practice',p:{lv}}; save(); closeSheet(); rerender('fwd'); return; } go('practice',{lv}); }
 const pracCur = lv => { const qi=pracList(lv).find(i=>!S.practice.res[i]); if(qi==null) return null; const c=S.practice.cur; if(!c || c.qi!==qi) S.practice.cur={ qi, phase:'explain', pick:null }; return S.practice.cur; };
 function peekBasket(){ const open=openBasket();
   sheet(`<h2>سبد «از معلم می‌پرسم»</h2>${open.length?`<p class="muted small">${fa(open.length)} سؤال توی سبدته. بعد از تمرین می‌تونی یکی‌یکی ببینیشون.</p>
@@ -1527,17 +1597,17 @@ function peekBasket(){ const open=openBasket();
 V.practice = () => {
   if(S.exam.status!=='published') return V.home();
   const lv=route.p.lv||'easy', list=pracList(lv), done=pracDone(lv), c=pracCur(lv);
-  const head=`<div class="sticky"><div class="topbar"><button class="icon-btn" onclick="back()" aria-label="بازگشت">${I.back}</button>
+  const head=`<div class="sticky"><div class="topbar"><button class="icon-btn" onclick="pracBack()" aria-label="بازگشت">${I.back}</button>
       <div class="title">تمرین · سؤال‌های ${DIFF[lv]}<div class="small muted" style="font-weight:500">${c?`${fa(done+1)} از ${fa(list.length)}`:'تموم شد'}</div></div>${basketBtn('peekBasket()')}</div>
       <div class="progress"><i style="width:${pct(done+(c&&(c.phase==='ok')?1:0),list.length)}%"></i></div></div>`;
   if(!c){ // پایان این سطح
-    const res=list.map(i=>S.practice.res[i]), ok=res.filter(x=>x==='ok').length, inB=res.filter(x=>x==='basket').length, nl=nextLevel(), nb=openBasket().length;
+    const res=list.map(i=>S.practice.res[i]), ok=res.filter(x=>x==='ok').length, inB=res.filter(x=>x==='basket').length, ns=nextStation(), nb=openBasket().length;
     return `<div class="screen no-nav has-act practice">${head}<div class="st-body center">
       <div class="illus end-art">${inB?ART.bubble:ART.trophy}</div>
       <h1 class="st-h">${!list.length?'اینجا تمرینی نداری':ok===list.length?'ایول، دمت گرم!':'آفرین، این سطح تموم شد!'}</h1>
       <p class="muted st-lead">${nob(!list.length?`همهٔ سؤال‌های ${DIFF[lv]} رو توی آزمون درست زده بودی.`:`از ${fa(list.length)} سؤالِ ${DIFF[lv]}، ${fa(ok)} تا رو درست حل کردی${inB?` و ${fa(inB)} تا رو انداختی توی سبد`:''}.`)}</p>
       ${nb?`<button class="card tap basket-call" style="display:flex;width:100%" onclick="go('basket')"><span class="basket-big">${I.basket}<span class="cnt">${fa(nb)}</span></span><div class="grow"><b>${fa(nb)} سؤال توی سبدت هست</b><p class="small muted">می‌خوای ببینیشون؟ می‌تونی سر کلاس از معلمت بپرسی.</p></div><span class="chev">${I.chev}</span></button>`:''}
-      </div></div>${actions(nl?`<button class="btn btn-primary" onclick="route.p.lv='${nl}';rerender('fwd')">تمرین سؤال‌های ${DIFF[nl]}</button><button class="btn btn-ghost" onclick="tab('exams')">بعداً</button>`:`<button class="btn btn-primary" onclick="tab('home')">برگشت به خانه</button><button class="btn btn-ghost" onclick="stack=[{name:'home',p:{}}];go('result')">دیدن کارنامه</button>`)}`;
+      </div></div>${actions(ns?`<button class="btn btn-primary" onclick="stack=[{name:'exams',p:{}}];route={name:'${ns.type==='lv'?'practice':'speed'}',p:{${ns.type==='lv'?'lv':'t'}:'${ns.key}'}};rerender('fwd')">ایستگاه بعدی: ${ns.type==='speed'?'مسیر سرعت':ns.title}</button><button class="btn btn-ghost" onclick="tab('exams')">مسیر تمرین</button>`:`<button class="btn btn-primary" onclick="tab('home')">برگشت به خانه</button><button class="btn btn-ghost" onclick="stack=[{name:'home',p:{}}];go('result')">دیدن کارنامه</button>`)}`;
   }
   const qi=c.qi, q=Q[qi], my=S.exam.answers[qi], ph=c.phase, sq=SIM(qi);
   let body, act;
@@ -1553,13 +1623,13 @@ V.practice = () => {
       <div class="rv-card card" id="rvCard"><p class="q-text">${nob(sq.q)}</p><div class="stack" style="margin-top:12px">${opts}</div></div>
       ${ph==='ok'?`<div class="got"><b>آفرین! درست بود.</b></div>`:''}
       ${ph==='no'?`<div class="card explain"><span class="cap">راه‌حل</span><p>${sq.s}</p></div><p class="ask">${nob('این یکی درست نشد. بندازش توی سبد تا از معلمت بپرسی.')}</p>`:''}`;
-    act = ph==='similar' ? `<button class="btn btn-ghost" onclick="pracExplain()">دوباره راه‌حل رو ببینم</button>`
-        : ph==='ok' ? `<button class="btn btn-primary" onclick="pracNext('ok')">${done+1>=list.length?'تموم شد!':'سؤال بعدی'}</button>`
+    act = ph==='similar' ? '' : ph==='ok' ? `<button class="btn btn-primary" onclick="pracNext('ok')">${done+1>=list.length?'تموم شد!':'سؤال بعدی'}</button>`
         : `<button class="btn btn-primary" onclick="toBasket()">${I.basket}بنداز توی سبد</button><button class="btn btn-ghost" onclick="pracNext('skip')">فعلاً نه؛ سؤال بعدی</button>`;
   }
-  return `<div class="screen no-nav has-act practice ${ph==='no'?'act2':''}">${head}<div class="qwrap stack">${body}</div></div>${actions(act)}`;
+  return `<div class="screen no-nav ${act?'has-act':''} practice ${ph==='no'?'act2':''}">${head}<div class="qwrap stack">${body}</div></div>${act?actions(act):''}`;
 };
 function pracSimilar(){ S.practice.cur.phase='similar'; save(); render(); kick('.qwrap','q-next'); top0(); haptic(); }
+function pracBack(){ const c=S.practice.cur; if(c && c.phase==='similar' && pracCur(route.p.lv)) return pracExplain(); back(); }
 function pracExplain(){ S.practice.cur.phase='explain'; save(); render(); kick('.qwrap','q-prev'); top0(); }
 function pracPick(j){ const c=S.practice.cur, sq=SIM(c.qi); if(c.phase!=='similar') return; c.pick=j;
   if(j===sq.a){ c.phase='ok'; save(); render(); haptic(15); const o=document.querySelectorAll('#rvCard .opt')[j]; if(o){ const r=o.getBoundingClientRect(); burst(r.left+r.width/2,r.top+r.height/2); } kick('.got','pop-in'); }
@@ -1569,7 +1639,7 @@ function pracNext(res){ const c=S.practice.cur; S.practice.res[c.qi]=res; S.prac
 let TOSS=false;
 function toBasket(){
   const c=S.practice.cur, card=$('#rvCard'); if(!c || !card || TOSS) return; TOSS=true; const i=c.qi;
-  if(!S.basket.find(b=>b.qi===i&&!b.solved)) S.basket.push({ id:Date.now(), qi:i, from:`${DATA.exam.title} · ${qLabel(i)}`, my:S.exam.answers[i], solved:false });
+  if(!S.basket.find(b=>b.qi===i&&!b.solved)) S.basket.push({ id:Date.now(), qi:i, from:`${DATA.exam.title} · ${qLabel(i)}`, my:S.exam.answers[i], sim:{ pick:c.pick }, solved:false });
   const r=card.getBoundingClientRect(), clone=card.cloneNode(true); clone.removeAttribute('id'); clone.classList.add('flying');
   card.style.visibility='hidden'; card.closest('.qwrap').classList.add('tossing'); haptic(12);
   fly(clone, r, $('#basketBtn'), {scaleTo:.04, arc:-70, dur:760, rot:-14}).then(()=>{ TOSS=false; save(); render(); kick('#basketBtn','bump'); kick('#basketBtn .cnt','pop-in'); haptic(18); setTimeout(()=>pracNext('basket'),380); });
@@ -1588,6 +1658,138 @@ function fly(node, from, toEl, {dur=700, scaleTo=.08, arc=-60, rot=-10}={}){
       {duration:dur, easing:'cubic-bezier(.5,0,.3,1)'});
     a.onfinish=()=>{ node.remove(); res(); };
   });
+}
+
+/* ---------- مسیر سرعت (تمرین دفترچهٔ ۲): سؤال‌های مشابه با زمان کم و سه جون ---------- */
+let G=null;
+const speedKinds = t => [...new Set(Q.filter(q=>q.b===1&&q.t===t).map(q=>q.k))];
+// هر بار سؤال‌های تازه از همان دسته
+function speedDeck(t, seed=(Date.now()%1e9)|0){ const r=rngOf(seed), ks=speedKinds(t), out=[], seen=new Set();
+  for(let g=0; out.length<SPEED.n && g<300; g++){ const x=GEN[ks[g%ks.length]](rngOf(ri(r,1,1e9))); if(seen.has(x.q)) continue; seen.add(x.q); out.push(x); } return out; }
+const hearts = n => `<span class="hearts" role="img" aria-label="${fa(n)} جون">${[0,1,2].map(i=>`<i class="${i<n?'':'off'}">${I.heart}</i>`).join('')}</span>`;
+const secs = ms => fa1(ms/1000);
+function speedStart(){ const t=route.p.t; G={ t, qs:speedDeck(t), k:0, lives:SPEED.lives, pick:null, res:[], streak:0, used:0, phase:'count', count:3 }; const g=G; render(); haptic();
+  const step=()=>{ if(G!==g||route.name!=='speed') return; if(--g.count>0){ render(); kick('.gcount b','pop-in'); haptic(); setTimeout(step,650); } else speedAsk(); }; setTimeout(step,650); }
+function speedAsk(){ G.phase='play'; G.pick=null; G.endsAt=Date.now()+SPEED.secs*1000; render(); kick('.qwrap','q-next'); requestAnimationFrame(speedTick); }
+function speedTick(){ if(!G||G.phase!=='play'||G.frozen||route.name!=='speed') return; const left=G.endsAt-Date.now(), bar=$('#gbar');
+  if(bar){ bar.style.width=Math.max(0,left/(SPEED.secs*10))+'%'; bar.parentNode.classList.toggle('low',left<5000); const n=$('#gsec'); if(n) n.textContent=fa(Math.max(0,Math.ceil(left/1000))); }
+  if(left<=0) return speedAnswer(-1); requestAnimationFrame(speedTick); }
+function speedAnswer(j){ if(!G||G.phase!=='play') return; const g=G, q=g.qs[g.k], right=j===q.a;
+  g.used+=Math.min(SPEED.secs*1000, SPEED.secs*1000-(g.endsAt-Date.now())); g.pick=j; g.phase='fb'; g.res.push(right?'ok':'bad');
+  if(right){ g.streak++; } else { g.lives--; g.streak=0; }
+  render();
+  if(right){ haptic(12); const o=document.querySelectorAll('.gopts .opt')[j]; if(o){ const r=o.getBoundingClientRect(); burst(r.left+r.width/2,r.top+r.height/2); } if(g.streak>=2) kick('.streak','pop-in'); }
+  else { haptic(40); kick('.gcard','shake'); kick('.hearts i.off:first-of-type','pop-in'); const hs=document.querySelectorAll('.hearts i'); if(hs[g.lives]) kick(hs[g.lives],'heart-break'); }
+  setTimeout(()=>{ if(G!==g||route.name!=='speed') return;
+    if(g.lives<=0){ g.phase='lost'; const s=S.practice.speed[g.t]||(S.practice.speed[g.t]={}); s.tries=(s.tries||0)+1; save(); NAV='fwd'; render(); haptic(50); }
+    else if(g.k>=g.qs.length-1){ const s=S.practice.speed[g.t]||(S.practice.speed[g.t]={}); g.record=!s.best||g.used<s.best; s.won=true; s.best=g.record?g.used:s.best; s.tries=(s.tries||0)+1; g.phase='won'; save(); NAV='fwd'; render(); speedCheer(); }
+    else { g.k++; speedAsk(); } }, right?600:1300);
+}
+function speedCheer(){ const go=()=>{ const t=$('.end-art'); if(t && route.name==='speed'){ const b=t.getBoundingClientRect(); burst(b.left+b.width/2,b.top+b.height/2); } }; setTimeout(go,300); setTimeout(go,800); setTimeout(()=>{ if(route.name==='speed') burst(innerWidth*.3,150); },1150); haptic(30); }
+function speedQuit(){ if(G && (G.phase==='play'||G.phase==='fb'||G.phase==='count')){ const g=G; g.frozen=true;
+    sheet(`<h2>وسط بازی بیرون می‌ری؟</h2><p class="muted">این دور حساب نمی‌شه و دفعهٔ بعد با سؤال‌های تازه از اول شروع می‌کنی.</p><div class="acts"><button class="btn btn-primary" onclick="speedResume()">ادامه می‌دم</button><button class="btn btn-ghost" onclick="G=null;closeSheet();back()">بیرون می‌رم</button></div>`); g.pausedLeft=g.endsAt-Date.now(); return; }
+  G=null; back(); }
+function speedResume(){ closeSheet(); if(!G) return; G.frozen=false; if(G.phase==='play'){ G.endsAt=Date.now()+Math.max(1500,G.pausedLeft||0); requestAnimationFrame(speedTick); } }
+V.speed = () => {
+  if(S.exam.status!=='published') return V.home();
+  const t=route.p.t; if(!G||G.t!==t) G={ t, phase:'intro' };
+  const g=G, sp=S.practice.speed[t]||{}, playing=g.phase==='play'||g.phase==='fb';
+  const head=`<div class="sticky"><div class="topbar"><button class="icon-btn" onclick="speedQuit()" aria-label="بازگشت">${I.back}</button>
+      <div class="title">مسیر سرعت<div class="small muted" style="font-weight:500">${TOPIC[t]}</div></div>${g.phase==='intro'||g.phase==='won'?'<span style="width:42px"></span>':hearts(g.lives)}</div>
+    ${playing?`<div class="gdots">${g.qs.map((x,i)=>`<i class="${g.res[i]||''} ${i===g.k&&g.phase==='play'?'cur':''}"></i>`).join('')}</div>
+      <div class="gtime-row"><div class="gtime ${g.frozen&&g.endsAt-Date.now()<5000?'low':''}"><i id="gbar" style="width:${g.phase==='play'?Math.max(0,(g.endsAt-Date.now())/(SPEED.secs*10)):0}%"></i></div><b id="gsec">${g.phase==='play'?fa(Math.max(0,Math.ceil((g.endsAt-Date.now())/1000))):'۰'}</b></div>`:''}</div>`;
+  let body='', act='';
+  if(g.phase==='intro'){
+    body=`<div class="st-body center"><div class="illus go-art">${ART.clock}</div>
+      <h1 class="st-h">${sp.won?'می‌خوای رکوردت رو بزنی؟':'آماده‌ای؟'}</h1>
+      <p class="muted st-lead">${nob('سؤال‌ها مثل سؤال‌های دفترچهٔ ۲ هستن و سخت نیستن؛ اینجا سرعت و دقت مهمه.')}</p>
+      <div class="lv-chips"><span class="lv-chip" style="--d:.3s"><b>${fa(SPEED.n)}</b>سؤال</span><span class="lv-chip" style="--d:.45s"><b>${fa(SPEED.secs)}</b>ثانیه برای هر سؤال</span><span class="lv-chip" style="--d:.6s"><b>${fa(SPEED.lives)}</b>جون</span></div>
+      <p class="muted small st-line" style="--d:.8s">${nob('جواب غلط یا تموم شدن وقت، یک جون کم می‌کنه. اگه هر سه جون بره، با سؤال‌های تازه از اول شروع می‌کنی.')}</p>
+      ${sp.best?`<p class="st-line tip" style="--d:.9s">رکورد تو: ${secs(sp.best)} ثانیه</p>`:''}</div>`;
+    act=`<button class="btn btn-primary pulse" onclick="speedStart()">بزن بریم!</button>`;
+  }
+  if(g.phase==='count') body=`<div class="gcount"><span class="muted">آماده…</span><b>${fa(g.count)}</b></div>`;
+  if(playing){ const q=g.qs[g.k], fb=g.phase==='fb', long=q.o.some(o=>String(o).length>12);
+    body=`<div class="qwrap stack">
+      <div class="row between small"><span class="muted">سؤال ${fa(g.k+1)} از ${fa(g.qs.length)}</span>${g.streak>=2?`<span class="streak">${I.bolt}${fa(g.streak)} تا پشت هم!</span>`:''}</div>
+      <div class="card gcard"><p class="q-text">${nob(q.q)}</p></div>
+      <div class="gopts ${long?'one':''}">${q.o.map((o,j)=>{ const right=fb&&j===q.a, no=fb&&g.pick===j&&j!==q.a; return `<button class="opt ${right?'right':''} ${no?'wrong':''}" ${fb?'disabled':''} onclick="speedAnswer(${j})"><span class="n">${right?'✓':no?'✕':fa(j+1)}</span><span class="grow">${o}</span></button>`; }).join('')}</div>
+      ${fb?`<p class="ask ${g.pick===q.a?'yes':'no'}">${g.pick===q.a?'آفرین!':g.pick===-1?'وقت تموم شد!':'این نبود!'}</p>`:''}</div>`; }
+  if(g.phase==='won'){ const ns=nextStation();
+    body=`<div class="st-body center"><div class="illus end-art">${ART.trophy}</div>
+      <h1 class="st-h">این مرحله رو بردی!</h1>${g.record?'<div><span class="badge pri">رکورد جدید</span></div>':''}
+      <div class="st-stats"><div class="stt" style="--d:.3s"><b>${secs(g.used)}</b><span>ثانیه</span></div><div class="stt ok" style="--d:.45s"><b>${fa(g.res.filter(x=>x==='ok').length)}</b><span>جواب درست</span></div><div class="stt" style="--d:.6s"><b>${fa(g.lives)}</b><span>جونِ مونده</span></div></div>
+      <p class="muted st-line" style="--d:.9s">${nob(`به‌طور میانگین هر سؤال رو توی ${secs(g.used/g.qs.length)} ثانیه جواب دادی.`)}</p></div>`;
+    act=(ns?`<button class="btn btn-primary" onclick="G=null;stack=[{name:'exams',p:{}}];route={name:'${ns.type==='lv'?'practice':'speed'}',p:{${ns.type==='lv'?'lv':'t'}:'${ns.key}'}};rerender('fwd')">ایستگاه بعدی: ${ns.title}</button>`:`<button class="btn btn-primary" onclick="G=null;tab('home')">برگشت به خانه</button>`)+`<div class="row2"><button class="btn btn-ghost" onclick="speedStart()">یه دور دیگه</button><button class="btn btn-ghost" onclick="G=null;tab('exams')">مسیر تمرین</button></div>`;
+  }
+  if(g.phase==='lost'){
+    body=`<div class="st-body center"><div class="illus end-art lost">${ART.clock}</div>
+      <h1 class="st-h">جون‌هات تموم شد</h1>
+      <p class="muted st-lead">${nob(`تا سؤال ${fa(g.k+1)} از ${fa(g.qs.length)} اومدی و ${fa(g.res.filter(x=>x==='ok').length)} تا رو درست زدی. یه بار دیگه با سؤال‌های تازه امتحان کن.`)}</p>
+      <div class="gdots big">${g.qs.map((x,i)=>`<i class="${g.res[i]||''}"></i>`).join('')}</div></div>`;
+    act=`<button class="btn btn-primary" onclick="speedStart()">دوباره از اول</button><button class="btn btn-ghost" onclick="G=null;tab('exams')">برگشت به مسیر تمرین</button>`;
+  }
+  return `<div class="screen no-nav ${act?'has-act':''} practice speed sp-${g.phase} ${g.phase==='won'?'act2':''}">${head}${body}</div>${act?actions(act):''}`;
+};
+
+/* ---------- خروجی PDF سبد ---------- */
+function makePdf(pages){ // هر صفحه یک تصویر JPEG تمام‌صفحه (A4)
+  const enc=new TextEncoder(), parts=[], offs=[]; let pos=0;
+  const push=x=>{ const u=typeof x==='string'?enc.encode(x):x; parts.push(u); pos+=u.length; };
+  const obj=(n,body)=>{ offs[n]=pos; push(`${n} 0 obj\n`); body(); push(`\nendobj\n`); };
+  push('%PDF-1.4\n');
+  obj(1,()=>push('<< /Type /Catalog /Pages 2 0 R >>'));
+  obj(2,()=>push(`<< /Type /Pages /Kids [${pages.map((_,i)=>`${3+i*3} 0 R`).join(' ')}] /Count ${pages.length} >>`));
+  pages.forEach((j,i)=>{ const p=3+i*3, content='q 595 0 0 842 0 0 cm /Im0 Do Q';
+    obj(p,()=>push(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /XObject << /Im0 ${p+1} 0 R >> >> /Contents ${p+2} 0 R >>`));
+    obj(p+1,()=>{ push(`<< /Type /XObject /Subtype /Image /Width ${j.w} /Height ${j.h} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${j.data.length} >>\nstream\n`); push(j.data); push('\nendstream'); });
+    obj(p+2,()=>push(`<< /Length ${content.length} >>\nstream\n${content}\nendstream`)); });
+  const xref=pos, n=3+pages.length*3; push(`xref\n0 ${n}\n0000000000 65535 f \n`);
+  for(let i=1;i<n;i++) push(String(offs[i]).padStart(10,'0')+' 00000 n \n');
+  push(`trailer\n<< /Size ${n} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`);
+  return new Blob(parts,{type:'application/pdf'});
+}
+const loadImg = src => new Promise(res=>{ const im=new Image(); im.onload=()=>res(im); im.onerror=()=>res(null); im.src=src; });
+async function basketPages(){
+  const items=openBasket(), s=me(), W=1240, H=1754, M=90, CW=W-2*M, INK='#1D1D1B', MUT='#5F5B55', pages=[];
+  const imgs={}; for(const b of items){ const q=Q[b.qi]; if(q.img) imgs[q.img]=imgs[q.img]||await loadImg(ASSET[q.img]); if(q.oi) for(const u of q.oi) imgs[u]=imgs[u]||await loadImg(u); }
+  await (document.fonts && document.fonts.ready);
+  let c, x, y;
+  const F=(w,px)=>x.font=`${w} ${px}px "Yekan Bakh", Tahoma, sans-serif`;
+  const txt=(t,X,Y,col=INK,al='right')=>{ x.fillStyle=col; x.textAlign=al; x.fillText(t,X,Y); };
+  const wrap=(t,maxW)=>{ const out=[]; let line=''; String(t).replace(/ /g,' ').split(' ').forEach(w=>{ const tr=line?line+' '+w:w; if(x.measureText(tr).width>maxW && line){ out.push(line); line=w; } else line=tr; }); if(line) out.push(line); return out; };
+  const para=(t,X,maxW,lh,dry,col)=>{ wrap(t,maxW).forEach(l=>{ if(!dry) txt(l,X,y+lh*.72,col); y+=lh; }); };
+  const page=()=>{ c=document.createElement('canvas'); c.width=W; c.height=H; x=c.getContext('2d'); x.direction='rtl'; x.fillStyle='#fff'; x.fillRect(0,0,W,H); pages.push(c); y=M; };
+  const opts=(q,pick,dry,X,maxW)=>{
+    if(q.oi){ const S2=170, gap=24; q.o.forEach((o,j)=>{ const X0=X-(j+1)*S2-j*gap; if(!dry){ if(imgs[q.oi[j]]) x.drawImage(imgs[q.oi[j]],X0,y,S2,S2); if(pick===j){ x.lineWidth=6; x.strokeStyle='#947EDC'; x.beginPath(); x.roundRect(X0-6,y-6,S2+12,S2+12,26); x.stroke(); } F(700,26); txt(fa(j+1)+(pick===j?' · جواب من':''),X0+S2/2,y+S2+36,pick===j?'#4B3A92':MUT,'center'); } }); y+=S2+60; return; }
+    q.o.forEach((o,j)=>{ F(pick===j?800:500,27); const mine=pick===j; if(!dry && mine){ const h=wrap(`${fa(j+1)}) ${o}`,maxW-230).length*40; x.fillStyle='#E9E3F8'; x.beginPath(); x.roundRect(X-maxW,y-4,maxW,h+8,14); x.fill(); F(800,24); txt('جواب من',X-maxW+20,y+27,'#4B3A92','left'); F(800,27); }
+      para(`${fa(j+1)}) ${o}`,X-16,maxW-230,40,dry); y+=4; });
+  };
+  const item=(b,n,dry)=>{ const q=Q[b.qi], y0=y;
+    if(!dry){ x.fillStyle=INK; x.beginPath(); x.arc(W-M-26,y+26,26,0,7); x.fill(); F(900,28); txt(fa(n),W-M-26,y+36,'#fff','center'); F(600,26); txt(b.from,W-M-70,y+35,MUT); } y+=74;
+    F(800,31); para(q.q,W-M,CW,50,dry); y+=6;
+    if(q.img && imgs[q.img]){ const im=imgs[q.img], w=Math.min(CW,760), h=w*im.height/im.width; if(!dry) x.drawImage(im,W-M-w,y,w,h); y+=h+20; }
+    opts(q,b.my,dry,W-M,CW);
+    if(b.my===null){ F(700,28); para('جواب من: این سؤال رو توی آزمون جواب نداده بودم.',W-M,CW,46,dry,'#8A3E26'); }
+    if(b.sim){ const sq=SIM(b.qi); y+=14; const yb=y; let hb=0;
+      const inner=d=>{ y=yb+26; F(700,24); para('سؤال مشابهی که توی تمرین حل کردم',W-M-30,CW-60,40,d,MUT); F(700,27); para(sq.q,W-M-30,CW-60,42,d); y+=4; opts(sq,b.sim.pick,d,W-M-30,CW-60); y+=14; };
+      inner(true); hb=y-yb; if(!dry){ x.fillStyle='#F7F5F1'; x.beginPath(); x.roundRect(M,yb,CW,hb,24); x.fill(); inner(false); } y=yb+hb; }
+    y+=22; if(!dry){ x.fillStyle='#D6D0C6'; x.fillRect(M,y,CW,2); } y+=28; return y-y0; };
+  page(); F(900,54); txt('از معلم می‌پرسم',W-M,y+50); y+=84; F(500,28); txt(`${s.first} ${s.last} · پایهٔ ${s.grade} · ${s.school}`,W-M,y+24,MUT); y+=44; txt(`${DATA.exam.title} · ${fa(items.length)} سؤال`,W-M,y+24,MUT); y+=60; x.fillStyle=INK; x.fillRect(M,y,CW,4); y+=44;
+  items.forEach((b,i)=>{ const keep=y; const h=item(b,i+1,true); y=keep; if(y+h>H-M-40 && y>M+10) page(); item(b,i+1,false); });
+  pages.forEach((cv,i)=>{ const g=cv.getContext('2d'); g.direction='rtl'; g.font='500 24px "Yekan Bakh", Tahoma, sans-serif'; g.fillStyle=MUT; g.textAlign='center'; g.fillText(`صفحهٔ ${fa(i+1)} از ${fa(pages.length)}`,W/2,H-50); });
+  return pages;
+}
+let PDF_URL=null;
+async function basketPdf(){
+  if(!openBasket().length) return toast('سبدت خالیه');
+  toast('دارم PDF رو می‌سازم…');
+  const pages=await basketPages(), bytes=u=>{ const b=atob(u.split(',')[1]), a=new Uint8Array(b.length); for(let i=0;i<b.length;i++) a[i]=b.charCodeAt(i); return a; };
+  const blob=makePdf(pages.map(c=>({ w:c.width, h:c.height, data:bytes(c.toDataURL('image/jpeg',.9)) })));
+  if(PDF_URL) URL.revokeObjectURL(PDF_URL); PDF_URL=URL.createObjectURL(blob); window.PDF_BLOB=blob;
+  sheet(`<h2>PDF سبدت آماده‌ست</h2><p class="muted small">${fa(openBasket().length)} سؤال با جواب‌های خودت، در ${fa(pages.length)} صفحه. می‌تونی چاپش کنی یا برای معلمت بفرستی.</p>
+    <img class="rep-img" src="${pages[0].toDataURL('image/jpeg',.7)}" alt="پیش‌نمایش صفحهٔ اول">
+    <div class="acts"><a class="btn btn-primary" href="${PDF_URL}" download="sabad-az-moallem-miporsam.pdf">${I.down}دانلود PDF</a><button class="btn btn-ghost" onclick="closeSheet()">بستن</button></div>`);
 }
 
 /* ---------- رتبه‌بندی ---------- */
@@ -1631,16 +1833,18 @@ function logout(){ stashUser(); S.loggedIn=false; save(); closeSheet(); stack=[]
 
 /* ---------- سبد: از معلم می‌پرسم ---------- */
 V.basket = () => { const open=openBasket(), solved=S.basket.length-open.length;
-  return `<div class="screen no-nav stack">${topbar('از معلم می‌پرسم')}
-    ${open.length?open.map(b=>`<button class="list-item" onclick="go('basketItem',{id:${b.id}})"><span class="grow"><b class="small">${Q[b.qi].q}</b><br><span class="muted small">${b.from}</span></span><span class="chev">${I.chev}</span></button>`).join('')
+  return `<div class="screen no-nav ${open.length?'has-act':''} stack">${topbar('از معلم می‌پرسم')}
+    ${open.length?`<p class="muted small">${nob('سؤال‌های آزمون که توی تمرین هم برات جا نیفتادن. با PDF می‌تونی همه رو یک‌جا به معلمت نشون بدی.')}</p>`:''}
+    ${open.length?open.map(b=>`<button class="list-item" onclick="go('basketItem',{id:${b.id}})"><span class="grow"><b class="small">${Q[b.qi].q}</b><br><span class="muted small">${b.from}${b.sim?' · با یک سؤال مشابه':''}</span></span><span class="chev">${I.chev}</span></button>`).join('')
       :empty(ART.bubble,'سبدت خالیه','وقتی توی تمرین سؤالی برات جا نیفتاد، بندازش توی سبد تا از معلمت بپرسی.')}
     ${solved?`<p class="muted small center">${fa(solved)} سؤال حل‌شده از سبد بیرون رفته.</p>`:''}
-  </div>`; };
+  </div>${open.length?actions(`<button class="btn btn-primary" onclick="basketPdf()">${I.down}دانلود PDF سؤال‌ها و جواب‌هام</button>`):''}`; };
 V.basketItem = () => { const b=S.basket.find(x=>x.id===route.p.id); if(!b) return V.basket(); const q=Q[b.qi];
   return `<div class="screen no-nav has-act stack">${topbar('سؤال من')}
-    <div><span class="badge">${b.from}</span></div>
+    <div class="row between"><span class="badge">${b.from}</span><span class="muted small">سؤال اصلی آزمون</span></div>
     ${qBody(q)}
     <div class="${optsCls(q)}">${q.o.map((o,j)=>staticOpt(q,j,b.my,true)).join('')}</div>
+    ${b.sim?(sq=>`<span class="cap sec">سؤال مشابهی که توی تمرین حل کردی</span><div class="card linked"><p class="q-text sm">${nob(sq.q)}</p><div class="stack" style="margin-top:10px">${sq.o.map((o,j)=>staticOpt(sq,j,b.sim.pick,true)).join('')}</div></div>`)(SIM(b.qi)):''}
     <div class="note">${I.info}<span>این سؤال رو سر کلاس یا از همون راهی که با معلمت در ارتباطی بپرس.</span></div>
     <b>اشکالت رفع شد؟</b>
   </div>${actions(`<button class="btn btn-primary" onclick="solve(${b.id})">آره، حل شد</button><div class="row2"><button class="btn btn-ghost" onclick="back();toast('سؤال برای پیگیری توی سبد می‌مونه')">هنوز نه</button><button class="btn btn-ghost btn-danger" onclick="removeItem(${b.id})">حذف از سبد</button></div>`)}`; };
@@ -1693,12 +1897,12 @@ function devFill(perf){ const P=DEV_PERF[perf]||DEV_PERF.mid, r=rngOf((perf||'mi
 function devUser(){ if(S.loggedIn && S.profile) return; S.loggedIn=true; S.phone='09121112233'; if(!S.registered.includes(S.phone)) S.registered.push(S.phone); loadUser(S.phone,true);
   S.profile={ first:'سارا', last:'احمدی', grade:'ششم', province:'تهران', city:'تهران', school:'دبستان فرهنگ', gender:'دختر', birth:{y:1393,m:5,d:12}, nid:'0012345679' }; S.avatar=2; }
 function devGo(id, perf){
-  closeSheet(); stack=[]; const [g,a]=id.split(':'); let name=g, p={}, after=null;
+  closeSheet(); stack=[]; G=null; const [g,a]=id.split(':'); let name=g, p={}, after=null;
   const auth=()=>{ if(S.loggedIn){ stashUser(); S.loggedIn=false; } L={mode:'login',phone:'',otp:'',err:'',resendAt:0}; R=freshR(); };
   const pub=()=>{ devUser(); devFill(perf); S.story=null; S.practice=freshPractice(); S.basket=[]; };
   const seen=()=>{ pub(); S.story={step:STEPS().length-1,done:true}; };
   const sit=b=>{ devUser(); S.exam=freshExam(); S.exam.status='inProgress'; S.exam.booklet=b; if(b) QB(0).forEach(q=>S.exam.passed[q.i]=true); S.exam.endsAt[b]=Date.now()+DATA.exam.booklets[b].minutes*60000-(b?0:754000); name='exam'; };
-  const drill=(n,mode)=>{ const w=result().wrong; w.slice(0,n).forEach((i,k)=>{ const bk=mode==='mix'&&k%3===2; S.practice.res[i]=bk?'basket':'ok'; if(bk) S.basket.push({id:1000+i,qi:i,from:`${DATA.exam.title} · ${qLabel(i)}`,my:S.exam.answers[i],solved:false}); }); };
+  const drill=(n,mode)=>{ const w=result().wrong.filter(i=>Q[i].b===0); w.slice(0,n).forEach((i,k)=>{ const bk=mode==='mix'&&k%3===2; S.practice.res[i]=bk?'basket':'ok'; if(bk) S.basket.push({id:1000+i,qi:i,from:`${DATA.exam.title} · ${qLabel(i)}`,my:S.exam.answers[i],sim:{pick:(SIM(i).a+1)%4},solved:false}); }); if(n>=999) speedTopics().forEach((t,k)=>S.practice.speed[t]={won:true,best:61000+k*9000,tries:2}); };
   if(g==='login'){ auth(); }
   else if(g==='unregistered'){ auth(); L.phone=DATA.login.unregistered; }
   else if(g==='otp'){ auth(); L.phone='09121112233'; L.resendAt=Date.now()+60000; }
@@ -1723,18 +1927,26 @@ function devGo(id, perf){
   else if(g==='story'){ pub(); const n=STEPS(), k=Math.max(0,n.indexOf(a)); S.story={step:k,done:k===n.length-1}; }
   else if(g==='practice'){ seen(); const lv=nextLevel()||'easy'; p={lv}; const c=pracCur(lv);
     if(c && a!=='explain' && a!=='end'){ const sq=SIM(c.qi); c.phase=a; if(a==='ok') c.pick=sq.a; if(a==='no') c.pick=(sq.a+1)%4; }
-    if(a==='end'){ pracList(lv).forEach((i,k)=>{ const bk=k%3===1; S.practice.res[i]=bk?'basket':'ok'; if(bk) S.basket.push({id:1000+i,qi:i,from:`${DATA.exam.title} · ${qLabel(i)}`,my:S.exam.answers[i],solved:false}); }); S.practice.cur=null; } }
+    if(a==='end'){ pracList(lv).forEach((i,k)=>{ const bk=k%3===1; S.practice.res[i]=bk?'basket':'ok'; if(bk) S.basket.push({id:1000+i,qi:i,from:`${DATA.exam.title} · ${qLabel(i)}`,my:S.exam.answers[i],sim:{pick:(SIM(i).a+1)%4},solved:false}); }); S.practice.cur=null; } }
+  else if(g==='speed'){ seen(); const t=speedTopics()[0]||'numbers'; p={t}; const deck=speedDeck(t,4242);
+    if(a==='intro') G={t,phase:'intro'};
+    if(a==='count') G={t,qs:deck,k:0,lives:3,res:[],streak:0,used:0,phase:'count',count:2,frozen:true};
+    if(a==='play') G={t,qs:deck,k:3,lives:2,res:['ok','ok','bad'],streak:0,used:21000,phase:'play',frozen:true,endsAt:Date.now()+9400};
+    if(a==='streak') G={t,qs:deck,k:4,lives:3,res:['ok','ok','ok','ok','ok'],streak:5,used:24000,pick:deck[4].a,phase:'fb',frozen:true,endsAt:Date.now()+9000};
+    if(a==='wrong') G={t,qs:deck,k:5,lives:1,res:['ok','bad','ok','ok','bad','bad'],streak:0,used:40000,pick:(deck[5].a+1)%4,phase:'fb',frozen:true,endsAt:Date.now()+3000};
+    if(a==='lost') G={t,qs:deck,k:5,lives:0,res:['ok','bad','ok','ok','bad','bad'],streak:0,used:40000,phase:'lost'};
+    if(a==='won'){ S.practice.speed[t]={won:true,best:52300,tries:2}; G={t,qs:deck,k:7,lives:2,res:['ok','ok','bad','ok','ok','ok','ok','ok'],streak:5,used:52300,record:true,phase:'won'}; } }
   else if(g==='exams'){ if(a==='before'){ devUser(); S.exam=freshExam(); S.story=null; S.practice=freshPractice(); } else { seen(); drill(a==='done'?999:5,'mix'); } }
   else if(g==='result'){ seen(); }
   else if(g==='report'){ seen(); name='result'; after=reportSheet; }
   else if(g==='answer'){ seen(); name='result'; after=()=>showAnswer(result().wrong[0] ?? 0); }
   else if(g==='leaderboard'){ if(a==='before'){ devUser(); S.exam=freshExam(); } else seen(); }
-  else if(g==='basket'){ seen(); if(a!=='empty') drill(12,'mix'); if(a==='item'){ name='basketItem'; p={id:S.basket[0].id}; stack=[{name:'basket',p:{}}]; } }
+  else if(g==='basket'){ seen(); if(a!=='empty') drill(12,'mix'); if(a==='item'){ name='basketItem'; p={id:S.basket[0].id}; stack=[{name:'basket',p:{}}]; } if(a==='pdf') after=basketPdf; }
   else if(g==='profile'){ devUser(); }
   else if(g==='logout'){ devUser(); name='profile'; after=logoutAsk; }
   else if(g==='avatar'){ devUser(); name='profile'; after=pickAvatar; }
   else if(g==='reset'){ S=fresh(); auth(); name='login'; }
-  if(['practice','basket','basketItem','result','story','rules'].includes(name) && !stack.length) stack=[{name:name==='practice'?'exams':'home',p:{}}];
+  if(['practice','speed','basket','basketItem','result','story','rules'].includes(name) && !stack.length) stack=[{name:name==='practice'||name==='speed'?'exams':'home',p:{}}];
   route={name,p}; save(); NAV='tab'; render(); scrollTo(0,0);
   if(after) setTimeout(after,350);
 }
